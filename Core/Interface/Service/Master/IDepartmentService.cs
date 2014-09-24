@@ -15,6 +15,7 @@ namespace Core.Interface.Service
         Department GetObjectById(int Id);
         Department GetObjectByName(string Name);
         Department CreateObject(Department department);
+        Department CreateObject(string Code, string Name, string Description);
         Department UpdateObject(Department department);
         Department SoftDeleteObject(Department department);
         bool DeleteObject(int Id);

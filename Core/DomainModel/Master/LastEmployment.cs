@@ -12,7 +12,7 @@ namespace Core.DomainModel
 
         public string Company { get; set; }
         public string Title { get; set; }
-        public string Reason { get; set; }
+        public string ResignReason { get; set; }
         public DateTime StartDate { get; set; }
         public Nullable<DateTime> EndDate { get; set; }
         public int EmployeeId { get; set; }

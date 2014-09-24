@@ -40,9 +40,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Master\CompanyInfoService.cs" />
+    <Compile Include="Service\Master\SalaryEmployeeDetailService.cs" />
+    <Compile Include="Service\Master\SalaryEmployeeService.cs" />
+    <Compile Include="Service\Master\SalaryStandardDetailService.cs" />
+    <Compile Include="Service\Master\SalaryStandardService.cs" />
+    <Compile Include="Service\Master\SalarySlipDetailService.cs" />
+    <Compile Include="Service\Master\SalarySlipService.cs" />
+    <Compile Include="Service\Master\SalaryItemService.cs" />
+    <Compile Include="Service\Master\PPH21SPTService.cs" />
+    <Compile Include="Service\Master\PTKPService.cs" />
+    <Compile Include="Service\Master\OtherIncomeService.cs" />
+    <Compile Include="Service\Master\OtherExpenseService.cs" />
+    <Compile Include="Service\Master\LastEmploymentService.cs" />
+    <Compile Include="Service\Master\LastEducationService.cs" />
+    <Compile Include="Service\Master\FormulaService.cs" />
+    <Compile Include="Service\Master\EmployeeService.cs" />
+    <Compile Include="Service\Master\TitleInfoService.cs" />
+    <Compile Include="Service\Master\DivisionService.cs" />
+    <Compile Include="Service\Master\DepartmentService.cs" />
+    <Compile Include="Service\StringEncryption.cs" />
+    <Compile Include="Service\UserRole\UserAccountService.cs" />
+    <Compile Include="Service\Utility\EmployeeLoanDetailService.cs" />
+    <Compile Include="Service\Utility\EmployeeLoanService.cs" />
+    <Compile Include="Service\Utility\PensionCompensationService.cs" />
+    <Compile Include="Service\Utility\ManualAttendanceService.cs" />
+    <Compile Include="Service\Utility\GeneralLeaveService.cs" />
+    <Compile Include="Service\Utility\EmployeeLeaveService.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Service\Master\" />
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{94721595-1c93-45c5-bdd8-890b60ad9339}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{14f5dc8f-6aae-4971-b71f-b08f2b638c17}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

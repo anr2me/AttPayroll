@@ -14,6 +14,7 @@ namespace Core.Interface.Service
         IList<LastEducation> GetAll();
         LastEducation GetObjectById(int Id);
         LastEducation CreateObject(LastEducation lastEducation);
+        LastEducation CreateObject(string Institute, string Major, string EducationLevel, DateTime EnrollmentDate, Nullable<DateTime> GraduationDate);
         LastEducation UpdateObject(LastEducation lastEducation);
         LastEducation SoftDeleteObject(LastEducation lastEducation);
         bool DeleteObject(int Id);

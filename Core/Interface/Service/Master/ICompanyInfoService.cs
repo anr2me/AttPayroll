@@ -16,7 +16,7 @@ namespace Core.Interface.Service
         CompanyInfo GetObjectByName(string Name);
         //CompanyInfo FindOrCreateBaseCompanyInfo();
         CompanyInfo CreateObject(CompanyInfo companyInfo);
-        CompanyInfo CreateObject(string Name, string Address, string ContactNo, string Logo, string Email);
+        CompanyInfo CreateObject(string Name, string Address, string PostalCode, string PhoneNumber, string FaxNumber, string Website, string Email);
         CompanyInfo UpdateObject(CompanyInfo companyInfo);
         CompanyInfo SoftDeleteObject(CompanyInfo companyInfo);
         bool DeleteObject(int Id);

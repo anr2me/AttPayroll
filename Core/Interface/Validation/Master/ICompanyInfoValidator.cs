@@ -11,8 +11,7 @@ namespace Core.Interface.Validation
     {
         CompanyInfo VHasUniqueName(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
         CompanyInfo VHasAddress(CompanyInfo companyInfo);
-        CompanyInfo VHasContactNo(CompanyInfo companyInfo);
-        //CompanyInfo VHasLogo(CompanyInfo companyInfo);
+        CompanyInfo VHasPhoneNumber(CompanyInfo companyInfo);
         CompanyInfo VHasEmail(CompanyInfo companyInfo);
         CompanyInfo VCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
         CompanyInfo VUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);

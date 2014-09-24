@@ -18,26 +18,26 @@ namespace Core.DomainModel
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public string Sex { get; set; }
-        public string MaritalStatus { get; set; }
+        public int Sex { get; set; }
+        public int MaritalStatus { get; set; } //Single/Married
         public int Children { get; set; }
-        public string Religion { get; set; }
+        public int Religion { get; set; }
         public string Father { get; set; }
         public string Mother { get; set; }
         public int ChildNo { get; set; }
         public int NumberOfChild { get; set; }
         public string NPWP { get; set; }
-        public string NPWPAddress { get; set; }
+        //public string NPWPAddress { get; set; }
         public string JamsostekNo { get; set; }
         public string BankCode { get; set; }
         public string BankAccount { get; set; }
-        public string Status { get; set; } // Magang/Kontrak/MasaPercobaan/PegawaiTetap
+        public int WorkingStatus { get; set; } // Magang/Kontrak/MasaPercobaan/PegawaiTetap
         public Nullable<DateTime> StartWorking { get; set; }
         public Nullable<DateTime> Appointment { get; set; } // Mulai jadi pegawai tetap
         public Nullable<int> LastEducationId { get; set; }
         public Nullable<int> LastEmploymentId { get; set; }
-        public string WorkingStatus { get; set; } // NonAktif/Aktif/MedicalCheck
-        public DateTime WorkingStatusEffectiveDate { get; set; } 
+        public bool IsActive { get; set; } // NonAktif/Aktif/MedicalCheck?
+        public Nullable<DateTime> NonActiveDate { get; set; } 
         public int DivisionId { get; set; }
         public int TitleInfoId { get; set; }
 

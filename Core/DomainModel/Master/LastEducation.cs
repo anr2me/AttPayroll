@@ -11,6 +11,7 @@ namespace Core.DomainModel
         public int Id { get; set; }
 
         public string Institute { get; set; }
+        public string Major { get; set; }
         public string EducationLevel { get; set; }
         public DateTime EnrollmentDate { get; set; }
         public Nullable<DateTime> GraduationDate { get; set; }

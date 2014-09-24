@@ -15,6 +15,7 @@ namespace Core.Interface.Service
         Division GetObjectById(int Id);
         Division GetObjectByName(string Name);
         Division CreateObject(Division division);
+        Division CreateObject(string Code, string Name, string Description);
         Division UpdateObject(Division division);
         Division SoftDeleteObject(Division division);
         bool DeleteObject(int Id);

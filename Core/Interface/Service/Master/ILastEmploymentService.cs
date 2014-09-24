@@ -14,6 +14,7 @@ namespace Core.Interface.Service
         IList<LastEmployment> GetAll();
         LastEmployment GetObjectById(int Id);
         LastEmployment CreateObject(LastEmployment lastEmployment);
+        LastEmployment CreateObject(string Company, string Title, DateTime StartDate, Nullable<DateTime> EndDate, string ResignReason);
         LastEmployment UpdateObject(LastEmployment lastEmployment);
         LastEmployment SoftDeleteObject(LastEmployment lastEmployment);
         bool DeleteObject(int Id);
