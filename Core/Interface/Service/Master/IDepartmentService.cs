@@ -14,9 +14,9 @@ namespace Core.Interface.Service
         IList<Department> GetAll();
         Department GetObjectById(int Id);
         Department GetObjectByName(string Name);
-        Department CreateObject(Department department);
-        Department CreateObject(string Code, string Name, string Description);
-        Department UpdateObject(Department department);
+        Department CreateObject(Department department, ICompanyInfoService _companyInfoService);
+        Department CreateObject(string Code, string Name, string Description, ICompanyInfoService _companyInfoService);
+        Department UpdateObject(Department department, ICompanyInfoService _companyInfoService);
         Department SoftDeleteObject(Department department);
         bool DeleteObject(int Id);
         bool IsNameDuplicated(Department department);

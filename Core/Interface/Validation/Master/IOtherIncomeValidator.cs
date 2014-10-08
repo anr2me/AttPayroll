@@ -9,11 +9,9 @@ namespace Core.Interface.Validation
 {
     public interface IOtherIncomeValidator
     {
-        OtherIncome VCreateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService);
-        OtherIncome VUpdateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService);
-        OtherIncome VDeleteObject(OtherIncome otherIncome);
-        bool ValidCreateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService);
-        bool ValidUpdateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService);
+
+        bool ValidCreateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
+        bool ValidUpdateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
         bool ValidDeleteObject(OtherIncome otherIncome);
         bool isValid(OtherIncome otherIncome);
         string PrintError(OtherIncome otherIncome);

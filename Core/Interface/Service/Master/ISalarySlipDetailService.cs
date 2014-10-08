@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<SalarySlipDetail> GetQueryable();
         IList<SalarySlipDetail> GetAll();
         SalarySlipDetail GetObjectById(int Id);
-        SalarySlipDetail CreateObject(SalarySlipDetail salarySlipDetail);
-        SalarySlipDetail UpdateObject(SalarySlipDetail salarySlipDetail);
+        SalarySlipDetail CreateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService);
+        SalarySlipDetail UpdateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService);
         SalarySlipDetail SoftDeleteObject(SalarySlipDetail salarySlipDetail);
         bool DeleteObject(int Id);
     }

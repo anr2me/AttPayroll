@@ -9,11 +9,9 @@ namespace Core.Interface.Validation
 {
     public interface ISalaryEmployeeDetailValidator
     {
-        SalaryEmployeeDetail VCreateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeDetailService _salaryEmployeeDetailService);
-        SalaryEmployeeDetail VUpdateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeDetailService _salaryEmployeeDetailService);
-        SalaryEmployeeDetail VDeleteObject(SalaryEmployeeDetail salaryEmployeeDetail);
-        bool ValidCreateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeDetailService _salaryEmployeeDetailService);
-        bool ValidUpdateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeDetailService _salaryEmployeeDetailService);
+
+        bool ValidCreateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService);
+        bool ValidUpdateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService);
         bool ValidDeleteObject(SalaryEmployeeDetail salaryEmployeeDetail);
         bool isValid(SalaryEmployeeDetail salaryEmployeeDetail);
         string PrintError(SalaryEmployeeDetail salaryEmployeeDetail);

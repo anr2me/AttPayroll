@@ -7,7 +7,6 @@ using System.Text;
 using Data.Context;
 using Data.Repository;
 using System.Data;
-using System.Data.Entity;
 
 namespace Data.Repository
 {

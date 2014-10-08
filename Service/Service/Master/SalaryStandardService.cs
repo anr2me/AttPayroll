@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalaryStandard CreateObject(SalaryStandard salaryStandard)
+        public SalaryStandard CreateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService)
         {
             salaryStandard.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salaryStandard, this) ? _repository.CreateObject(salaryStandard) : salaryStandard);
+            return (_validator.ValidCreateObject(salaryStandard, _titleInfoService) ? _repository.CreateObject(salaryStandard) : salaryStandard);
         }
 
-        public SalaryStandard UpdateObject(SalaryStandard salaryStandard)
+        public SalaryStandard UpdateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService)
         {
-            return (salaryStandard = _validator.ValidUpdateObject(salaryStandard, this) ? _repository.UpdateObject(salaryStandard) : salaryStandard);
+            return (salaryStandard = _validator.ValidUpdateObject(salaryStandard, _titleInfoService) ? _repository.UpdateObject(salaryStandard) : salaryStandard);
         }
 
         public SalaryStandard SoftDeleteObject(SalaryStandard salaryStandard)

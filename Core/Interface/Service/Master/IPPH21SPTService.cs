@@ -17,5 +17,6 @@ namespace Core.Interface.Service
         PPH21SPT UpdateObject(PPH21SPT pph21spt);
         PPH21SPT SoftDeleteObject(PPH21SPT pph21spt);
         bool DeleteObject(int Id);
+        bool IsCodeDuplicated(PPH21SPT pph21spt);
     }
 }

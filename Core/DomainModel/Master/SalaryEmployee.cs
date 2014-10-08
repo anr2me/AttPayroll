@@ -12,6 +12,7 @@ namespace Core.DomainModel
         public string Description { get; set; }
         public DateTime EffectiveDate { get; set; }
         public int EmployeeId { get; set; }
+        public bool IsActive { get; set; }
         
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

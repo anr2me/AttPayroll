@@ -11,7 +11,7 @@ namespace Core.DomainModel
         public int Id { get; set; }
         public int SalarySlipId { get; set; }
         public int SalaryItemId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Amount { get; set; } // Base value
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

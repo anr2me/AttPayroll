@@ -17,5 +17,6 @@ namespace Core.Interface.Service
         PTKP UpdateObject(PTKP ptkp);
         PTKP SoftDeleteObject(PTKP ptkp);
         bool DeleteObject(int Id);
+        bool IsCodeDuplicated(PTKP ptkp);
     }
 }

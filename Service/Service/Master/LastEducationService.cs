@@ -39,13 +39,13 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public LastEducation CreateObject(string Institute, string Major, string EducationLevel, DateTime EnrollmentDate, Nullable<DateTime> GraduationDate)
+        public LastEducation CreateObject(string Institute, string Major, string Level, DateTime EnrollmentDate, Nullable<DateTime> GraduationDate)
         {
             LastEducation lastEducation = new LastEducation
             {
                 Institute = Institute,
                 Major = Major,
-                EducationLevel = EducationLevel,
+                Level = Level,
                 EnrollmentDate = EnrollmentDate,
                 GraduationDate = GraduationDate,
             };

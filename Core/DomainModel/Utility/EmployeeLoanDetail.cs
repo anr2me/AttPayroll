@@ -12,7 +12,7 @@ namespace Core.DomainModel
         public int EmployeeLoanId { get; set; }
         public DateTime InstallmentMonth { get; set; }
         public decimal Amount { get; set; }
-        public decimal PaidAmount { get; set; }
+        public decimal AmountPaid { get; set; }
         public bool IsPaid { get; set; }
 
         public bool IsDeleted { get; set; }

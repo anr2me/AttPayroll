@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<SalaryEmployee> GetQueryable();
         IList<SalaryEmployee> GetAll();
         SalaryEmployee GetObjectById(int Id);
-        SalaryEmployee CreateObject(SalaryEmployee salaryEmployee);
-        SalaryEmployee UpdateObject(SalaryEmployee salaryEmployee);
+        SalaryEmployee CreateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService);
+        SalaryEmployee UpdateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService);
         SalaryEmployee SoftDeleteObject(SalaryEmployee salaryEmployee);
         bool DeleteObject(int Id);
     }

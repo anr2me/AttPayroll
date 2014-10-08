@@ -24,9 +24,12 @@ namespace Data.Context
         {
             IList<String> tableNames = new List<String>();
 
+            IList<String> viewModelNames = new List<String>() 
+                                        { "SlipGajiDetail2A", "SlipGajiDetail1", "SlipGajiDetail", "SlipGajiMini"};
+
             IList<String> utilityNames = new List<String>() 
-                                        { "EmployeeLeave", "GeneralLeave", "EmployeeLoanDetail", "EmployeeLoan", 
-                                          "PensionCompensation", "ManualAttendance"};
+                                        { "SPKL", "EmployeeLeave", "GeneralLeave", "EmployeeLoanDetail", "EmployeeLoan", 
+                                          "PensionCompensation", "EmployeeAttendanceDetail", "EmployeeAttendance"};
 
             IList<String> masterNames = new List<String>() 
                                         { "SalarySlipDetail", "SalarySlip", "SalaryEmployeeDetail", "SalaryEmployee",
@@ -37,6 +40,7 @@ namespace Data.Context
             IList<String> userRoleNames = new List<String>()
                                         { "UserAccount" };
 
+            viewModelNames.ToList().ForEach(x => tableNames.Add(x));
             utilityNames.ToList().ForEach(x => tableNames.Add(x));
             masterNames.ToList().ForEach(x => tableNames.Add(x));
             userRoleNames.ToList().ForEach(x => tableNames.Add(x));
@@ -52,33 +56,43 @@ namespace Data.Context
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-            modelBuilder.Configurations.Add(new SalarySlipDetailMapping());
-            modelBuilder.Configurations.Add(new SalarySlipMapping());
-            modelBuilder.Configurations.Add(new SalaryEmployeeDetailMapping());
-            modelBuilder.Configurations.Add(new SalaryEmployeeMapping());
-            modelBuilder.Configurations.Add(new SalaryStandardDetailMapping());
-            modelBuilder.Configurations.Add(new SalaryStandardMapping());
-            modelBuilder.Configurations.Add(new OtherExpenseMapping());
-            modelBuilder.Configurations.Add(new OtherIncomeMapping());
-            modelBuilder.Configurations.Add(new SalaryItemMapping());
             modelBuilder.Configurations.Add(new FormulaMapping());
-            modelBuilder.Configurations.Add(new EmployeeMapping());
+            modelBuilder.Configurations.Add(new SalaryItemMapping());
             modelBuilder.Configurations.Add(new LastEmploymentMapping());
             modelBuilder.Configurations.Add(new LastEducationMapping());
             modelBuilder.Configurations.Add(new TitleInfoMapping());
             modelBuilder.Configurations.Add(new DivisionMapping());
             modelBuilder.Configurations.Add(new DepartmentMapping());
             modelBuilder.Configurations.Add(new CompanyInfoMapping());
-            modelBuilder.Configurations.Add(new PTKPMapping());
-            modelBuilder.Configurations.Add(new PPH21SPTMapping());
-            modelBuilder.Configurations.Add(new EmployeeLoanDetailMapping());
+            modelBuilder.Configurations.Add(new EmployeeMapping());
+            modelBuilder.Configurations.Add(new UserAccountMapping());
+            modelBuilder.Configurations.Add(new OtherExpenseMapping());
+            modelBuilder.Configurations.Add(new OtherIncomeMapping());
+            modelBuilder.Configurations.Add(new SPKLMapping());
+            modelBuilder.Configurations.Add(new WorkingTimeMapping());
+            modelBuilder.Configurations.Add(new WorkingDayMapping());
+            modelBuilder.Configurations.Add(new EmployeeWorkingTimeMapping());
             modelBuilder.Configurations.Add(new EmployeeLoanMapping());
+            modelBuilder.Configurations.Add(new EmployeeLoanDetailMapping());
+            modelBuilder.Configurations.Add(new EmployeeAttendanceMapping());
+            modelBuilder.Configurations.Add(new EmployeeAttendanceDetailMapping());
             modelBuilder.Configurations.Add(new EmployeeLeaveMapping());
             modelBuilder.Configurations.Add(new GeneralLeaveMapping());
-            modelBuilder.Configurations.Add(new ManualAttendanceMapping());
             modelBuilder.Configurations.Add(new PensionCompensationMapping());
-            modelBuilder.Configurations.Add(new UserAccountMapping());
+            modelBuilder.Configurations.Add(new PTKPMapping());
+            modelBuilder.Configurations.Add(new PPH21SPTMapping());
+            modelBuilder.Configurations.Add(new SalaryStandardMapping());
+            modelBuilder.Configurations.Add(new SalaryStandardDetailMapping());
+            modelBuilder.Configurations.Add(new SalaryEmployeeMapping());
+            modelBuilder.Configurations.Add(new SalaryEmployeeDetailMapping());
+            modelBuilder.Configurations.Add(new SalarySlipMapping());
+            modelBuilder.Configurations.Add(new SalarySlipDetailMapping());
             
+            modelBuilder.Configurations.Add(new SlipGajiMiniMapping());
+            modelBuilder.Configurations.Add(new SlipGajiDetailMapping());
+            modelBuilder.Configurations.Add(new SlipGajiDetail1Mapping());
+            modelBuilder.Configurations.Add(new SlipGajiDetail2AMapping());
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -101,11 +115,16 @@ namespace Data.Context
         public DbSet<CompanyInfo> CompanyInfos { get; set; }
         public DbSet<PTKP> PTKPs { get; set; }
         public DbSet<PPH21SPT> PPH21SPTs { get; set; }
+        public DbSet<SPKL> SPKLs { get; set; }
+        public DbSet<EmployeeLoan> WorkingTimes { get; set; }
+        public DbSet<EmployeeLoan> WorkingDays { get; set; }
+        public DbSet<EmployeeLoan> EmployeeWorkingTimes { get; set; }
         public DbSet<EmployeeLoanDetail> EmployeeLoanDetails { get; set; }
         public DbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public DbSet<GeneralLeave> GeneralLeaves { get; set; }
-        public DbSet<ManualAttendance> ManualAttendances { get; set; }
+        public DbSet<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
+        public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public DbSet<PensionCompensation> PensionCompensations { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
     }

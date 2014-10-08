@@ -27,6 +27,10 @@ namespace Data.Mapping
                 .WithMany()
                 .HasForeignKey(e => e.LastEmploymentId)
                 .WillCascadeOnDelete(false);
+            HasOptional(e => e.EmployeeWorkingTime)
+                .WithMany(ew => ew.Employees)
+                .HasForeignKey(e => e.EmployeeWorkingTimeId)
+                .WillCascadeOnDelete(false);
             Ignore(e => e.Errors);
         }
     }

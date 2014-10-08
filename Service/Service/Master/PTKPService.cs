@@ -61,6 +61,10 @@ namespace Service.Service
             return _repository.DeleteObject(Id);
         }
 
-        
+        public bool IsCodeDuplicated(PTKP ptkp)
+        {
+            IQueryable<PTKP> ptkps = _repository.FindAll(x => x.Code == ptkp.Code && !x.IsDeleted && x.Id != ptkp.Id);
+            return (ptkps.Count() > 0 ? true : false);
+        }
     }
 }

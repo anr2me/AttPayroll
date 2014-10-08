@@ -30,8 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\References\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Master\CompanyInfoService.cs" />
+    <Compile Include="Service\Master\WorkingDayService.cs" />
+    <Compile Include="Service\Master\EmployeeWorkingTimeService.cs" />
+    <Compile Include="Service\Master\WorkingTimeService.cs" />
     <Compile Include="Service\Master\SalaryEmployeeDetailService.cs" />
     <Compile Include="Service\Master\SalaryEmployeeService.cs" />
     <Compile Include="Service\Master\SalaryStandardDetailService.cs" />
@@ -61,12 +71,19 @@
     <Compile Include="Service\Master\DepartmentService.cs" />
     <Compile Include="Service\StringEncryption.cs" />
     <Compile Include="Service\UserRole\UserAccountService.cs" />
+    <Compile Include="Service\Utility\SPKLService.cs" />
+    <Compile Include="Service\Utility\SalaryProcessService.cs" />
     <Compile Include="Service\Utility\EmployeeLoanDetailService.cs" />
     <Compile Include="Service\Utility\EmployeeLoanService.cs" />
     <Compile Include="Service\Utility\PensionCompensationService.cs" />
-    <Compile Include="Service\Utility\ManualAttendanceService.cs" />
+    <Compile Include="Service\Utility\EmployeeAttendanceService.cs" />
     <Compile Include="Service\Utility\GeneralLeaveService.cs" />
     <Compile Include="Service\Utility\EmployeeLeaveService.cs" />
+    <Compile Include="Service\Utility\EmployeeAttendanceDetailService.cs" />
+    <Compile Include="Service\ViewModel\SlipGajiMiniService.cs" />
+    <Compile Include="Service\ViewModel\SlipGajiDetail2AService.cs" />
+    <Compile Include="Service\ViewModel\SlipGajiDetail1Service.cs" />
+    <Compile Include="Service\ViewModel\SlipGajiDetailService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

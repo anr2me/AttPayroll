@@ -12,9 +12,9 @@ namespace Data.Mapping
         public SalarySlipMapping()
         {
             HasKey(ss => ss.Id);
-            HasOptional(ss => ss.Formula)
+            HasOptional(ss => ss.SalaryItem)
                 .WithMany()
-                .HasForeignKey(ss => ss.FormulaId)
+                .HasForeignKey(ss => ss.SalaryItemId)
                 .WillCascadeOnDelete(false);
             Ignore(ss => ss.Errors);
         }

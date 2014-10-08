@@ -9,9 +9,6 @@ namespace Core.Interface.Validation
 {
     public interface ILastEducationValidator
     {
-        LastEducation VCreateObject(LastEducation lastEducation, ILastEducationService _lastEducationService);
-        LastEducation VUpdateObject(LastEducation lastEducation, ILastEducationService _lastEducationService);
-        LastEducation VDeleteObject(LastEducation lastEducation);
         bool ValidCreateObject(LastEducation lastEducation, ILastEducationService _lastEducationService);
         bool ValidUpdateObject(LastEducation lastEducation, ILastEducationService _lastEducationService);
         bool ValidDeleteObject(LastEducation lastEducation);

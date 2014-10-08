@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalaryStandardDetail CreateObject(SalaryStandardDetail salaryStandardDetail)
+        public SalaryStandardDetail CreateObject(SalaryStandardDetail salaryStandardDetail, ISalaryStandardService _salaryStandardService, ISalaryItemService _salaryItemService)
         {
             salaryStandardDetail.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salaryStandardDetail, this) ? _repository.CreateObject(salaryStandardDetail) : salaryStandardDetail);
+            return (_validator.ValidCreateObject(salaryStandardDetail, _salaryStandardService, _salaryItemService) ? _repository.CreateObject(salaryStandardDetail) : salaryStandardDetail);
         }
 
-        public SalaryStandardDetail UpdateObject(SalaryStandardDetail salaryStandardDetail)
+        public SalaryStandardDetail UpdateObject(SalaryStandardDetail salaryStandardDetail, ISalaryStandardService _salaryStandardService, ISalaryItemService _salaryItemService)
         {
-            return (salaryStandardDetail = _validator.ValidUpdateObject(salaryStandardDetail, this) ? _repository.UpdateObject(salaryStandardDetail) : salaryStandardDetail);
+            return (salaryStandardDetail = _validator.ValidUpdateObject(salaryStandardDetail, _salaryStandardService, _salaryItemService) ? _repository.UpdateObject(salaryStandardDetail) : salaryStandardDetail);
         }
 
         public SalaryStandardDetail SoftDeleteObject(SalaryStandardDetail salaryStandardDetail)

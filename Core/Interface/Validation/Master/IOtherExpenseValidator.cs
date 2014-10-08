@@ -9,11 +9,9 @@ namespace Core.Interface.Validation
 {
     public interface IOtherExpenseValidator
     {
-        OtherExpense VCreateObject(OtherExpense otherExpense, IOtherExpenseService _otherExpenseService);
-        OtherExpense VUpdateObject(OtherExpense otherExpense, IOtherExpenseService _otherExpenseService);
-        OtherExpense VDeleteObject(OtherExpense otherExpense);
-        bool ValidCreateObject(OtherExpense otherExpense, IOtherExpenseService _otherExpenseService);
-        bool ValidUpdateObject(OtherExpense otherExpense, IOtherExpenseService _otherExpenseService);
+
+        bool ValidCreateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
+        bool ValidUpdateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
         bool ValidDeleteObject(OtherExpense otherExpense);
         bool isValid(OtherExpense otherExpense);
         string PrintError(OtherExpense otherExpense);

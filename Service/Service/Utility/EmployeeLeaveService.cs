@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public EmployeeLeave CreateObject(EmployeeLeave employeeLeave)
+        public EmployeeLeave CreateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService)
         {
             employeeLeave.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employeeLeave, this) ? _repository.CreateObject(employeeLeave) : employeeLeave);
+            return (_validator.ValidCreateObject(employeeLeave, _employeeService) ? _repository.CreateObject(employeeLeave) : employeeLeave);
         }
 
-        public EmployeeLeave UpdateObject(EmployeeLeave employeeLeave)
+        public EmployeeLeave UpdateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService)
         {
-            return (employeeLeave = _validator.ValidUpdateObject(employeeLeave, this) ? _repository.UpdateObject(employeeLeave) : employeeLeave);
+            return (employeeLeave = _validator.ValidUpdateObject(employeeLeave, _employeeService) ? _repository.UpdateObject(employeeLeave) : employeeLeave);
         }
 
         public EmployeeLeave SoftDeleteObject(EmployeeLeave employeeLeave)

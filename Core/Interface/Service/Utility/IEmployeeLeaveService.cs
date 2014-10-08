@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<EmployeeLeave> GetQueryable();
         IList<EmployeeLeave> GetAll();
         EmployeeLeave GetObjectById(int Id);
-        EmployeeLeave CreateObject(EmployeeLeave employeeLeave);
-        EmployeeLeave UpdateObject(EmployeeLeave employeeLeave);
+        EmployeeLeave CreateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService);
+        EmployeeLeave UpdateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService);
         EmployeeLeave SoftDeleteObject(EmployeeLeave employeeLeave);
         bool DeleteObject(int Id);
     }

@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public OtherIncome CreateObject(OtherIncome otherIncome)
+        public OtherIncome CreateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
             otherIncome.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(otherIncome, this) ? _repository.CreateObject(otherIncome) : otherIncome);
+            return (_validator.ValidCreateObject(otherIncome, _employeeService, _salaryItemService) ? _repository.CreateObject(otherIncome) : otherIncome);
         }
 
-        public OtherIncome UpdateObject(OtherIncome otherIncome)
+        public OtherIncome UpdateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
-            return (otherIncome = _validator.ValidUpdateObject(otherIncome, this) ? _repository.UpdateObject(otherIncome) : otherIncome);
+            return (otherIncome = _validator.ValidUpdateObject(otherIncome, _employeeService, _salaryItemService) ? _repository.UpdateObject(otherIncome) : otherIncome);
         }
 
         public OtherIncome SoftDeleteObject(OtherIncome otherIncome)

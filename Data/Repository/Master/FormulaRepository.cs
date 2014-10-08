@@ -36,10 +36,10 @@ namespace Data.Repository
             return formula;
         }
 
-        public Formula GetObjectByCode(string Code)
-        {
-            return FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
-        }
+        //public Formula GetObjectByCode(string Code)
+        //{
+        //    return FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
+        //}
 
         public Formula CreateObject(Formula formula)
         {
@@ -69,10 +69,10 @@ namespace Data.Repository
             return (Delete(formula) == 1) ? true : false;
         }
 
-        public bool IsCodeDuplicated(Formula formula)
-        {
-            IQueryable<Formula> formulas = FindAll(x => x.Code == formula.Code && !x.IsDeleted && x.Id != formula.Id);
-            return (formulas.Count() > 0 ? true : false);
-        }
+        //public bool IsCodeDuplicated(Formula formula)
+        //{
+        //    IQueryable<Formula> formulas = FindAll(x => x.Code == formula.Code && !x.IsDeleted && x.Id != formula.Id);
+        //    return (formulas.Count() > 0 ? true : false);
+        //}
     }
 }

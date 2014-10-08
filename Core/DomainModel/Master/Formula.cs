@@ -9,16 +9,15 @@ namespace Core.DomainModel
     public partial class Formula
     {
         public int Id { get; set; }
-
-        public string Code { get; set; }
-        public string Name { get; set; }
+        //public string Code { get; set; }
+        public int SalaryItemId { get; set; } // Parent Id
         //public string ItemSign { get; set; } // "-", "+"
-        public int FirstItemId { get; set; }
+        public Nullable<int> FirstSalaryItemId { get; set; } // 1st Operand
         public string FormulaOp { get; set; } // "+", "-", "/", "*"
-        public bool IsVariable { get; set; }
-        public Nullable<int> SecondItemId { get; set; }
-        public decimal VariableValue { get; set; }
-        public string VariableSign { get; set; } // "-", "+"
+        public bool IsValue { get; set; } // 2nd operand is a value (not an item)
+        public Nullable<int> SecondSalaryItemId { get; set; } // 2nd Operand
+        public decimal Value { get; set; }
+        public string ValueSign { get; set; } // "-", "+"
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -27,6 +26,8 @@ namespace Core.DomainModel
 
         public Dictionary<string, string> Errors { get; set; }
 
-        public virtual ICollection<SalaryItem> SalaryItems { get; set; }
+        public virtual SalaryItem FirstSalaryItem { get; set; }
+        public virtual SalaryItem SecondSalaryItem { get; set; }
+        public virtual SalaryItem SalaryItem { get; set; } // Parent
     }
 }

@@ -9,11 +9,9 @@ namespace Core.Interface.Validation
 {
     public interface IEmployeeLeaveValidator
     {
-        EmployeeLeave VCreateObject(EmployeeLeave employeeLeave, IEmployeeLeaveService _employeeLeaveService);
-        EmployeeLeave VUpdateObject(EmployeeLeave employeeLeave, IEmployeeLeaveService _employeeLeaveService);
-        EmployeeLeave VDeleteObject(EmployeeLeave employeeLeave);
-        bool ValidCreateObject(EmployeeLeave employeeLeave, IEmployeeLeaveService _employeeLeaveService);
-        bool ValidUpdateObject(EmployeeLeave employeeLeave, IEmployeeLeaveService _employeeLeaveService);
+
+        bool ValidCreateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService);
+        bool ValidUpdateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService);
         bool ValidDeleteObject(EmployeeLeave employeeLeave);
         bool isValid(EmployeeLeave employeeLeave);
         string PrintError(EmployeeLeave employeeLeave);

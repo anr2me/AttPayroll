@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public OtherExpense CreateObject(OtherExpense otherExpense)
+        public OtherExpense CreateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
             otherExpense.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(otherExpense, this) ? _repository.CreateObject(otherExpense) : otherExpense);
+            return (_validator.ValidCreateObject(otherExpense, _employeeService, _salaryItemService) ? _repository.CreateObject(otherExpense) : otherExpense);
         }
 
-        public OtherExpense UpdateObject(OtherExpense otherExpense)
+        public OtherExpense UpdateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
-            return (otherExpense = _validator.ValidUpdateObject(otherExpense, this) ? _repository.UpdateObject(otherExpense) : otherExpense);
+            return (otherExpense = _validator.ValidUpdateObject(otherExpense, _employeeService, _salaryItemService) ? _repository.UpdateObject(otherExpense) : otherExpense);
         }
 
         public OtherExpense SoftDeleteObject(OtherExpense otherExpense)

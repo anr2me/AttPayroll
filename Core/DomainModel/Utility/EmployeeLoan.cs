@@ -10,16 +10,16 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
 
-        public DateTime LoanDate { get; set; }
         public int EmployeeId { get; set; }
-        public string Description { get; set; }
+        public DateTime LoanDate { get; set; }
+        public string Remark { get; set; }
         public int SalaryItemId { get; set; } // ExpenseType:Kasbon
         public decimal Interest { get; set; }
         public decimal Amount { get; set; }
-        public decimal Total { get; set; }
-        public decimal InstallmentValue { get; set; }
-        public int InstallmentTimes { get; set; }
-        public DateTime StartDate { get; set; }
+        public decimal Total { get; set; } // total after interest
+        public decimal InstallmentValue { get; set; } // payment per month
+        public int InstallmentTimes { get; set; } // monthly
+        public DateTime StartDate { get; set; } // installment start
         public DateTime EndDate { get; set; }
 
         public bool IsDeleted { get; set; }

@@ -44,7 +44,7 @@ namespace Service.Service
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
         }
 
-        public Division CreateObject(string Code, string Name, string Description)
+        public Division CreateObject(string Code, string Name, string Description, IDepartmentService _departmentService)
         {
             Division division = new Division
             {
@@ -52,18 +52,18 @@ namespace Service.Service
                 Name = Name,
                 Description = Description,
             };
-            return this.CreateObject(division);
+            return this.CreateObject(division, _departmentService);
         }
 
-        public Division CreateObject(Division division)
+        public Division CreateObject(Division division, IDepartmentService _departmentService)
         {
             division.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(division, this) ? _repository.CreateObject(division) : division);
+            return (_validator.ValidCreateObject(division, this, _departmentService) ? _repository.CreateObject(division) : division);
         }
 
-        public Division UpdateObject(Division division)
+        public Division UpdateObject(Division division, IDepartmentService _departmentService)
         {
-            return (division = _validator.ValidUpdateObject(division, this) ? _repository.UpdateObject(division) : division);
+            return (division = _validator.ValidUpdateObject(division, this, _departmentService) ? _repository.UpdateObject(division) : division);
         }
 
         public Division SoftDeleteObject(Division division)

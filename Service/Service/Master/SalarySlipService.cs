@@ -44,25 +44,25 @@ namespace Service.Service
             return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
         }
 
-        public SalarySlip CreateObject(string Code, string Name)
+        public SalarySlip CreateObject(string Code, string Name, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
         {
             SalarySlip salarySlip = new SalarySlip
             {
                 Code = Code,
                 Name = Name,
             };
-            return this.CreateObject(salarySlip);
+            return this.CreateObject(salarySlip, _salarySlipService, _salaryItemService);
         }
 
-        public SalarySlip CreateObject(SalarySlip salarySlip)
+        public SalarySlip CreateObject(SalarySlip salarySlip, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
         {
             salarySlip.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salarySlip, this) ? _repository.CreateObject(salarySlip) : salarySlip);
+            return (_validator.ValidCreateObject(salarySlip, _salarySlipService, _salaryItemService) ? _repository.CreateObject(salarySlip) : salarySlip);
         }
 
-        public SalarySlip UpdateObject(SalarySlip salarySlip)
+        public SalarySlip UpdateObject(SalarySlip salarySlip, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
         {
-            return (salarySlip = _validator.ValidUpdateObject(salarySlip, this) ? _repository.UpdateObject(salarySlip) : salarySlip);
+            return (salarySlip = _validator.ValidUpdateObject(salarySlip, _salarySlipService, _salaryItemService) ? _repository.UpdateObject(salarySlip) : salarySlip);
         }
 
         public SalarySlip SoftDeleteObject(SalarySlip salarySlip)

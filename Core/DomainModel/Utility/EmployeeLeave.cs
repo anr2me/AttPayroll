@@ -12,7 +12,8 @@ namespace Core.DomainModel
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Description { get; set; }
+        public int LeaveType { get; set; } // cuti, izin, sakit dgn surat
+        public string Remark { get; set; }
         public int EmployeeId { get; set; }
 
         public bool IsDeleted { get; set; }

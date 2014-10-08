@@ -67,6 +67,7 @@ namespace Service.Service
 
         public CompanyInfo UpdateObject(CompanyInfo companyInfo)
         {
+            //companyInfo.Errors.Clear();
             return (companyInfo = _validator.ValidUpdateObject(companyInfo, this) ? _repository.UpdateObject(companyInfo) : companyInfo);
         }
 

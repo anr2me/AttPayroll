@@ -9,11 +9,9 @@ namespace Core.Interface.Validation
 {
     public interface IEmployeeLoanValidator
     {
-        EmployeeLoan VCreateObject(EmployeeLoan employeeLoan, IEmployeeLoanService _employeeLoanService);
-        EmployeeLoan VUpdateObject(EmployeeLoan employeeLoan, IEmployeeLoanService _employeeLoanService);
-        EmployeeLoan VDeleteObject(EmployeeLoan employeeLoan);
-        bool ValidCreateObject(EmployeeLoan employeeLoan, IEmployeeLoanService _employeeLoanService);
-        bool ValidUpdateObject(EmployeeLoan employeeLoan, IEmployeeLoanService _employeeLoanService);
+
+        bool ValidCreateObject(EmployeeLoan employeeLoan, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
+        bool ValidUpdateObject(EmployeeLoan employeeLoan, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
         bool ValidDeleteObject(EmployeeLoan employeeLoan);
         bool isValid(EmployeeLoan employeeLoan);
         string PrintError(EmployeeLoan employeeLoan);

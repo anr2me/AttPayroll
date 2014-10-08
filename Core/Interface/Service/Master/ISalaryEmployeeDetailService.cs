@@ -13,8 +13,9 @@ namespace Core.Interface.Service
         IQueryable<SalaryEmployeeDetail> GetQueryable();
         IList<SalaryEmployeeDetail> GetAll();
         SalaryEmployeeDetail GetObjectById(int Id);
-        SalaryEmployeeDetail CreateObject(SalaryEmployeeDetail salaryEmployeeDetail);
-        SalaryEmployeeDetail UpdateObject(SalaryEmployeeDetail salaryEmployeeDetail);
+        SalaryEmployeeDetail GetObjectByEmployeeIdAndSalaryItemId(int employeeId, int salaryItemId, DateTime date);
+        SalaryEmployeeDetail CreateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService);
+        SalaryEmployeeDetail UpdateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService);
         SalaryEmployeeDetail SoftDeleteObject(SalaryEmployeeDetail salaryEmployeeDetail);
         bool DeleteObject(int Id);
     }

@@ -44,7 +44,7 @@ namespace Service.Service
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
         }
 
-        public Department CreateObject(string Code, string Name, string Description)
+        public Department CreateObject(string Code, string Name, string Description, ICompanyInfoService _companyInfoService)
         {
             Department department = new Department
             {
@@ -52,18 +52,18 @@ namespace Service.Service
                 Name = Name,
                 Description = Description,
             };
-            return this.CreateObject(department);
+            return this.CreateObject(department, _companyInfoService);
         }
 
-        public Department CreateObject(Department department)
+        public Department CreateObject(Department department, ICompanyInfoService _companyInfoService)
         {
             department.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(department, this) ? _repository.CreateObject(department) : department);
+            return (_validator.ValidCreateObject(department, this, _companyInfoService) ? _repository.CreateObject(department) : department);
         }
 
-        public Department UpdateObject(Department department)
+        public Department UpdateObject(Department department, ICompanyInfoService _companyInfoService)
         {
-            return (department = _validator.ValidUpdateObject(department, this) ? _repository.UpdateObject(department) : department);
+            return (department = _validator.ValidUpdateObject(department, this, _companyInfoService) ? _repository.UpdateObject(department) : department);
         }
 
         public Department SoftDeleteObject(Department department)

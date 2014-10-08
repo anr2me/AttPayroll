@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<SalaryStandard> GetQueryable();
         IList<SalaryStandard> GetAll();
         SalaryStandard GetObjectById(int Id);
-        SalaryStandard CreateObject(SalaryStandard salaryStandard);
-        SalaryStandard UpdateObject(SalaryStandard salaryStandard);
+        SalaryStandard CreateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService);
+        SalaryStandard UpdateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService);
         SalaryStandard SoftDeleteObject(SalaryStandard salaryStandard);
         bool DeleteObject(int Id);
     }

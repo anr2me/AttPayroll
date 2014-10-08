@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="Constants\MasterConstant.cs" />
     <Compile Include="DomainModel\Master\CompanyInfo.cs" />
+    <Compile Include="DomainModel\Master\WorkingDay.cs" />
+    <Compile Include="DomainModel\Master\EmployeeWorkingTime.cs" />
+    <Compile Include="DomainModel\Master\WorkingTime.cs" />
     <Compile Include="DomainModel\Master\SalarySlipDetail.cs" />
     <Compile Include="DomainModel\Master\OtherExpense.cs" />
     <Compile Include="DomainModel\Master\OtherIncome.cs" />
@@ -65,13 +68,22 @@
     <Compile Include="DomainModel\Master\SalaryItem.cs" />
     <Compile Include="DomainModel\Master\TitleInfo.cs" />
     <Compile Include="DomainModel\UserRole\UserAccount.cs" />
+    <Compile Include="DomainModel\Utility\SPKL.cs" />
     <Compile Include="DomainModel\Utility\EmployeeLeave.cs" />
     <Compile Include="DomainModel\Utility\EmployeeLoan.cs" />
     <Compile Include="DomainModel\Utility\EmployeeLoanDetail.cs" />
     <Compile Include="DomainModel\Utility\GeneralLeave.cs" />
-    <Compile Include="DomainModel\Utility\ManualAttendance.cs" />
+    <Compile Include="DomainModel\Utility\EmployeeAttendance.cs" />
     <Compile Include="DomainModel\Utility\PensionCompensation.cs" />
+    <Compile Include="DomainModel\Utility\EmployeeAttendanceDetail.cs" />
+    <Compile Include="DomainModel\ViewModel\SlipGajiDetail2A.cs" />
+    <Compile Include="DomainModel\ViewModel\SlipGajiDetail1.cs" />
+    <Compile Include="DomainModel\ViewModel\SlipGajiMini.cs" />
+    <Compile Include="DomainModel\ViewModel\SlipGajiDetail.cs" />
     <Compile Include="Interface\Repository\IRepository.cs" />
+    <Compile Include="Interface\Repository\Master\IWorkingDayRepository.cs" />
+    <Compile Include="Interface\Repository\Master\IEmployeeWorkingTimeRepository.cs" />
+    <Compile Include="Interface\Repository\Master\IWorkingTimeRepository.cs" />
     <Compile Include="Interface\Repository\Master\ITitleInfoRepository.cs" />
     <Compile Include="Interface\Repository\Master\ISalaryItemRepository.cs" />
     <Compile Include="Interface\Repository\Master\ISalarySlipDetailRepository.cs" />
@@ -92,12 +104,21 @@
     <Compile Include="Interface\Repository\Master\IDepartmentRepository.cs" />
     <Compile Include="Interface\Repository\Master\ICompanyInfoRepository.cs" />
     <Compile Include="Interface\Repository\UserRole\IUserAccountRepository.cs" />
+    <Compile Include="Interface\Repository\Utility\ISPKLRepository.cs" />
     <Compile Include="Interface\Repository\Utility\IPensionCompensationRepository.cs" />
-    <Compile Include="Interface\Repository\Utility\IManualAttendanceRepository.cs" />
+    <Compile Include="Interface\Repository\Utility\IEmployeeAttendanceRepository.cs" />
     <Compile Include="Interface\Repository\Utility\IGeneralLeaveRepository.cs" />
     <Compile Include="Interface\Repository\Utility\IEmployeeLoanDetailRepository.cs" />
     <Compile Include="Interface\Repository\Utility\IEmployeeLeaveRepository.cs" />
     <Compile Include="Interface\Repository\Utility\IEmployeeLoanRepository.cs" />
+    <Compile Include="Interface\Repository\Utility\IEmployeeAttendanceDetailRepository.cs" />
+    <Compile Include="Interface\Repository\ViewModel\ISlipGajiDetail2ARepository.cs" />
+    <Compile Include="Interface\Repository\ViewModel\ISlipGajiDetail1Repository.cs" />
+    <Compile Include="Interface\Repository\ViewModel\ISlipGajiMiniRepository.cs" />
+    <Compile Include="Interface\Repository\ViewModel\ISlipGajiDetailRepository.cs" />
+    <Compile Include="Interface\Service\Master\IWorkingDayService.cs" />
+    <Compile Include="Interface\Service\Master\IWorkingTimeService.cs" />
+    <Compile Include="Interface\Service\Master\IEmployeeWorkingTimeService.cs" />
     <Compile Include="Interface\Service\Master\ISalaryEmployeeDetailService.cs" />
     <Compile Include="Interface\Service\Master\ISalaryEmployeeService.cs" />
     <Compile Include="Interface\Service\Master\ISalaryStandardDetailService.cs" />
@@ -118,12 +139,22 @@
     <Compile Include="Interface\Service\Master\IDepartmentService.cs" />
     <Compile Include="Interface\Service\Master\ICompanyInfoService.cs" />
     <Compile Include="Interface\Service\UserRole\IUserAccountService.cs" />
+    <Compile Include="Interface\Service\Utility\ISPKLService.cs" />
+    <Compile Include="Interface\Service\Utility\IEmployeeAttendanceDetailService.cs" />
+    <Compile Include="Interface\Service\Utility\ISalaryProcessService.cs" />
     <Compile Include="Interface\Service\Utility\IEmployeeLeaveService.cs" />
     <Compile Include="Interface\Service\Utility\IEmployeeLoanService.cs" />
     <Compile Include="Interface\Service\Utility\IEmployeeLoanDetailService.cs" />
     <Compile Include="Interface\Service\Utility\IPensionCompensationService.cs" />
-    <Compile Include="Interface\Service\Utility\IManualAttendanceService.cs" />
+    <Compile Include="Interface\Service\Utility\IEmployeeAttendanceService.cs" />
     <Compile Include="Interface\Service\Utility\IGeneralLeaveService.cs" />
+    <Compile Include="Interface\Service\ViewModel\ISlipGajiDetail2AService.cs" />
+    <Compile Include="Interface\Service\ViewModel\ISlipGajiDetail1Service.cs" />
+    <Compile Include="Interface\Service\ViewModel\ISlipGajiMiniService.cs" />
+    <Compile Include="Interface\Service\ViewModel\ISlipGajiDetailService.cs" />
+    <Compile Include="Interface\Validation\Master\IWorkingDayValidator.cs" />
+    <Compile Include="Interface\Validation\Master\IEmployeeWorkingTimeValidator.cs" />
+    <Compile Include="Interface\Validation\Master\IWorkingTimeValidator.cs" />
     <Compile Include="Interface\Validation\Master\ISalaryEmployeeDetailValidator.cs" />
     <Compile Include="Interface\Validation\Master\ISalaryEmployeeValidator.cs" />
     <Compile Include="Interface\Validation\Master\ISalaryStandardDetailValidator.cs" />
@@ -144,17 +175,22 @@
     <Compile Include="Interface\Validation\Master\IDepartmentValidator.cs" />
     <Compile Include="Interface\Validation\Master\ICompanyInfoValidator.cs" />
     <Compile Include="Interface\Validation\UserRole\IUserAccountValidator.cs" />
+    <Compile Include="Interface\Validation\Utility\ISPKLValidator.cs" />
+    <Compile Include="Interface\Validation\Utility\ISalaryProcessValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IEmployeeLoanDetailValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IEmployeeLoanValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IEmployeeLeaveValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IGeneralLeaveValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IPensionCompensationValidator.cs" />
-    <Compile Include="Interface\Validation\Utility\IManualAttendanceValidator.cs" />
+    <Compile Include="Interface\Validation\Utility\IEmployeeAttendanceValidator.cs" />
+    <Compile Include="Interface\Validation\Utility\IEmployeeAttendanceDetailValidator.cs" />
+    <Compile Include="Interface\Validation\ViewModel\ISlipGajiDetail2AValidator.cs" />
+    <Compile Include="Interface\Validation\ViewModel\ISlipGajiDetail1Validator.cs" />
+    <Compile Include="Interface\Validation\ViewModel\ISlipGajiMiniValidator.cs" />
+    <Compile Include="Interface\Validation\ViewModel\ISlipGajiDetailValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DomainModel\Report\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

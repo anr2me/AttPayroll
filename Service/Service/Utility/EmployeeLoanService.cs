@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public EmployeeLoan CreateObject(EmployeeLoan employeeLoan)
+        public EmployeeLoan CreateObject(EmployeeLoan employeeLoan, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
             employeeLoan.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employeeLoan, this) ? _repository.CreateObject(employeeLoan) : employeeLoan);
+            return (_validator.ValidCreateObject(employeeLoan, _employeeService, _salaryItemService) ? _repository.CreateObject(employeeLoan) : employeeLoan);
         }
 
-        public EmployeeLoan UpdateObject(EmployeeLoan employeeLoan)
+        public EmployeeLoan UpdateObject(EmployeeLoan employeeLoan, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
         {
-            return (employeeLoan = _validator.ValidUpdateObject(employeeLoan, this) ? _repository.UpdateObject(employeeLoan) : employeeLoan);
+            return (employeeLoan = _validator.ValidUpdateObject(employeeLoan, _employeeService, _salaryItemService) ? _repository.UpdateObject(employeeLoan) : employeeLoan);
         }
 
         public EmployeeLoan SoftDeleteObject(EmployeeLoan employeeLoan)

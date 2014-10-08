@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public PensionCompensation CreateObject(PensionCompensation pensionCompensation)
+        public PensionCompensation CreateObject(PensionCompensation pensionCompensation, IEmployeeService _employeeService)
         {
             pensionCompensation.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(pensionCompensation, this) ? _repository.CreateObject(pensionCompensation) : pensionCompensation);
+            return (_validator.ValidCreateObject(pensionCompensation, _employeeService) ? _repository.CreateObject(pensionCompensation) : pensionCompensation);
         }
 
-        public PensionCompensation UpdateObject(PensionCompensation pensionCompensation)
+        public PensionCompensation UpdateObject(PensionCompensation pensionCompensation, IEmployeeService _employeeService)
         {
-            return (pensionCompensation = _validator.ValidUpdateObject(pensionCompensation, this) ? _repository.UpdateObject(pensionCompensation) : pensionCompensation);
+            return (pensionCompensation = _validator.ValidUpdateObject(pensionCompensation, _employeeService) ? _repository.UpdateObject(pensionCompensation) : pensionCompensation);
         }
 
         public PensionCompensation SoftDeleteObject(PensionCompensation pensionCompensation)

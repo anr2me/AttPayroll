@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<OtherExpense> GetQueryable();
         IList<OtherExpense> GetAll();
         OtherExpense GetObjectById(int Id);
-        OtherExpense CreateObject(OtherExpense otherExpense);
-        OtherExpense UpdateObject(OtherExpense otherExpense);
+        OtherExpense CreateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
+        OtherExpense UpdateObject(OtherExpense otherExpense, IEmployeeService _employeeService, ISalaryItemService _salaryItemService);
         OtherExpense SoftDeleteObject(OtherExpense otherExpense);
         bool DeleteObject(int Id);
     }

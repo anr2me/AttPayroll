@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+using Core.Constants;
 
 namespace Service.Service
 {
@@ -42,6 +44,12 @@ namespace Service.Service
         public SalaryItem GetObjectByCode(string Code)
         {
             return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
+        }
+
+        public SalaryItem GetObjectByCode(Constant.LegacyAttendanceItem Code)
+        {
+            string scode = Enum.GetName(typeof(Core.Constants.Constant.LegacySalaryItem), Code);
+            return _repository.FindAll(x => x.Code == scode && !x.IsDeleted).FirstOrDefault();
         }
 
         public SalaryItem CreateObject(string Code, string Name)
@@ -81,5 +89,81 @@ namespace Service.Service
             IQueryable<SalaryItem> salaryItems = _repository.FindAll(x => x.Code == salaryItem.Code && !x.IsDeleted && x.Id != salaryItem.Id);
             return (salaryItems.Count() > 0 ? true : false);
         }
+
+        public decimal CalcSalaryItem(int salaryItemId, int employeeId, DateTime date, IFormulaService _formulaService,
+                            ISalaryEmployeeDetailService _salaryEmployeeDetailService, IEmployeeAttendanceDetailService _employeeAttendanceDetailService)
+        {
+            decimal val = 0;
+            SalaryItem salaryItem = GetObjectById(salaryItemId);
+            if (salaryItem != null)
+            {
+                if (salaryItem.FormulaId.GetValueOrDefault() > 0)
+                {
+                    val = _formulaService.CalcFormula(salaryItem.FormulaId.GetValueOrDefault(), employeeId, date, this, _salaryEmployeeDetailService, _employeeAttendanceDetailService);
+                }
+                else
+                {
+                    if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
+                    {
+                        val = _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
+                    {
+                        val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
+                    {
+                        val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else
+                    {
+                        val = salaryItem.DefaultValue;
+                    }
+                }
+            }
+            return val;
+        }
+
+        /// <summary>
+        /// Menghitung nilai Salary item
+        /// </summary>
+        /// <param name="salaryItem">Object salary item</param>
+        /// <param name="salaryItemsValue">Pair antara salaryitem code dengan nilainya</param>
+        /// <param name="_formulaService">Service formula</param>
+        /// <returns></returns>
+        public decimal CalcSalaryItem(SalaryItem salaryItem, IDictionary<string, decimal> salaryItemsValue, IFormulaService _formulaService)
+        {
+            decimal val = 0;
+            //SalaryItem salaryItem = GetObjectById(salaryItemId);
+            if (salaryItem != null)
+            {
+                if (salaryItem.FormulaId.GetValueOrDefault() > 0)
+                {
+                    var salaryItems = GetQueryable();
+                    val = _formulaService.CalcFormula(salaryItem.Formula, salaryItemsValue, salaryItems);
+                }
+                else
+                {
+                    if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
+                    {
+                        val = salaryItemsValue[salaryItem.Code]; // _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
+                    {
+                        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
+                    {
+                        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                    }
+                    else
+                    {
+                        val = salaryItem.DefaultValue;
+                    }
+                }
+            }
+            return val;
+        }
+
     }
 }

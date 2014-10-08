@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\References\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Context\AttPayrollEntities.cs" />
     <Compile Include="Mapping\Master\CompanyInfoMapping.cs" />
+    <Compile Include="Mapping\Master\WorkingDayMapping.cs" />
+    <Compile Include="Mapping\Master\WorkingTimeMapping.cs" />
+    <Compile Include="Mapping\Master\EmployeeWorkingTimeMapping.cs" />
     <Compile Include="Mapping\Master\SalaryEmployeeDetailMapping.cs" />
     <Compile Include="Mapping\Master\SalaryEmployeeMapping.cs" />
     <Compile Include="Mapping\Master\SalaryStandardDetailMapping.cs" />
@@ -64,16 +70,25 @@
     <Compile Include="Mapping\Master\DivisionMapping.cs" />
     <Compile Include="Mapping\Master\DepartmentMapping.cs" />
     <Compile Include="Mapping\UserRole\UserAccountMapping.cs" />
+    <Compile Include="Mapping\Utility\SPKLMapping.cs" />
     <Compile Include="Mapping\Utility\EmployeeLoanDetailMapping.cs" />
     <Compile Include="Mapping\Utility\PensionCompensationMapping.cs" />
-    <Compile Include="Mapping\Utility\ManualAttendanceMapping.cs" />
+    <Compile Include="Mapping\Utility\EmployeeAttendanceMapping.cs" />
     <Compile Include="Mapping\Utility\GeneralLeaveMapping.cs" />
     <Compile Include="Mapping\Utility\EmployeeLeaveMapping.cs" />
     <Compile Include="Mapping\Utility\EmployeeLoanMapping.cs" />
+    <Compile Include="Mapping\Utility\EmployeeAttendanceDetailMapping.cs" />
+    <Compile Include="Mapping\ViewModel\SlipGajiMiniMapping.cs" />
+    <Compile Include="Mapping\ViewModel\SlipGajiDetail2AMapping.cs" />
+    <Compile Include="Mapping\ViewModel\SlipGajiDetail1Mapping.cs" />
+    <Compile Include="Mapping\ViewModel\SlipGajiDetailMapping.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\EfRepository.cs" />
     <Compile Include="Repository\Master\CompanyInfoRepository.cs" />
+    <Compile Include="Repository\Master\WorkingDayRepository.cs" />
+    <Compile Include="Repository\Master\EmployeeWorkingTimeRepository.cs" />
+    <Compile Include="Repository\Master\WorkingTimeRepository.cs" />
     <Compile Include="Repository\Master\SalaryEmployeeDetailRepository.cs" />
     <Compile Include="Repository\Master\SalaryEmployeeRepository.cs" />
     <Compile Include="Repository\Master\SalaryStandardDetailRepository.cs" />
@@ -93,14 +108,22 @@
     <Compile Include="Repository\Master\DivisionRepository.cs" />
     <Compile Include="Repository\Master\DepartmentRepository.cs" />
     <Compile Include="Repository\UserAccount\UserAccountRepository.cs" />
+    <Compile Include="Repository\Utility\SPKLRepository.cs" />
     <Compile Include="Repository\Utility\EmployeeLoanDetailRepository.cs" />
     <Compile Include="Repository\Utility\EmployeeLoanRepository.cs" />
     <Compile Include="Repository\Utility\EmployeeLeaveRepository.cs" />
     <Compile Include="Repository\Utility\GeneralLeaveRepository.cs" />
     <Compile Include="Repository\Utility\PensionCompensationRepository.cs" />
-    <Compile Include="Repository\Utility\ManualAttendanceRepository.cs" />
+    <Compile Include="Repository\Utility\EmployeeAttendanceRepository.cs" />
+    <Compile Include="Repository\Utility\EmployeeAttendanceDetailRepository.cs" />
+    <Compile Include="Repository\ViewModel\SlipGajiDetail2ARepository.cs" />
+    <Compile Include="Repository\ViewModel\SlipGajiDetail1Repository.cs" />
+    <Compile Include="Repository\ViewModel\SlipGajiMiniRepository.cs" />
+    <Compile Include="Repository\ViewModel\SlipGajiDetailRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{94721595-1c93-45c5-bdd8-890b60ad9339}</Project>

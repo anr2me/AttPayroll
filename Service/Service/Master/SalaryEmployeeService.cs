@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalaryEmployee CreateObject(SalaryEmployee salaryEmployee)
+        public SalaryEmployee CreateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService)
         {
             salaryEmployee.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salaryEmployee, this) ? _repository.CreateObject(salaryEmployee) : salaryEmployee);
+            return (_validator.ValidCreateObject(salaryEmployee, _employeeService) ? _repository.CreateObject(salaryEmployee) : salaryEmployee);
         }
 
-        public SalaryEmployee UpdateObject(SalaryEmployee salaryEmployee)
+        public SalaryEmployee UpdateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService)
         {
-            return (salaryEmployee = _validator.ValidUpdateObject(salaryEmployee, this) ? _repository.UpdateObject(salaryEmployee) : salaryEmployee);
+            return (salaryEmployee = _validator.ValidUpdateObject(salaryEmployee, _employeeService) ? _repository.UpdateObject(salaryEmployee) : salaryEmployee);
         }
 
         public SalaryEmployee SoftDeleteObject(SalaryEmployee salaryEmployee)

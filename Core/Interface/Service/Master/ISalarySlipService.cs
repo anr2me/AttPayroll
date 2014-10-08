@@ -13,9 +13,11 @@ namespace Core.Interface.Service
         IQueryable<SalarySlip> GetQueryable();
         IList<SalarySlip> GetAll();
         SalarySlip GetObjectById(int Id);
-        SalarySlip CreateObject(SalarySlip salarySlip);
-        SalarySlip UpdateObject(SalarySlip salarySlip);
+        SalarySlip CreateObject(string Code, string Name, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService);
+        SalarySlip CreateObject(SalarySlip salarySlip, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService);
+        SalarySlip UpdateObject(SalarySlip salarySlip, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService);
         SalarySlip SoftDeleteObject(SalarySlip salarySlip);
         bool DeleteObject(int Id);
+        bool IsCodeDuplicated(SalarySlip salarySlip);
     }
 }

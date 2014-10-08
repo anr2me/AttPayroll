@@ -9,9 +9,7 @@ namespace Core.Interface.Validation
 {
     public interface IPPH21SPTValidator
     {
-        PPH21SPT VCreateObject(PPH21SPT pph21spt, IPPH21SPTService _pph21sptService);
-        PPH21SPT VUpdateObject(PPH21SPT pph21spt, IPPH21SPTService _pph21sptService);
-        PPH21SPT VDeleteObject(PPH21SPT pph21spt);
+        
         bool ValidCreateObject(PPH21SPT pph21spt, IPPH21SPTService _pph21sptService);
         bool ValidUpdateObject(PPH21SPT pph21spt, IPPH21SPTService _pph21sptService);
         bool ValidDeleteObject(PPH21SPT pph21spt);

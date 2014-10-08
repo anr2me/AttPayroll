@@ -40,6 +40,7 @@ namespace Core.DomainModel
         public Nullable<DateTime> NonActiveDate { get; set; } 
         public int DivisionId { get; set; }
         public int TitleInfoId { get; set; }
+        public Nullable<int> EmployeeWorkingTimeId { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -52,5 +53,6 @@ namespace Core.DomainModel
         public virtual LastEmployment LastEmployment { get; set; }
         public virtual Division Division { get; set; }
         public virtual TitleInfo TitleInfo { get; set; }
+        public virtual EmployeeWorkingTime EmployeeWorkingTime { get; set; }
     }
 }

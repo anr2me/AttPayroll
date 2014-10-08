@@ -11,11 +11,11 @@ namespace Core.Interface.Repository
         IQueryable<Formula> GetQueryable();
         IList<Formula> GetAll();
         Formula GetObjectById(int Id);
-        Formula GetObjectByCode(string Code);
+        //Formula GetObjectByCode(string Code);
         Formula CreateObject(Formula formula);
         Formula UpdateObject(Formula formula);
         Formula SoftDeleteObject(Formula formula);
         bool DeleteObject(int Id);
-        bool IsCodeDuplicated(Formula formula);
+        //bool IsCodeDuplicated(Formula formula);
     }
 }

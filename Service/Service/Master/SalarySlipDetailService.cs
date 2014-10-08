@@ -39,15 +39,15 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalarySlipDetail CreateObject(SalarySlipDetail salarySlipDetail)
+        public SalarySlipDetail CreateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
         {
             salarySlipDetail.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salarySlipDetail, this) ? _repository.CreateObject(salarySlipDetail) : salarySlipDetail);
+            return (_validator.ValidCreateObject(salarySlipDetail, _salarySlipService, _salaryItemService) ? _repository.CreateObject(salarySlipDetail) : salarySlipDetail);
         }
 
-        public SalarySlipDetail UpdateObject(SalarySlipDetail salarySlipDetail)
+        public SalarySlipDetail UpdateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
         {
-            return (salarySlipDetail = _validator.ValidUpdateObject(salarySlipDetail, this) ? _repository.UpdateObject(salarySlipDetail) : salarySlipDetail);
+            return (salarySlipDetail = _validator.ValidUpdateObject(salarySlipDetail, _salarySlipService, _salaryItemService) ? _repository.UpdateObject(salarySlipDetail) : salarySlipDetail);
         }
 
         public SalarySlipDetail SoftDeleteObject(SalarySlipDetail salarySlipDetail)

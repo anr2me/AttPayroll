@@ -15,6 +15,8 @@ namespace Core.DomainModel
         public string Description { get; set; }
         public bool IsMainSalary { get; set; }
         public bool IsDetailSalary { get; set; }
+        public decimal DefaultValue { get; set; }
+        public decimal CurrentValue { get; set; } // temporary used during processing
         public int SalarySign { get; set; } // 0 = expense, 1 = income
         public bool IsFormula { get; set; }
         public Nullable<int> FormulaId { get; set; }

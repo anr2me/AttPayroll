@@ -9,11 +9,8 @@ namespace Core.Interface.Validation
 {
     public interface IFormulaValidator
     {
-        Formula VCreateObject(Formula formula, IFormulaService _formulaService);
-        Formula VUpdateObject(Formula formula, IFormulaService _formulaService);
-        Formula VDeleteObject(Formula formula);
-        bool ValidCreateObject(Formula formula, IFormulaService _formulaService);
-        bool ValidUpdateObject(Formula formula, IFormulaService _formulaService);
+        bool ValidCreateObject(Formula formula, IFormulaService _formulaService, ISalaryItemService _salaryItemService);
+        bool ValidUpdateObject(Formula formula, IFormulaService _formulaService, ISalaryItemService _salaryItemService);
         bool ValidDeleteObject(Formula formula);
         bool isValid(Formula formula);
         string PrintError(Formula formula);

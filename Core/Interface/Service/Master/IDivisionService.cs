@@ -14,9 +14,9 @@ namespace Core.Interface.Service
         IList<Division> GetAll();
         Division GetObjectById(int Id);
         Division GetObjectByName(string Name);
-        Division CreateObject(Division division);
-        Division CreateObject(string Code, string Name, string Description);
-        Division UpdateObject(Division division);
+        Division CreateObject(Division division, IDepartmentService _departmentService);
+        Division CreateObject(string Code, string Name, string Description, IDepartmentService _departmentService);
+        Division UpdateObject(Division division, IDepartmentService _departmentService);
         Division SoftDeleteObject(Division division);
         bool DeleteObject(int Id);
         bool IsNameDuplicated(Division division);

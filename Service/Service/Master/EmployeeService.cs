@@ -45,7 +45,8 @@ namespace Service.Service
         }
 
         public Employee CreateObject(string NIK, string Name, string Address, string PhoneNumber, string Email, string NPWP,
-                                     string PlaceOfBirth, DateTime BirthDate, int Sex, int MaritalStatus, int Children, int Religion)
+                                     string PlaceOfBirth, DateTime BirthDate, int Sex, int MaritalStatus, int Children, int Religion,
+                                     IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             Employee employee = new Employee
             {
@@ -62,18 +63,18 @@ namespace Service.Service
                 Children = Children,
                 Religion = Religion,
             };
-            return this.CreateObject(employee);
+            return this.CreateObject(employee, _divisionService, _titleInfoService);
         }
 
-        public Employee CreateObject(Employee employee)
+        public Employee CreateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             employee.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employee, this) ? _repository.CreateObject(employee) : employee);
+            return (_validator.ValidCreateObject(employee, this, _divisionService, _titleInfoService) ? _repository.CreateObject(employee) : employee);
         }
 
-        public Employee UpdateObject(Employee employee)
+        public Employee UpdateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
-            return (employee = _validator.ValidUpdateObject(employee, this) ? _repository.UpdateObject(employee) : employee);
+            return (employee = _validator.ValidUpdateObject(employee, this, _divisionService, _titleInfoService) ? _repository.UpdateObject(employee) : employee);
         }
 
         public Employee SoftDeleteObject(Employee employee)

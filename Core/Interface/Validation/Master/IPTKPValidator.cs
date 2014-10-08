@@ -9,9 +9,7 @@ namespace Core.Interface.Validation
 {
     public interface IPTKPValidator
     {
-        PTKP VCreateObject(PTKP ptkp, IPTKPService _ptkpService);
-        PTKP VUpdateObject(PTKP ptkp, IPTKPService _ptkpService);
-        PTKP VDeleteObject(PTKP ptkp);
+        
         bool ValidCreateObject(PTKP ptkp, IPTKPService _ptkpService);
         bool ValidUpdateObject(PTKP ptkp, IPTKPService _ptkpService);
         bool ValidDeleteObject(PTKP ptkp);

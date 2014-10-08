@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Data.Mapping
 {
-    public class ManualAttendanceMapping : EntityTypeConfiguration<ManualAttendance>
+    public class EmployeeAttendanceMapping : EntityTypeConfiguration<EmployeeAttendance>
     {
-        public ManualAttendanceMapping()
+        public EmployeeAttendanceMapping()
         {
             HasKey(ma => ma.Id);
             HasRequired(ma => ma.Employee)

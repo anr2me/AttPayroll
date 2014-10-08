@@ -12,6 +12,18 @@ namespace Data.Mapping
         public FormulaMapping()
         {
             HasKey(f => f.Id);
+            HasRequired(f => f.SalaryItem)
+                .WithMany()
+                .HasForeignKey(f => f.SalaryItemId)
+                .WillCascadeOnDelete(false);
+            HasRequired(f => f.FirstSalaryItem)
+                .WithMany()
+                .HasForeignKey(f => f.FirstSalaryItemId)
+                .WillCascadeOnDelete(false);
+            HasOptional(f => f.SecondSalaryItem)
+                .WithMany()
+                .HasForeignKey(f => f.SecondSalaryItemId)
+                .WillCascadeOnDelete(false);
             Ignore(f => f.Errors);
         }
     }

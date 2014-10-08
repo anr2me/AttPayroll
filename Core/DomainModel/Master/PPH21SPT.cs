@@ -10,6 +10,7 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
 
+        public string Code { get; set; }
         public decimal MinAmount { get; set; }
         public decimal MaxAmount { get; set; }
         public bool IsInfiniteMaxAmount { get; set; }

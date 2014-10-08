@@ -10,9 +10,9 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
 
+        public DateTime EntryDate { get; set; } // Posting date
+        public string UserName { get; set; } // Poster
         public DateTime PensionDate { get; set; }
-        public DateTime EntryDate { get; set; }
-        public string UserName { get; set; }
         public int EmployeeId { get; set; }
         public decimal PensionValue { get; set; }
         public decimal PensionMultiply { get; set; }

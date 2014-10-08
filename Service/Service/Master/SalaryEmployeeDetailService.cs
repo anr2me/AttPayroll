@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Linq.Dynamic;
+using System.Data.Entity;
 
 namespace Service.Service
 {
@@ -39,15 +41,20 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalaryEmployeeDetail CreateObject(SalaryEmployeeDetail salaryEmployeeDetail)
+        public SalaryEmployeeDetail GetObjectByEmployeeIdAndSalaryItemId(int employeeId, int salaryItemId, DateTime date)
         {
-            salaryEmployeeDetail.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salaryEmployeeDetail, this) ? _repository.CreateObject(salaryEmployeeDetail) : salaryEmployeeDetail);
+            return _repository.GetQueryable().Include("SalaryEmployee").Where(x => x.SalaryEmployee.EmployeeId == employeeId && x.SalaryItemId == salaryItemId && x.SalaryEmployee.EffectiveDate <= date).OrderByDescending(x => x.SalaryEmployee.EffectiveDate).FirstOrDefault();
         }
 
-        public SalaryEmployeeDetail UpdateObject(SalaryEmployeeDetail salaryEmployeeDetail)
+        public SalaryEmployeeDetail CreateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService)
         {
-            return (salaryEmployeeDetail = _validator.ValidUpdateObject(salaryEmployeeDetail, this) ? _repository.UpdateObject(salaryEmployeeDetail) : salaryEmployeeDetail);
+            salaryEmployeeDetail.Errors = new Dictionary<String, String>();
+            return (_validator.ValidCreateObject(salaryEmployeeDetail, _salaryEmployeeService, _salaryItemService) ? _repository.CreateObject(salaryEmployeeDetail) : salaryEmployeeDetail);
+        }
+
+        public SalaryEmployeeDetail UpdateObject(SalaryEmployeeDetail salaryEmployeeDetail, ISalaryEmployeeService _salaryEmployeeService, ISalaryItemService _salaryItemService)
+        {
+            return (salaryEmployeeDetail = _validator.ValidUpdateObject(salaryEmployeeDetail, _salaryEmployeeService, _salaryItemService) ? _repository.UpdateObject(salaryEmployeeDetail) : salaryEmployeeDetail);
         }
 
         public SalaryEmployeeDetail SoftDeleteObject(SalaryEmployeeDetail salaryEmployeeDetail)

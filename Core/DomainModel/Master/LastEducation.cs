@@ -12,7 +12,7 @@ namespace Core.DomainModel
 
         public string Institute { get; set; }
         public string Major { get; set; }
-        public string EducationLevel { get; set; }
+        public string Level { get; set; }
         public DateTime EnrollmentDate { get; set; }
         public Nullable<DateTime> GraduationDate { get; set; }
         public int EmployeeId { get; set; }

@@ -10,11 +10,9 @@ namespace Core.Interface.Validation
     public interface IEmployeeValidator
     {
         Employee VHasUniqueNIK(Employee employee, IEmployeeService _employeeService);
-        Employee VCreateObject(Employee employee, IEmployeeService _employeeService);
-        Employee VUpdateObject(Employee employee, IEmployeeService _employeeService);
-        Employee VDeleteObject(Employee employee);
-        bool ValidCreateObject(Employee employee, IEmployeeService _employeeService);
-        bool ValidUpdateObject(Employee employee, IEmployeeService _employeeService);
+
+        bool ValidCreateObject(Employee employee, IEmployeeService _employeeService, IDivisionService _divisionService, ITitleInfoService _titleInfoService);
+        bool ValidUpdateObject(Employee employee, IEmployeeService _employeeService, IDivisionService _divisionService, ITitleInfoService _titleInfoService);
         bool ValidDeleteObject(Employee employee);
         bool isValid(Employee employee);
         string PrintError(Employee employee);

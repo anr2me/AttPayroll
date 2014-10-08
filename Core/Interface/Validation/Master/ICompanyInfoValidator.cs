@@ -13,9 +13,7 @@ namespace Core.Interface.Validation
         CompanyInfo VHasAddress(CompanyInfo companyInfo);
         CompanyInfo VHasPhoneNumber(CompanyInfo companyInfo);
         CompanyInfo VHasEmail(CompanyInfo companyInfo);
-        CompanyInfo VCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
-        CompanyInfo VUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
-        CompanyInfo VDeleteObject(CompanyInfo companyInfo);
+        
         bool ValidCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
         bool ValidUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
         bool ValidDeleteObject(CompanyInfo companyInfo);

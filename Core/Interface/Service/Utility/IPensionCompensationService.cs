@@ -13,8 +13,8 @@ namespace Core.Interface.Service
         IQueryable<PensionCompensation> GetQueryable();
         IList<PensionCompensation> GetAll();
         PensionCompensation GetObjectById(int Id);
-        PensionCompensation CreateObject(PensionCompensation pensionCompensation);
-        PensionCompensation UpdateObject(PensionCompensation pensionCompensation);
+        PensionCompensation CreateObject(PensionCompensation pensionCompensation, IEmployeeService _employeeService);
+        PensionCompensation UpdateObject(PensionCompensation pensionCompensation, IEmployeeService _employeeService);
         PensionCompensation SoftDeleteObject(PensionCompensation pensionCompensation);
         bool DeleteObject(int Id);
     }

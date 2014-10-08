@@ -51,46 +51,27 @@ namespace Validation.Validation
             return companyInfo;
         }
 
-        public CompanyInfo VCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService)
-        {
-            VHasUniqueName(companyInfo, _companyInfoService);
-            if (!isValid(companyInfo)) { return companyInfo; }
-            VHasAddress(companyInfo);
-            if (!isValid(companyInfo)) { return companyInfo; }
-            VHasPhoneNumber(companyInfo);
-            if (!isValid(companyInfo)) { return companyInfo; }
-            VHasEmail(companyInfo);
-            return companyInfo;
-        }
-
-        public CompanyInfo VUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService)
-        {
-            VCreateObject(companyInfo, _companyInfoService);
-            return companyInfo;
-        }
-
-        public CompanyInfo VDeleteObject(CompanyInfo companyInfo)
-        {
-            return companyInfo;
-        }
-
         public bool ValidCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService)
         {
-            VCreateObject(companyInfo, _companyInfoService);
+            VHasUniqueName(companyInfo, _companyInfoService);
+            if (!isValid(companyInfo)) { return false; }
+            VHasAddress(companyInfo);
+            if (!isValid(companyInfo)) { return false; }
+            VHasPhoneNumber(companyInfo);
+            if (!isValid(companyInfo)) { return false; }
+            VHasEmail(companyInfo);
             return isValid(companyInfo);
         }
 
         public bool ValidUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService)
         {
             companyInfo.Errors.Clear();
-            VUpdateObject(companyInfo, _companyInfoService);
-            return isValid(companyInfo);
+            return ValidCreateObject(companyInfo, _companyInfoService);
         }
 
         public bool ValidDeleteObject(CompanyInfo companyInfo)
         {
             companyInfo.Errors.Clear();
-            VDeleteObject(companyInfo);
             return isValid(companyInfo);
         }
 

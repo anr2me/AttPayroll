@@ -42,12 +42,12 @@ namespace Service.Service
         public GeneralLeave CreateObject(GeneralLeave generalLeave)
         {
             generalLeave.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(generalLeave, this) ? _repository.CreateObject(generalLeave) : generalLeave);
+            return (_validator.ValidCreateObject(generalLeave) ? _repository.CreateObject(generalLeave) : generalLeave);
         }
 
         public GeneralLeave UpdateObject(GeneralLeave generalLeave)
         {
-            return (generalLeave = _validator.ValidUpdateObject(generalLeave, this) ? _repository.UpdateObject(generalLeave) : generalLeave);
+            return (generalLeave = _validator.ValidUpdateObject(generalLeave) ? _repository.UpdateObject(generalLeave) : generalLeave);
         }
 
         public GeneralLeave SoftDeleteObject(GeneralLeave generalLeave)
