@@ -25,10 +25,19 @@ namespace Validation.Validation
 
         public SalarySlip VHasSalaryItem(SalarySlip salarySlip, ISalaryItemService _salaryItemService)
         {
-            SalaryItem salaryItem = _salaryItemService.GetObjectById(salarySlip.SalaryItemId);
+            SalaryItem salaryItem = _salaryItemService.GetObjectById(salarySlip.SalaryItemId.GetValueOrDefault());
             if (salaryItem == null)
             {
                 salarySlip.Errors.Add("SalaryItem", "Tidak ada");
+            }
+            return salarySlip;
+        }
+
+        public SalarySlip VHasValidSign(SalarySlip salarySlip)
+        {
+            if (salarySlip.SalarySign == 0)
+            {
+                salarySlip.Errors.Add("SalarySign", "Tidak valid");
             }
             return salarySlip;
         }
@@ -38,6 +47,8 @@ namespace Validation.Validation
             VHasUniqueCode(salarySlip, _salarySlipService);
             if (!isValid(salarySlip)) { return false; }
             VHasSalaryItem(salarySlip, _salaryItemService);
+            if (!isValid(salarySlip)) { return false; }
+            VHasValidSign(salarySlip);
             return isValid(salarySlip);
         }
 

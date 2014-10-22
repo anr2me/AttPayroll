@@ -12,13 +12,16 @@ namespace Core.Interface.Service
         IDepartmentValidator GetValidator();
         IQueryable<Department> GetQueryable();
         IList<Department> GetAll();
+        IList<Department> GetObjectsByBranchOfficeId(int BranchOfficeId);
         Department GetObjectById(int Id);
+        Department GetObjectByCode(string Code);
         Department GetObjectByName(string Name);
-        Department CreateObject(Department department, ICompanyInfoService _companyInfoService);
-        Department CreateObject(string Code, string Name, string Description, ICompanyInfoService _companyInfoService);
-        Department UpdateObject(Department department, ICompanyInfoService _companyInfoService);
-        Department SoftDeleteObject(Department department);
+        Department CreateObject(Department department, IBranchOfficeService _branchOfficeService);
+        Department CreateObject(int branchOfficeId, string Code, string Name, string Description, IBranchOfficeService _branchOfficeService);
+        Department UpdateObject(Department department, IBranchOfficeService _branchOfficeService);
+        Department SoftDeleteObject(Department department, IDivisionService _divisionService);
         bool DeleteObject(int Id);
+        bool IsCodeDuplicated(Department department);
         bool IsNameDuplicated(Department department);
     }
 }

@@ -44,13 +44,14 @@ namespace Service.Service
             return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
         }
 
-        public TitleInfo CreateObject(string Code, string Name, string Description)
+        public TitleInfo CreateObject(string Code, string Name, string Description, bool IsShiftable)
         {
             TitleInfo titleInfo = new TitleInfo
             {
                 Code = Code,
                 Name = Name,
                 Description = Description,
+                IsShiftable = IsShiftable,
             };
             return this.CreateObject(titleInfo);
         }
@@ -66,9 +67,9 @@ namespace Service.Service
             return (titleInfo = _validator.ValidUpdateObject(titleInfo, this) ? _repository.UpdateObject(titleInfo) : titleInfo);
         }
 
-        public TitleInfo SoftDeleteObject(TitleInfo titleInfo)
+        public TitleInfo SoftDeleteObject(TitleInfo titleInfo, IEmployeeService _employeeService)
         {
-            return (titleInfo = _validator.ValidDeleteObject(titleInfo) ?
+            return (titleInfo = _validator.ValidDeleteObject(titleInfo, _employeeService) ?
                     _repository.SoftDeleteObject(titleInfo) : titleInfo);
         }
 

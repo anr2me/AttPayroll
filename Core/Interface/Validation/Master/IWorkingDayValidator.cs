@@ -15,5 +15,6 @@ namespace Core.Interface.Validation
         bool ValidDeleteObject(WorkingDay workingDay);
         bool isValid(WorkingDay workingDay);
         string PrintError(WorkingDay workingDay);
+        WorkingDay FixWorkingDayRange(WorkingDay workingDay);
     }
 }

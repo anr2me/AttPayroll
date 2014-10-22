@@ -36,6 +36,13 @@ namespace Data.Repository
             return pph21spt;
         }
 
+        public PPH21SPT GetObjectBySalary(decimal Amount)
+        {
+            PPH21SPT pph21spt = Find(x => x.MinAmount <= Amount && (x.IsInfiniteMaxAmount || x.MaxAmount >= Amount) && !x.IsDeleted);
+            if (pph21spt != null) { pph21spt.Errors = new Dictionary<string, string>(); }
+            return pph21spt;
+        }
+
         public PPH21SPT CreateObject(PPH21SPT pph21spt)
         {
             pph21spt.IsDeleted = false;

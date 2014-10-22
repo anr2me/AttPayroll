@@ -16,6 +16,10 @@ namespace Data.Mapping
                 .WithMany(wt => wt.EmployeeWorkingTimes)
                 .HasForeignKey(ew => ew.WorkingTimeId)
                 .WillCascadeOnDelete(false);
+            HasRequired(ew => ew.Employee)
+                .WithMany(e => e.EmployeeWorkingTimes)
+                .HasForeignKey(ew => ew.EmployeeId)
+                .WillCascadeOnDelete(true);
             Ignore(ew => ew.Errors);
         }
     }

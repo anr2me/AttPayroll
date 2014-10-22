@@ -1,0 +1,10 @@
+NoBadge	String	20	
+Tanggal	Date		
+Shift	String	4
+jamkerjaActual	Number
+jamReg	Number	
+Lembur15	Number		
+Lembur20	Number		
+Lembur30	Number		
+Lembur40	Number		
+nmhari	String	20

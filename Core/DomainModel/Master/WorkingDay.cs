@@ -12,7 +12,6 @@ namespace Core.DomainModel
         
         public string Code { get; set; }
         public string Name { get; set; }
-        public decimal Tolerance { get; set; } // toleransi checkin (minutes)
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public DateTime MinCheckIn { get; set; }
@@ -25,9 +24,11 @@ namespace Core.DomainModel
         //public DateTime MaxBreakIn { get; set; }
         //public DateTime MinBreakOut { get; set; }
         //public DateTime MaxBreakOut { get; set; }
+        public decimal CheckInTolerance { get; set; } // toleransi checkin (minutes)
+        public decimal CheckOutTolerance { get; set; } // toleransi checkout (minutes)
         public decimal WorkInterval { get; set; } // waktu kerja minus waktu break (minutes)
         public decimal BreakInterval { get; set; } // waktu istirahat (minutes)
-        public int WorkingTimeId { get; set; }
+        public Nullable<int> WorkingTimeId { get; set; }
         public bool IsEnabled { get; set; }
 
         public bool IsDeleted { get; set; }

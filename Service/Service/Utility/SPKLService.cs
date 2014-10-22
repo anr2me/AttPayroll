@@ -42,12 +42,22 @@ namespace Service.Service
         public SPKL CreateObject(SPKL spkl, IEmployeeService _employeeService)
         {
             spkl.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(spkl, _employeeService) ? _repository.CreateObject(spkl) : spkl);
+            if(_validator.ValidCreateObject(spkl, _employeeService))
+            {
+                spkl.OverTimeInterval = (decimal)spkl.EndTime.Subtract(spkl.StartTime).TotalMinutes;
+                _repository.CreateObject(spkl);
+            }
+            return spkl;
         }
 
         public SPKL UpdateObject(SPKL spkl, IEmployeeService _employeeService)
         {
-            return (spkl = _validator.ValidUpdateObject(spkl, _employeeService) ? _repository.UpdateObject(spkl) : spkl);
+            if(_validator.ValidUpdateObject(spkl, _employeeService))
+            {
+                spkl.OverTimeInterval = (decimal)spkl.EndTime.Subtract(spkl.StartTime).TotalMinutes;
+                _repository.UpdateObject(spkl);
+            }
+            return spkl;
         }
 
         public SPKL SoftDeleteObject(SPKL spkl)

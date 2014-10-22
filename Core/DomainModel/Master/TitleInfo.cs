@@ -14,7 +14,9 @@ namespace Core.DomainModel
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsShiftable { get; set; }
-        //public int Grade { get; set; }
+        //public int Grade { get; set; } // Senior, Junior
+        public int AccessLevel { get; set; } // Managerial Access (can see underlings)
+        public bool IsSalaryAllIn { get; set; } // Managerial Level
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

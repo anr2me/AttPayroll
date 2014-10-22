@@ -13,6 +13,7 @@ namespace Core.DomainModel
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Remark { get; set; }
+        public decimal OverTimeInterval { get; set; } // in minutes
         public int EmployeeId { get; set; }
 
         public bool IsDeleted { get; set; }

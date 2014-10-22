@@ -13,9 +13,10 @@ namespace Core.Interface.Service
         IQueryable<WorkingTime> GetQueryable();
         IList<WorkingTime> GetAll();
         WorkingTime GetObjectById(int Id);
-        WorkingTime CreateObject(WorkingTime workingTime);
-        WorkingTime UpdateObject(WorkingTime workingTime);
-        WorkingTime SoftDeleteObject(WorkingTime workingTime);
+        WorkingTime GetObjectByCode(string code);
+        WorkingTime CreateObject(WorkingTime workingTime, IWorkingDayService _workingDayService);
+        WorkingTime UpdateObject(WorkingTime workingTime, IWorkingDayService _workingDayService);
+        WorkingTime SoftDeleteObject(WorkingTime workingTime, IEmployeeWorkingTimeService _employeeWorkingTimeService);
         bool DeleteObject(int Id);
         bool IsCodeDuplicated(WorkingTime workingTime);
     }

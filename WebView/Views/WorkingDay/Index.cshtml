@@ -1,0 +1,188 @@
+﻿@model WebView.Controllers.WorkingDayController
+@{
+    ViewBag.Title = "Working Day";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/workingday.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<table width="100%">
+        <tr>
+            <td width="30%">
+                <div id="panel" class="easyui-panel">
+                    <div id="toolbar" class="form_toolbar">
+                        <div style="float: left">
+                            <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+                        </div>
+                    </div>
+                     <div id="table_div">
+                        <table id="list"></table>
+                        <div id="pager" class="scroll" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </td>
+            <td width ="70%" align="top">
+                <div id="detail_panel" class="easyui-panel">
+                    <div id="detail_toolbar" class="form_toolbar">
+                        <div style="float: left">
+                            <a id="detail_btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+                            @*<a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add</a>*@
+                            <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+                            @*<a id="btn_delete" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>*@
+                        </div>
+                    </div>
+                    <div id="table_detail_div">
+                        <table id="list_detail"></table>
+                        <div id="pager_detail" class="scroll" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl" >
+                        <tr nowrap>
+                            <td width="80" nowrap style="width: 80px">
+                                <label>ID</label></td>
+                            <td width="160">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Code</label></td>
+                            <td>
+                                <input id="Code" name="Code" type="text" size="10" maxlength="20" align="left" disabled /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Name</label></td>
+                            <td colspan="3">
+                                <input id="Name" name="Name" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="IsEnabled">Enabled </label></td>
+                            <td>
+                                <input type="checkbox" id="IsEnabled" name="IsEnabled" value="value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Min CheckIn :
+                            </td>
+                            <td width="160">
+                                <input id="MinCheckIn" name="MinCheckIn" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                            <td width="70">
+                                CheckIn :
+                            </td>
+                            <td width="160">
+                                <input id="CheckIn" name="CheckIn" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                            <td>
+                                Max CheckIn :
+                            </td>
+                            <td width="160">
+                                <input id="MaxCheckIn" name="MaxCheckIn" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                BreakOut : 
+                            </td>
+                            <td width="160">
+                                <input id="BreakOut" name="BreakOut" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                            <td width="60">
+                                BreakIn : 
+                            </td>
+                            <td width="160">
+                                <input id="BreakIn" name="BreakIn" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Min CheckOut : 
+                            </td>
+                            <td width="160">
+                                <input id="MinCheckOut" name="MinCheckOut" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                            <td width="60">
+                                CheckOut : 
+                            </td>
+                            <td width="160">
+                                <input id="CheckOut" name="CheckOut" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                            <td>
+                                Max CheckOut : 
+                            </td>
+                            <td width="160">
+                                <input id="MaxCheckOut" name="MaxCheckOut" title="HH:mm" type="text" size="10" maxlength="12" value="00:00"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>CheckIn Tolerance : </label></td>
+                            <td>
+                                <input id="CheckInTolerance" name="CheckInTolerance" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" />Minutes</td>
+                            <td>
+                                <label>CheckOut Tolerance : </label></td>
+                            <td>
+                                <input id="CheckOutTolerance" name="CheckOutTolerance" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" />Minutes</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Work Interval : </label></td>
+                            <td>
+                                <input id="WorkInterval" name="WorkInterval" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" disabled />Hours</td>
+                            <td>
+                                <label>Break Interval : </label></td>
+                            <td>
+                                <input id="BreakInterval" name="BreakInterval" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" disabled />Hours</td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+
+
+  </div>
+

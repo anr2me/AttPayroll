@@ -1,0 +1,11 @@
+CompanyName	String	255	
+BeginningDate	Date		
+EndDate	Date			
+Revenue	Currency		
+COGS	Currency		
+OperationalExpenses	Currency		
+InterestEarning	Currency		
+Depreciation	Currency		
+Amortization	Currency		
+Tax	Currency		
+Divident	Currency		

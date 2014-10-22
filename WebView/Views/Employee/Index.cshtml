@@ -1,0 +1,307 @@
+﻿@model WebView.Controllers.EmployeeController
+@{
+    ViewBag.Title = "Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/employee.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="grid_toolbar">
+       <div style="float: left">
+           <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+           <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+           @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+       </div>
+       <div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Division : </label>
+           <select id="parenttype" >
+               @*<option value="0">--Select Department--</option>*@
+               @*@foreach (var item in Model._departmentService.GetObjectsByBranchOfficeId())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }*@
+           </select>
+       </div>
+        <div id="department" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Department : </label>
+           <select id="departmenttype" >
+               @*<option value="0">--Select Department--</option>*@
+               @*@foreach (var item in Model._departmentService.GetObjectsByBranchOfficeId())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }*@
+           </select>
+       </div>
+        <div id="branchoffice" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Branch Office : </label>
+           <select id="branchofficetype" >
+               <option value="0">-- Select Branch Office --</option>
+               @foreach (var item in Model._branchOfficeService.GetAll())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+       </div>
+   </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="226">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>NIK</label></td>
+                            <td colspan="3">
+                                <input id="NIK" name="NIK" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Name</label></td>
+                            <td colspan="3">
+                                <input id="Name" name="Name" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Title</label></td>
+                            <td colspan="3">
+                               <input id="TitleInfoId" name="TitleInfoId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnTitleInfo" name="btnTitleInfo" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="TitleInfoName" name="TitleInfo" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Division</label></td>
+                            <td colspan="3">
+                               <input id="DivisionId" name="DivisionId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnDivision" name="btnDivision" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." disabled />
+                               <input id="DivisionName" name="Division" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Place of Birth</label></td>
+                            <td colspan="3">
+                                <input id="PlaceOfBirth" name="PlaceOfBirth" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Birth Date
+                            </td>
+                            <td>
+                                <input id="BirthDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="BirthDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Address</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="Address" id="Address" cols="60" rows="3"></textarea>
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Phone Number</label></td>
+                            <td colspan="3">
+                                <input id="PhoneNumber" name="PhoneNumber" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Email</label></td>
+                            <td colspan="3">
+                                <input id="Email" name="Email" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Sex </label></td>
+                            <td>
+                                <select id="Sex" name="Sex">
+                                    @*<option value="0">Male</option>
+                                    <option value="1">Female</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.Sex)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Sex), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Marital Status </label></td>
+                            <td>
+                                <select id="MaritalStatus" name="MaritalStatus">
+                                    @*<option value="0">Single/Widowed</option>
+                                    <option value="1">Married</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.MaritalStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.MaritalStatus), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Children</label></td>
+                            <td colspan="3">
+                                <input id="Children" name="Children" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Religion </label></td>
+                            <td>
+                                <select id="Religion" name="Religion">
+                                    @*<option value="0">Other</option>
+                                    <option value="1">Kristen</option>
+                                    <option value="2">Katolik</option>
+                                    <option value="3">Islam</option>
+                                    <option value="4">Hindu</option>
+                                    <option value="5">Budha</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.Religion)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Religion), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>NPWP</label></td>
+                            <td colspan="3">
+                                <input id="NPWP" name="NPWP" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                NPWP Date
+                            </td>
+                            <td>
+                                <input id="NPWPDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="NPWPDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Jamsostek No.</label></td>
+                            <td colspan="3">
+                                <input id="Jamsostek" name="Jamsostek" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Working Status </label></td>
+                            <td>
+                                <select id="WorkingStatus" name="WorkingStatus">
+                                    @*<option value="0">Magang/PartTime</option>
+                                    <option value="1">Kontrak</option>
+                                    <option value="2">Percobaan</option>
+                                    <option value="3">Permanen</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.WorkingStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.WorkingStatus), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Start Working Date
+                            </td>
+                            <td>
+                                <input id="StartWorkingDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="StartWorkingDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Appointment Date
+                            </td>
+                            <td>
+                                <input id="AppointmentDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="AppointmentDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Active Status </label></td>
+                            <td>
+                                <select id="ActiveStatus" name="ActiveStatus">
+                                    @*<option value="0">Non-Active</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Medical Check</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.ActiveStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.ActiveStatus), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Non-Active Date
+                            </td>
+                            <td>
+                                <input id="NonActiveDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="NonActiveDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Look Up TitleInfo -->
+    <div id="lookup_div_titleinfo" class="easyui-dialog" title="List Title Info" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_titleinfo" class="grid_toolbar">
+            <a id="lookup_btn_add_titleinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_titleinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_titleinfo" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_titleinfo" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up TitleInfo -->
+
+  </div>
+

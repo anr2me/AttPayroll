@@ -10,10 +10,10 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
 
-        public DateTime EntryDate { get; set; } // Posting date
-        public string UserName { get; set; } // Poster
+        //public DateTime EntryDate { get; set; } // Posting date = created at
+        //public string UserName { get; set; } // Poster
         public DateTime AttendanceDate { get; set; }
-        public int Shift { get; set; } // Normal, Malam, HariLibur, ALL
+        public int Shift { get; set; } // Normal, Malam, Sabtu, Sabtu Malam, Minggu/HariLibur, Sabtu Tgl Merah, AllShift
         //public bool AllEmployees { get; set; }
         public int EmployeeId { get; set; }
         public int Status { get; set; } // Present, Alpha, Duty, Off, Ijin/SakitTanpaSurat, Cuti, SakitDenganSurat
@@ -41,6 +41,6 @@ namespace Core.DomainModel
         public Dictionary<string, string> Errors { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual ICollection<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
+        //public virtual ICollection<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
     }
 }

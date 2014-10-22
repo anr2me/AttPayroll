@@ -9,11 +9,11 @@ namespace Core.Interface.Validation
 {
     public interface ITitleInfoValidator
     {
-        TitleInfo VHasUniqueCode(TitleInfo titleInfo, ITitleInfoService _titleInfoService);
+        //TitleInfo VHasUniqueCode(TitleInfo titleInfo, ITitleInfoService _titleInfoService);
         
         bool ValidCreateObject(TitleInfo titleInfo, ITitleInfoService _titleInfoService);
         bool ValidUpdateObject(TitleInfo titleInfo, ITitleInfoService _titleInfoService);
-        bool ValidDeleteObject(TitleInfo titleInfo);
+        bool ValidDeleteObject(TitleInfo titleInfo, IEmployeeService _employeeService);
         bool isValid(TitleInfo titleInfo);
         string PrintError(TitleInfo titleInfo);
     }

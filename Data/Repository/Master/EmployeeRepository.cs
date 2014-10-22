@@ -31,14 +31,14 @@ namespace Data.Repository
 
         public Employee GetObjectById(int Id)
         {
-            Employee employee = Find(x => x.Id == Id && !x.IsDeleted);
+            Employee employee = FindAll(x => x.Id == Id && !x.IsDeleted).Include("Division").Include("TitleInfo").Include("EmployeeEducation").Include("LastEmployment").Include("EmployeeWorkingTimes").FirstOrDefault();
             if (employee != null) { employee.Errors = new Dictionary<string, string>(); }
             return employee;
         }
 
         public Employee GetObjectByNIK(string NIK)
         {
-            return FindAll(x => x.NIK == NIK && !x.IsDeleted).FirstOrDefault();
+            return FindAll(x => x.NIK == NIK && !x.IsDeleted).Include("Division").Include("TitleInfo").Include("EmployeeEducation").Include("LastEmployment").Include("EmployeeWorkingTimes").FirstOrDefault();
         }
 
         public Employee CreateObject(Employee employee)

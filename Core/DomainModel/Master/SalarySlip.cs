@@ -9,13 +9,14 @@ namespace Core.DomainModel
     public partial class SalarySlip
     {
         public int Id { get; set; }
+        public int Index { get; set; } // nomer urut
         public string Code { get; set; }
         public string Name { get; set; }
         public bool IsMainSalary { get; set; }
         public bool IsDetailSalary { get; set; }
         public int SalarySign { get; set; } // 0 = expense, 1 = income
-        public int SalaryItemId { get; set; }
-        public decimal TotalAmount { get; set; } // 
+        public Nullable<int> SalaryItemId { get; set; }
+        public decimal TotalAmount { get; set; } // total amount from details
         public bool IsPTKP { get; set; }
         //public Nullable<int> PTKPId { get; set; }
         public bool IsPPH21 { get; set; }

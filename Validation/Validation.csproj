@@ -40,7 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\Master\CompanyValidator.cs" />
+    <Compile Include="Validation\Master\BranchOfficeValidator.cs" />
+    <Compile Include="Validation\Master\CompanyInfoValidator.cs" />
+    <Compile Include="Validation\Master\OtherExpenseDetailValidator.cs" />
+    <Compile Include="Validation\Master\OtherExpenseValidator.cs" />
+    <Compile Include="Validation\Master\OtherIncomeDetailValidator.cs" />
     <Compile Include="Validation\Master\WorkingDayValidator.cs" />
     <Compile Include="Validation\Master\EmployeeWorkingTimeValidator.cs" />
     <Compile Include="Validation\Master\WorkingTimeValidator.cs" />
@@ -54,9 +58,8 @@
     <Compile Include="Validation\Master\PPH21SPTValidator.cs" />
     <Compile Include="Validation\Master\PTKPValidator.cs" />
     <Compile Include="Validation\Master\OtherIncomeValidator.cs" />
-    <Compile Include="Validation\Master\OtherExpenseValidator.cs" />
     <Compile Include="Validation\Master\LastEmploymentValidator.cs" />
-    <Compile Include="Validation\Master\LastEducationValidator.cs" />
+    <Compile Include="Validation\Master\EmployeeEducationValidator.cs" />
     <Compile Include="Validation\Master\FormulaValidator.cs" />
     <Compile Include="Validation\Master\EmployeeValidator.cs" />
     <Compile Include="Validation\Master\TitleInfoValidator.cs" />

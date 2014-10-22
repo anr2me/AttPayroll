@@ -39,10 +39,27 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SalaryStandard CreateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService)
+        public SalaryStandard CreateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService, 
+                                    ISalaryStandardDetailService _salaryStandardDetailService, ISalaryItemService _salaryItemService)
         {
             salaryStandard.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(salaryStandard, _titleInfoService) ? _repository.CreateObject(salaryStandard) : salaryStandard);
+            if(_validator.ValidCreateObject(salaryStandard, _titleInfoService))
+            {
+                _repository.CreateObject(salaryStandard);
+                if (!salaryStandard.Errors.Any())
+                {
+                    foreach (var x in Enum.GetNames(typeof(Core.Constants.Constant.LegacySalaryItem)))
+                    {
+                        SalaryStandardDetail ssd = new SalaryStandardDetail
+                        {
+                            SalaryStandardId = salaryStandard.Id,
+                            SalaryItemId = _salaryItemService.GetObjectByCode(x).Id,
+                        };
+                        _salaryStandardDetailService.CreateObject(ssd, this, _salaryItemService);
+                    }
+                }
+            }
+            return salaryStandard;
         }
 
         public SalaryStandard UpdateObject(SalaryStandard salaryStandard, ITitleInfoService _titleInfoService)

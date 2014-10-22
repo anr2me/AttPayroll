@@ -10,8 +10,9 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
         public int WorkingTimeId { get; set; }
-        public bool IsShiftable { get; set; }
-        public bool IsEnabled { get; set; }
+        public int EmployeeId { get; set; }
+        //public bool IsShiftable { get; set; }
+        //public bool IsEnabled { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
@@ -23,7 +24,7 @@ namespace Core.DomainModel
         public Dictionary<string, string> Errors { get; set; }
 
         public virtual WorkingTime WorkingTime { get; set; }
-        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual Employee Employee { get; set; }
 
     }
 }

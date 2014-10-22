@@ -13,10 +13,14 @@ namespace Core.Interface.Service
         IQueryable<PTKP> GetQueryable();
         IList<PTKP> GetAll();
         PTKP GetObjectById(int Id);
+        PTKP GetObjectByCode(string code);
+        PTKP CreateObject(string Code, decimal Amount, string Desc);
         PTKP CreateObject(PTKP ptkp);
         PTKP UpdateObject(PTKP ptkp);
         PTKP SoftDeleteObject(PTKP ptkp);
         bool DeleteObject(int Id);
         bool IsCodeDuplicated(PTKP ptkp);
+        //string GetPTKPCode(bool Single, int NumberOfChildren);
+        decimal CalcPTKP(bool Single, int NumberOfChildren);
     }
 }

@@ -12,12 +12,12 @@ namespace Data.Mapping
         public SlipGajiDetailMapping()
         {
             HasKey(s => s.Id);
-            HasOptional(s => s.SlipGajiDetail1)
-                .WithMany()
-                .HasForeignKey(s => s.SlipGajiDetail1Id);
-            HasOptional(s => s.SlipGajiDetail2A)
-                .WithMany()
-                .HasForeignKey(s => s.SlipGajiDetail2AId);
+            //HasOptional(s => s.SlipGajiDetail2A)
+            //    .WithMany()
+            //    .HasForeignKey(s => s.SlipGajiDetail2AId)
+            //    .WillCascadeOnDelete(true);
+            HasMany(s => s.SlipGajiDetail2As);
+            HasMany(s => s.SlipGajiDetail1s);
             Ignore(s => s.Errors);
         }
     }

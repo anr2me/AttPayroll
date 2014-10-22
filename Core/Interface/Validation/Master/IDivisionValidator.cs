@@ -13,7 +13,7 @@ namespace Core.Interface.Validation
 
         bool ValidCreateObject(Division division, IDivisionService _divisionService, IDepartmentService _departmentService);
         bool ValidUpdateObject(Division division, IDivisionService _divisionService, IDepartmentService _departmentService);
-        bool ValidDeleteObject(Division division);
+        bool ValidDeleteObject(Division division, IEmployeeService _employeeService);
         bool isValid(Division division);
         string PrintError(Division division);
     }

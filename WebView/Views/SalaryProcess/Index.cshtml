@@ -1,0 +1,86 @@
+﻿@model WebView.Controllers.SalaryProcessController
+@{
+    ViewBag.Title = "Salary Process";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/salaryprocess.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="form_toolbar">
+        @*<a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>*@
+        <a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-approval'">Process Data</a>
+    </div>
+
+<!-- Dialog Box -->
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        
+                        <tr>
+                            <td>
+                                <label>Start Period</label></td>
+                             <td>
+                             <div id="StartPeriodDiv"><input id="StartPeriod" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="StartPeriodDiv2"><input id="StartPeriod2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>End Period</label></td>
+                             <td>
+                             <div id="EndPeriodDiv"><input id="EndPeriod" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="EndPeriodDiv2"><input id="EndPeriod2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="IsAllEmployee">All Employee </label></td>
+                            <td>
+                                <input type="checkbox" id="IsAllEmployee" name="IsAllEmployee" value="value" onchange="onAllEmployee()"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Employee</label></td>
+                            <td colspan="3">
+                               <input id="EmployeeId" name="EmployeeId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnEmployee" name="btnEmployee" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="EmployeeNIK" name="EmployeeNIK" type="text" size="20" maxlength="20" class="editable upper" disabled="disabled" />
+                               <input id="EmployeeName" name="Employee" type="text" size="40" maxlength="40" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr><td></td></tr>
+                         
+                    </table>
+                @*</fieldset>*@
+            </form>
+    </div>
+<!-- End Dialog Box -->
+
+ <!-- Look Up Employee -->
+    <div id="lookup_div_employee" class="easyui-dialog" title="List Employee" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_employee" class="grid_toolbar">
+            <a id="lookup_btn_add_employee" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_employee" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_employee" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_employee" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up Employee -->
+
+  </div>
+

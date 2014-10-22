@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Core.Constants;
 
 namespace Service.Service
 {
@@ -34,6 +35,21 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<Employee> GetObjectsByDivisionId(int DivisionId)
+        {
+            return _repository.FindAll(x => x.DivisionId == DivisionId && !x.IsDeleted).ToList();
+        }
+
+        public IList<Employee> GetObjectsByTitleInfoId(int TitleInfoId)
+        {
+            return _repository.FindAll(x => x.TitleInfoId == TitleInfoId && !x.IsDeleted).ToList();
+        }
+
+        //public IList<Employee> GetObjectsByEmployeeWorkingTimeId(int EmployeeWorkingTimeId)
+        //{
+        //    return _repository.FindAll(x => x.EmployeeWorkingTimeId == EmployeeWorkingTimeId && !x.IsDeleted).ToList();
+        //}
+
         public Employee GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
@@ -44,12 +60,15 @@ namespace Service.Service
             return _repository.FindAll(x => x.NIK == NIK && !x.IsDeleted).FirstOrDefault();
         }
 
-        public Employee CreateObject(string NIK, string Name, string Address, string PhoneNumber, string Email, string NPWP,
+        public Employee CreateObject(int divisionId, int titleInfoId, int employeeEducationId, string NIK, string Name, string Address, string PhoneNumber, string Email, string NPWP,
                                      string PlaceOfBirth, DateTime BirthDate, int Sex, int MaritalStatus, int Children, int Religion,
                                      IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             Employee employee = new Employee
             {
+                DivisionId = divisionId,
+                TitleInfoId = titleInfoId,
+                EmployeeEducationId = employeeEducationId,
                 NIK = NIK,
                 Name = Name,
                 Address = Address,
@@ -69,7 +88,11 @@ namespace Service.Service
         public Employee CreateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             employee.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employee, this, _divisionService, _titleInfoService) ? _repository.CreateObject(employee) : employee);
+            if(_validator.ValidCreateObject(employee, this, _divisionService, _titleInfoService)){
+                employee.PTKPCode = GetPTKPCode(employee.MaritalStatus != (int)Constant.MaritalStatus.Married, employee.Children);
+                _repository.CreateObject(employee);
+            }
+            return employee;
         }
 
         public Employee UpdateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
@@ -93,5 +116,24 @@ namespace Service.Service
             IQueryable<Employee> employees = _repository.FindAll(x => x.NIK == employee.NIK && !x.IsDeleted && x.Id != employee.Id);
             return (employees.Count() > 0 ? true : false);
         }
+
+        public string GetPTKPCode(bool Single, int NumberOfChildren)
+        {
+            string code = null;
+            if (Single)
+            {
+                code = "TK";
+                if (NumberOfChildren > 0)
+                {
+                    code += NumberOfChildren.ToString();
+                }
+            }
+            else
+            {
+                code = "KW" + NumberOfChildren.ToString();
+            }
+            return code;
+        }
+
     }
 }

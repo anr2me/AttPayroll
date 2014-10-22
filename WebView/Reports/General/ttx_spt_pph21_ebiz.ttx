@@ -1,0 +1,35 @@
+year	string	4
+company_npwp	string	20
+company_city	string	20
+company_name	string	50
+employee_code	string 	12
+employee_name	string	50
+title_name	string	20
+employee_npwp	string	20
+address		string	100
+sex		string	10
+marital_status	string	20
+number_child	string	10
+start_date	string	5
+end_date	string	5
+basic_salary1	number
+tunj_pph2	number
+lembur3	number
+honor4	number
+premi5	number
+uangmakan6	number
+thr7	number
+jht12	number
+jml_ptkp17	number
+pph21	number
+neto15	number
+jml_bln_kerja	number
+tunj_lap	number
+insentive_hadir	number
+jkk_jkm_204	number
+tunj_lain	number
+kurang_bulan_lalu	number
+potongan_absen		number
+potongan_lain		number
+pot_tunj_jabatan	number
+nol	number

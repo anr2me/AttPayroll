@@ -14,6 +14,7 @@ namespace Core.DomainModel
         public string NoBadge { get; set; }
         public DateTime Tanggal { get; set; }
         public string Shift { get; set; }
+        public string Status { get; set; }
         public decimal jamkerjaActual { get; set; }
         public decimal jamReg { get; set; }
         public decimal Lembur15 { get; set; }

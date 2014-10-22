@@ -11,9 +11,9 @@ namespace Core.Interface.Validation
     {
         Department VHasUniqueName(Department department, IDepartmentService _departmentService);
 
-        bool ValidCreateObject(Department department, IDepartmentService _departmentService, ICompanyInfoService _companyInfoService);
-        bool ValidUpdateObject(Department department, IDepartmentService _departmentService, ICompanyInfoService _companyInfoService);
-        bool ValidDeleteObject(Department department);
+        bool ValidCreateObject(Department department, IDepartmentService _departmentService, IBranchOfficeService _branchOfficeService);
+        bool ValidUpdateObject(Department department, IDepartmentService _departmentService, IBranchOfficeService _branchOfficeService);
+        bool ValidDeleteObject(Department department, IDivisionService _divisionService);
         bool isValid(Department department);
         string PrintError(Department department);
     }

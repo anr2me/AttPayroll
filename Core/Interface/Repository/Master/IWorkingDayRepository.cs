@@ -11,6 +11,7 @@ namespace Core.Interface.Repository
         IQueryable<WorkingDay> GetQueryable();
         IList<WorkingDay> GetAll();
         WorkingDay GetObjectById(int Id);
+        WorkingDay GetObjectByCode(string code);
         WorkingDay CreateObject(WorkingDay workingDay);
         WorkingDay UpdateObject(WorkingDay workingDay);
         WorkingDay SoftDeleteObject(WorkingDay workingDay);

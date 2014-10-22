@@ -44,25 +44,30 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SlipGajiMini GetObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth)
+        public SlipGajiMini GetOrNewObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth)
         {
-            return _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTH.Year == YearMonth.Year && x.MONTH.Month == YearMonth.Month).FirstOrDefault();
+            SlipGajiMini slipGajiMini = _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTH.Year == YearMonth.Year && x.MONTH.Month == YearMonth.Month).FirstOrDefault();
+            if (slipGajiMini == null)
+            {
+                slipGajiMini = new SlipGajiMini();
+                slipGajiMini.Errors = new Dictionary<string, string>();
+            }
+            return slipGajiMini;
         }
 
-        public SlipGajiMini FindOrCreateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService)
+        public SlipGajiMini CreateOrUpdateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService)
         {
             slipGajiMini.Errors = new Dictionary<String, String>();
             if (_validator.ValidCreateObject(slipGajiMini, _employeeService))
             {
-                SlipGajiMini slipGajiMini2 = GetObjectByEmployeeMonth(slipGajiMini.EmployeeId, slipGajiMini.MONTH);
-                if (slipGajiMini2 == null)
+                //SlipGajiMini slipGajiMini2 = GetObjectByEmployeeMonth(slipGajiMini.EmployeeId, slipGajiMini.MONTH);
+                if (slipGajiMini.Id > 0)
                 {
-                    _repository.CreateObject(slipGajiMini);
+                    _repository.UpdateObject(slipGajiMini);
                 }
                 else
                 {
-                    slipGajiMini.Id = slipGajiMini2.Id;
-                    _repository.UpdateObject(slipGajiMini);
+                    _repository.CreateObject(slipGajiMini);
                 }
             }
             return slipGajiMini;

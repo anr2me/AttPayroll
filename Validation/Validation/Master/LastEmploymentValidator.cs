@@ -10,6 +10,16 @@ namespace Validation.Validation
 {
     public class LastEmploymentValidator : ILastEmploymentValidator
     {
+        public LastEmployment VHasEmployee(LastEmployment lastEmployment, IEmployeeService _employeeService)
+        {
+            Employee employee = _employeeService.GetObjectById(lastEmployment.EmployeeId);
+            if (employee == null)
+            {
+                lastEmployment.Errors.Add("Employee", "Tidak valid");
+            }
+            return lastEmployment;
+        }
+
         public LastEmployment VHasCompany(LastEmployment lastEmployment)
         {
             if (String.IsNullOrEmpty(lastEmployment.Company) || lastEmployment.Company.Trim() == "")
@@ -59,8 +69,10 @@ namespace Validation.Validation
             return lastEmployment;
         }
 
-        public bool ValidCreateObject(LastEmployment lastEmployment, ILastEmploymentService _lastEmploymentService)
+        public bool ValidCreateObject(LastEmployment lastEmployment, IEmployeeService _employeeService)
         {
+            VHasEmployee(lastEmployment, _employeeService);
+            if (!isValid(lastEmployment)) { return false; }
             VHasCompany(lastEmployment);
             if (!isValid(lastEmployment)) { return false; }
             VHasTitle(lastEmployment);
@@ -73,10 +85,10 @@ namespace Validation.Validation
             return isValid(lastEmployment);
         }
 
-        public bool ValidUpdateObject(LastEmployment lastEmployment, ILastEmploymentService _lastEmploymentService)
+        public bool ValidUpdateObject(LastEmployment lastEmployment, IEmployeeService _employeeService)
         {
             lastEmployment.Errors.Clear();
-            ValidCreateObject(lastEmployment, _lastEmploymentService);
+            ValidCreateObject(lastEmployment, _employeeService);
             return isValid(lastEmployment);
         }
 

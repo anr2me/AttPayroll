@@ -1,0 +1,18 @@
+NoBadge	String	20
+Name	String	50	
+Jabatan	string	50
+TanggalPenerimaan	Date		
+PeriodeAwal	Date
+PeriodeAkhir	Date
+GajiBasis	Number
+StatusMarriage	String	10
+NoSlip	Number
+Rate	Number
+Lembur15	Number		
+Lembur20	Number		
+Lembur30	Number		
+Lembur40	Number
+Disiapkan_oleh	string	50
+Disetujui_oleh	string	50
+Dikoreksi_oleh	string	50
+company_code	string	30	

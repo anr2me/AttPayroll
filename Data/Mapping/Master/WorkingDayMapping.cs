@@ -12,7 +12,7 @@ namespace Data.Mapping
         public WorkingDayMapping()
         {
             HasKey(wd => wd.Id);
-            HasRequired(wd => wd.WorkingTime)
+            HasOptional(wd => wd.WorkingTime)
                 .WithMany(wt => wt.WorkingDays)
                 .HasForeignKey(wd => wd.WorkingTimeId)
                 .WillCascadeOnDelete(false);

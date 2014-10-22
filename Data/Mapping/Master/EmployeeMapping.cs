@@ -19,18 +19,14 @@ namespace Data.Mapping
                 .WithMany()
                 .HasForeignKey(e => e.TitleInfoId)
                 .WillCascadeOnDelete(false);
-            HasRequired(e => e.LastEducation)
+            HasOptional(e => e.EmployeeEducation)
                 .WithMany()
-                .HasForeignKey(e => e.LastEducationId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.EmployeeEducationId)
+                .WillCascadeOnDelete(true);
             HasOptional(e => e.LastEmployment)
                 .WithMany()
                 .HasForeignKey(e => e.LastEmploymentId)
-                .WillCascadeOnDelete(false);
-            HasOptional(e => e.EmployeeWorkingTime)
-                .WithMany(ew => ew.Employees)
-                .HasForeignKey(e => e.EmployeeWorkingTimeId)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
             Ignore(e => e.Errors);
         }
     }

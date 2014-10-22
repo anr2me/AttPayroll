@@ -9,8 +9,8 @@ namespace Core.DomainModel
     public partial class SalaryStandard
     {
         public int Id { get; set; }
-        public string Description { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public string Description { get; set; }
         public int TitleInfoId { get; set; }
         
         public bool IsDeleted { get; set; }

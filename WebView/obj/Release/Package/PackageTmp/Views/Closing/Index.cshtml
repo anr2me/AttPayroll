@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Closing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/closing.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title=".: Closing :.">
+    <div id="toolbar" class="form_toolbar">
+        <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+        <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+        <a id="btn_close" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-no'">Close</a>
+        <a id="btn_open" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'">Reopen</a>
+        <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+        @*<a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>*@
+    </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+  </div>
+
+  <!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; padding:0px 0px 10px" data-options="modal:true"  
+        title=".: @ViewBag.Title :.">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="550">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                             <label>Period</label>
+                            </td>
+                            <td>
+                               <input id="Period" name="Period" type="text" size="10"/>
+                               <label class="label-space">&nbsp;&nbsp;&nbsp;Year</label>
+                               <input id="YearPeriod" name="YearPeriod" type="text" size="10"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Beginning</label></td>
+                             <td>
+                                 <input id="BeginningPeriod"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                 <input name="BeginningPeriod" type="text" size="1" hidden="hidden"/>
+                                 <label class="label-space">Ending</label>
+                                 <input id="EndDatePeriod"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                 <input name="EndDatePeriod" type="text" size="1" hidden="hidden"/>
+                             </td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+ <!-- End Dialog Box -->
+
+ <!-- Dialog Box Closing -->
+    <div id="close_confirm_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px;width :500px"
+        data-options="modal:true" title=".: Confirm Closing :.">
+
+        <div id="close_confirm_toolbar" class="form_toolbar">
+            <a id="close_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="close_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="close_confirm_info">
+              <table  width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr>
+                      <td width="139" nowrap style="width: 100px">
+                          Id
+                      </td>
+                      <td>
+                         <input id="idclose" type="text" size="10" disabled="disabled"/>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          Closing Date
+                      </td>
+                      <td>
+                         <input id="ClosedAt"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                         <input name="ClosedAt" type="text" size="1" hidden="hidden"/>
+                         <input name="IsClosed" type="text" size="1" hidden="hidden"/>
+                      </td>
+                  </tr>
+              </table>
+          
+        </div>
+    </div>
+<!-- End Dialog Box Closing -->
+
+<!-- Dialog Box Open -->
+    <div id="open_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="open_confirm_toolbar" class="form_toolbar">
+            <a id="open_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="open_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="open_confirm_info">
+            <span>Are you sure to re-open the selected record?</span>
+            <input id="open_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Open -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->

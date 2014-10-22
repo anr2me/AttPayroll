@@ -15,8 +15,8 @@ namespace Core.Interface.Service
         IQueryable<SlipGajiMini> GetQueryable();
         IList<SlipGajiMini> GetAll();
         SlipGajiMini GetObjectById(int Id);
-        SlipGajiMini GetObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth);
-        SlipGajiMini FindOrCreateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService);
+        SlipGajiMini GetOrNewObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth);
+        SlipGajiMini CreateOrUpdateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService);
         SlipGajiMini CreateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService);
         SlipGajiMini UpdateObject(SlipGajiMini slipGajiMini, IEmployeeService _employeeService);
         bool DeleteObject(int Id);

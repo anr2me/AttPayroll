@@ -15,9 +15,9 @@ namespace Data.Mapping
             HasRequired(ssd => ssd.SalarySlip)
                 .WithMany(ss => ss.SalarySlipDetails)
                 .HasForeignKey(ssd => ssd.SalarySlipId);
-            HasRequired(ssd => ssd.SalaryItem)
+            HasRequired(ssd => ssd.Formula) // SalaryItem
                 .WithMany()
-                .HasForeignKey(ssd => ssd.SalaryItemId)
+                .HasForeignKey(ssd => ssd.FormulaId) // SalaryItemId
                 .WillCascadeOnDelete(false);
             Ignore(ssd => ssd.Errors);
         }

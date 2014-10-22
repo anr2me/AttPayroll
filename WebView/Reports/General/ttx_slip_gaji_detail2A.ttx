@@ -1,0 +1,33 @@
+month	string	10
+employee_code	string	20
+salary_basic	number
+rate_hour	number
+allowance_rate	number
+uang_makan	number
+jml_jam_lembur	number
+jml_lembur	number
+jml_hari_absen	number
+tunj_lap	number
+insentive_hadir	number
+other_allow	number
+krg_bln_lalu	number
+thr	number
+pot_absensi	number
+pot_others	number
+gaji_kotor	number
+pot_pinjaman	number
+pot_jamsostek	number
+pjk_jkk_jkm_204	number
+tot_dpt_kotor	number
+pjk_tunj_jabatan	number
+pjk_ptkp	number
+tot_pengurang_pajak	number
+tot_dpt_kena_pajak	number
+tot_dpt_kena_pajak_tahun	number
+pph_5_persen	number
+pph_15_persen	number
+pph_25_persen	number
+pph_30_persen	number
+pph21	number
+round	number
+gaji_bersih	number

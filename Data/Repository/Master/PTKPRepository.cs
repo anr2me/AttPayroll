@@ -36,6 +36,13 @@ namespace Data.Repository
             return ptkp;
         }
 
+        public PTKP GetObjectByCode(string code)
+        {
+            PTKP ptkp = Find(x => x.Code == code && !x.IsDeleted);
+            if (ptkp != null) { ptkp.Errors = new Dictionary<string, string>(); }
+            return ptkp;
+        }
+
         public PTKP CreateObject(PTKP ptkp)
         {
             ptkp.IsDeleted = false;

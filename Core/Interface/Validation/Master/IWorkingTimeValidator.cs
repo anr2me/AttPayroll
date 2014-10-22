@@ -12,8 +12,9 @@ namespace Core.Interface.Validation
         
         bool ValidCreateObject(WorkingTime workingTime, IWorkingTimeService _workingTimeService);
         bool ValidUpdateObject(WorkingTime workingTime, IWorkingTimeService _workingTimeService);
-        bool ValidDeleteObject(WorkingTime workingTime);
+        bool ValidDeleteObject(WorkingTime workingTime, IEmployeeWorkingTimeService _employeeWorkingTimeService);
         bool isValid(WorkingTime workingTime);
         string PrintError(WorkingTime workingTime);
+        WorkingTime FixWorkingTimeRange(WorkingTime workingTime);
     }
 }

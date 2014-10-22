@@ -18,8 +18,8 @@ namespace Core.Interface.Service
         Formula SoftDeleteObject(Formula formula);
         bool DeleteObject(int Id);
         decimal CalcFormula(Formula formula, IDictionary<string, decimal> salaryItemsValue, IEnumerable<SalaryItem> salaryItems);
-        decimal CalcFormula(int formulaId, int employeeId, DateTime date, ISalaryItemService _salaryItemService, 
-                    ISalaryEmployeeDetailService _salaryEmployeeDetailService, IEmployeeAttendanceDetailService _employeeAttendanceDetailService);
-        bool IsFormulaInfinite(int formulaId, ISalaryItemService _salaryItemService, IList<int> stack = null);
+        //decimal CalcFormula(int formulaId, int employeeId, DateTime date, ISalaryItemService _salaryItemService, 
+        //            ISalaryEmployeeDetailService _salaryEmployeeDetailService, IEmployeeAttendanceDetailService _employeeAttendanceDetailService);
+        //bool IsFormulaInfinite(int formulaId, ISalaryItemService _salaryItemService, IList<int> stack = null);
     }
 }

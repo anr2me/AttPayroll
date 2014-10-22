@@ -1,0 +1,174 @@
+﻿body {
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.hideme {
+    display: none;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* Infoss */
+#user-greeting
+{
+	float:right;
+	width: 300px;
+	text-align: right;
+	margin-top: -10px;
+	color: #12c;
+	padding-top: 10px;
+}
+#header-message
+{
+	float:left;
+	font-size: 18px;
+	width: 600px;
+	text-align: center;
+	margin-top: -5px;
+	color: #12c;
+	margin-left:100px;
+	font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+	padding: 5px 0px;
+}
+#datetime_message
+{
+	color: #12c;
+	margin-top: 120px;
+	margin-left: 15px;
+	font-size: 16px;
+}
+#logo
+{
+	padding: 5px 10px 5px 10px;
+	width: 230px;
+}
+#panel-menu
+{
+	margin-top: -20px;
+}
+#panel-menuss
+{
+	border: solid 1px #95B8E7;
+	margin-top:30px;
+	height: 280px;
+	border-radius: 20px;
+	background:#E0ECFF;
+}
+#sidebar-footer
+{
+	text-align: center;
+	bottom:0px;
+	position:absolute;
+	margin:0 auto;
+	padding-bottom: 20px;
+	width: 200px;
+	font-size: 16px;
+}
+.form_toolbar
+{
+	/*margin-left:20px;*/
+	border:1px solid #ddd;
+}
+.grid_toolbar
+{
+	border:1px solid #ddd;
+}
+.input_form_div
+{
+	margin:10px 20px;
+}
+.input_form_tbl td
+{
+	padding:3px 5px 0px 5px;
+}
+
+
+#delete_confirm_info
+{
+	margin-left:20px;
+	margin-top:10px;
+}
+#delete_confirm_info
+{
+	font-size: 14px;
+}
+
+.layout-panel, .panel, .panel-body
+{
+	overflow: visible !important;
+}
+
+.tabs-header
+{
+	background-color: #1BC9E0 !important;
+}
+
+.grid-col {
+  text-indent: 15px;
+}
+
+.hide-row {
+    display: none;    
+}
+
+.label-space {
+    margin-left: 10px;
+    margin-right: 5px;
+}

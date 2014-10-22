@@ -23,6 +23,15 @@ namespace Validation.Validation
             return pph21spt;
         }
 
+        public PPH21SPT VHasPercent(PPH21SPT pph21spt)
+        {
+            if (pph21spt.Percent < 0)
+            {
+                pph21spt.Errors.Add("Percent", "Harus lebih besar atau sama dengan 0");
+            }
+            return pph21spt;
+        }
+
         public PPH21SPT VHasMinAmount(PPH21SPT pph21spt)
         {
             if (pph21spt.MinAmount < 0)
@@ -44,6 +53,8 @@ namespace Validation.Validation
         public bool ValidCreateObject(PPH21SPT pph21spt, IPPH21SPTService _pph21sptService)
         {
             VHasUniqueCode(pph21spt, _pph21sptService);
+            if (!isValid(pph21spt)) { return false; }
+            VHasPercent(pph21spt);
             if (!isValid(pph21spt)) { return false; }
             VHasMinAmount(pph21spt);
             if (!isValid(pph21spt)) { return false; }

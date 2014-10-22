@@ -29,25 +29,25 @@ namespace Validation.Validation
             return slipGajiDetail;
         }
 
-        public SlipGajiDetail VHasSlipGajiDetail1(SlipGajiDetail slipGajiDetail, ISlipGajiDetail1Service _slipGajiDetail1Service)
-        {
-            SlipGajiDetail1 slipGajiDetail1 = _slipGajiDetail1Service.GetObjectById(slipGajiDetail.SlipGajiDetail1Id.GetValueOrDefault());
-            if (slipGajiDetail1 == null)
-            {
-                slipGajiDetail.Errors.Add("Generic", "SlipGajiDetail1 Tidak valid");
-            }
-            return slipGajiDetail;
-        }
+        //public SlipGajiDetail VHasSlipGajiDetail1(SlipGajiDetail slipGajiDetail, ISlipGajiDetail1Service _slipGajiDetail1Service)
+        //{
+        //    SlipGajiDetail1 slipGajiDetail1 = _slipGajiDetail1Service.GetObjectById(slipGajiDetail.SlipGajiDetail1Id.GetValueOrDefault());
+        //    if (slipGajiDetail1 == null)
+        //    {
+        //        slipGajiDetail.Errors.Add("Generic", "SlipGajiDetail1 Tidak valid");
+        //    }
+        //    return slipGajiDetail;
+        //}
 
-        public SlipGajiDetail VHasSlipGajiDetail2A(SlipGajiDetail slipGajiDetail, ISlipGajiDetail2AService _slipGajiDetail2AService)
-        {
-            SlipGajiDetail2A slipGajiDetail2A = _slipGajiDetail2AService.GetObjectById(slipGajiDetail.SlipGajiDetail2AId.GetValueOrDefault());
-            if (slipGajiDetail2A == null)
-            {
-                slipGajiDetail.Errors.Add("Generic", "SlipGajiDetail2A Tidak valid");
-            }
-            return slipGajiDetail;
-        }
+        //public SlipGajiDetail VHasSlipGajiDetail2A(SlipGajiDetail slipGajiDetail, ISlipGajiDetail2AService _slipGajiDetail2AService)
+        //{
+        //    SlipGajiDetail2A slipGajiDetail2A = _slipGajiDetail2AService.GetObjectById(slipGajiDetail.SlipGajiDetail2AId.GetValueOrDefault());
+        //    if (slipGajiDetail2A == null)
+        //    {
+        //        slipGajiDetail.Errors.Add("Generic", "SlipGajiDetail2A Tidak valid");
+        //    }
+        //    return slipGajiDetail;
+        //}
 
         public bool ValidCreateObject(SlipGajiDetail slipGajiDetail, IEmployeeService _employeeService, 
                                 ISlipGajiDetail1Service _slipGajiDetail1Service, ISlipGajiDetail2AService _slipGajiDetail2AService)
@@ -55,10 +55,10 @@ namespace Validation.Validation
             VHasEmployee(slipGajiDetail, _employeeService);
             if (!isValid(slipGajiDetail)) { return false; }
             VHasMonth(slipGajiDetail);
-            if (!isValid(slipGajiDetail)) { return false; }
-            VHasSlipGajiDetail1(slipGajiDetail, _slipGajiDetail1Service);
-            if (!isValid(slipGajiDetail)) { return false; }
-            VHasSlipGajiDetail2A(slipGajiDetail, _slipGajiDetail2AService);
+            //if (!isValid(slipGajiDetail)) { return false; }
+            //VHasSlipGajiDetail1(slipGajiDetail, _slipGajiDetail1Service);
+            //if (!isValid(slipGajiDetail)) { return false; }
+            //VHasSlipGajiDetail2A(slipGajiDetail, _slipGajiDetail2AService);
             return isValid(slipGajiDetail);
         }
 

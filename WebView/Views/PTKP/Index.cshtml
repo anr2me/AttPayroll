@@ -1,0 +1,115 @@
+﻿@model WebView.Controllers.PTKPController
+@{
+    ViewBag.Title = "PTKP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/ptkp.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="grid_toolbar">
+       <div style="float: left">
+           <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+           <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+           @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+       </div>
+       @*<div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Department : </label>
+           <select id="parenttype" >
+               <option value="0">--Select Department--</option>
+               @foreach (var item in Model._departmentService.GetObjectsByBranchOfficeId())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+       </div>
+        <div id="branchoffice" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Branch Office : </label>
+           <select id="branchofficetype" >
+               @foreach (var item in Model._branchOfficeService.GetAll())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+       </div>*@
+   </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="226">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Code</label></td>
+                            <td colspan="3">
+                                <input id="Code" name="Code" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Amount </label></td>
+                            <td>
+                                <input id="Amount" name="Amount" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:0" /></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Description</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="Description" id="Description" cols="60" rows="3"></textarea>
+                            </label></td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+
+
+  </div>
+

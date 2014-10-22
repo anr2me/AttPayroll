@@ -34,25 +34,30 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<EmployeeWorkingTime> GetObjectsByWorkingTimeId(int WorkingTimeId)
+        {
+            return _repository.FindAll(x => x.WorkingTimeId == WorkingTimeId && !x.IsDeleted).ToList();
+        }
+
         public EmployeeWorkingTime GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
         }
 
-        public EmployeeWorkingTime CreateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService)
+        public EmployeeWorkingTime CreateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService, IEmployeeService _employeeService)
         {
             employeeWorkingTime.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employeeWorkingTime, _workingTimeService) ? _repository.CreateObject(employeeWorkingTime) : employeeWorkingTime);
+            return (_validator.ValidCreateObject(employeeWorkingTime, _workingTimeService, _employeeService) ? _repository.CreateObject(employeeWorkingTime) : employeeWorkingTime);
         }
 
-        public EmployeeWorkingTime UpdateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService)
+        public EmployeeWorkingTime UpdateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService, IEmployeeService _employeeService)
         {
-            return (employeeWorkingTime = _validator.ValidUpdateObject(employeeWorkingTime, _workingTimeService) ? _repository.UpdateObject(employeeWorkingTime) : employeeWorkingTime);
+            return (employeeWorkingTime = _validator.ValidUpdateObject(employeeWorkingTime, _workingTimeService, _employeeService) ? _repository.UpdateObject(employeeWorkingTime) : employeeWorkingTime);
         }
 
-        public EmployeeWorkingTime SoftDeleteObject(EmployeeWorkingTime employeeWorkingTime)
+        public EmployeeWorkingTime SoftDeleteObject(EmployeeWorkingTime employeeWorkingTime, IEmployeeService _employeeService)
         {
-            return (employeeWorkingTime = _validator.ValidDeleteObject(employeeWorkingTime) ?
+            return (employeeWorkingTime = _validator.ValidDeleteObject(employeeWorkingTime, _employeeService) ?
                     _repository.SoftDeleteObject(employeeWorkingTime) : employeeWorkingTime);
         }
 

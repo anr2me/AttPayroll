@@ -23,6 +23,15 @@ namespace Validation.Validation
             return ptkp;
         }
 
+        //public PTKP VHasName(PTKP ptkp)
+        //{
+        //    if (String.IsNullOrEmpty(ptkp.Name) || ptkp.Name.Trim() == "")
+        //    {
+        //        ptkp.Errors.Add("Name", "Tidak boleh kosong");
+        //    }
+        //    return ptkp;
+        //}
+
         public PTKP VHasAmount(PTKP ptkp)
         {
             if (ptkp.Amount < 0)

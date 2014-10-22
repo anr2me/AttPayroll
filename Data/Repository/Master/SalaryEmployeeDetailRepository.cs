@@ -7,6 +7,8 @@ using System.Text;
 using Data.Context;
 using Data.Repository;
 using System.Data;
+using System.Linq.Dynamic;
+using System.Data.Entity;
 
 namespace Data.Repository
 {
@@ -30,7 +32,7 @@ namespace Data.Repository
 
         public SalaryEmployeeDetail GetObjectById(int Id)
         {
-            SalaryEmployeeDetail salaryEmployeeDetail = Find(x => x.Id == Id && !x.IsDeleted);
+            SalaryEmployeeDetail salaryEmployeeDetail = FindAll(x => x.Id == Id && !x.IsDeleted).Include("SalaryEmployee").Include("SalaryItem").FirstOrDefault();
             if (salaryEmployeeDetail != null) { salaryEmployeeDetail.Errors = new Dictionary<string, string>(); }
             return salaryEmployeeDetail;
         }

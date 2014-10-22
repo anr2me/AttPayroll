@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Linq.Dynamic;
+using System.Data.Entity;
 
 namespace Service.Service
 {
@@ -34,9 +36,19 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<SalaryStandardDetail> GetObjectsByTitleInfoId(int TitleInfoId)
+        {
+            return _repository.GetObjectsByTitleInfoId(TitleInfoId);
+        }
+
         public SalaryStandardDetail GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
+        }
+
+        public SalaryStandardDetail GetObjectBySalaryItemId(int SalaryItemId, int SalaryStandardId)
+        {
+            return _repository.FindAll(x => x.SalaryItemId == SalaryItemId && x.SalaryStandardId == SalaryStandardId && !x.IsDeleted).Include("SalaryStandard").Include("SalaryItem").FirstOrDefault();
         }
 
         public SalaryStandardDetail CreateObject(SalaryStandardDetail salaryStandardDetail, ISalaryStandardService _salaryStandardService, ISalaryItemService _salaryItemService)

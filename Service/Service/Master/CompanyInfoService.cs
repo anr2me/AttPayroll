@@ -44,7 +44,7 @@ namespace Service.Service
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
         }
 
-        public CompanyInfo CreateObject(string Name, string Address, string PostalCode, string PhoneNumber, string FaxNumber, string Website, string Email)
+        public CompanyInfo CreateObject(string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, string Website, string NPWP, DateTime NPWPDate)
         {
             CompanyInfo companyInfo = new CompanyInfo
             {
@@ -53,8 +53,10 @@ namespace Service.Service
                 PostalCode = PostalCode,
                 PhoneNumber = PhoneNumber,
                 FaxNumber = FaxNumber,
-                Website = Website,
                 Email = Email,
+                Website = Website,
+                NPWP = NPWP,
+                NPWPDate = NPWPDate,
             };
             return this.CreateObject(companyInfo);
         }
@@ -71,9 +73,9 @@ namespace Service.Service
             return (companyInfo = _validator.ValidUpdateObject(companyInfo, this) ? _repository.UpdateObject(companyInfo) : companyInfo);
         }
 
-        public CompanyInfo SoftDeleteObject(CompanyInfo companyInfo)
+        public CompanyInfo SoftDeleteObject(CompanyInfo companyInfo, IBranchOfficeService _branchOfficeService)
         {
-            return (companyInfo = _validator.ValidDeleteObject(companyInfo) ?
+            return (companyInfo = _validator.ValidDeleteObject(companyInfo, _branchOfficeService) ?
                     _repository.SoftDeleteObject(companyInfo) : companyInfo);
         }
 

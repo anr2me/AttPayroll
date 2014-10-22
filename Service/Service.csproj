@@ -33,7 +33,12 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\References\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Linq.Dynamic">
@@ -46,8 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertionFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Master\BranchOfficeService.cs" />
     <Compile Include="Service\Master\CompanyInfoService.cs" />
+    <Compile Include="Service\Master\OtherExpenseDetailService.cs" />
+    <Compile Include="Service\Master\OtherExpenseService.cs" />
+    <Compile Include="Service\Master\OtherIncomeDetailService.cs" />
     <Compile Include="Service\Master\WorkingDayService.cs" />
     <Compile Include="Service\Master\EmployeeWorkingTimeService.cs" />
     <Compile Include="Service\Master\WorkingTimeService.cs" />
@@ -61,15 +71,14 @@
     <Compile Include="Service\Master\PPH21SPTService.cs" />
     <Compile Include="Service\Master\PTKPService.cs" />
     <Compile Include="Service\Master\OtherIncomeService.cs" />
-    <Compile Include="Service\Master\OtherExpenseService.cs" />
     <Compile Include="Service\Master\LastEmploymentService.cs" />
-    <Compile Include="Service\Master\LastEducationService.cs" />
+    <Compile Include="Service\Master\EmployeeEducationService.cs" />
     <Compile Include="Service\Master\FormulaService.cs" />
     <Compile Include="Service\Master\EmployeeService.cs" />
     <Compile Include="Service\Master\TitleInfoService.cs" />
     <Compile Include="Service\Master\DivisionService.cs" />
     <Compile Include="Service\Master\DepartmentService.cs" />
-    <Compile Include="Service\StringEncryption.cs" />
+    <Compile Include="StringEncryption.cs" />
     <Compile Include="Service\UserRole\UserAccountService.cs" />
     <Compile Include="Service\Utility\SPKLService.cs" />
     <Compile Include="Service\Utility\SalaryProcessService.cs" />

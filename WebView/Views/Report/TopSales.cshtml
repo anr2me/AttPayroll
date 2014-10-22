@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Top Sales Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/reporttopsales.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title=".: Top Sales Invoice :.">
+<div id="toolbar" class="form_toolbar">
+        @*<a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>*@
+        <a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>
+    </div>
+
+<!-- Dialog Box -->
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        
+                        <tr>
+                            <td>
+                                <label>Start Date</label></td>
+                             <td>
+                             <div id="StartDateDiv"><input id="StartDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="StartDateDiv2"><input id="StartDate2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>End Date</label></td>
+                             <td>
+                             <div id="EndDateDiv"><input id="EndDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="EndDateDiv2"><input id="EndDate2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Number of Items</label></td>
+                            <td colspan="3">
+                        <input id="MaxItem" name="MaxItem" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="10" />
+                        </tr>
+                        <tr><td></td></tr>
+                         
+                    </table>
+                @*</fieldset>*@
+            </form>
+    </div>
+<!-- End Dialog Box -->
+
+ 
+
+  </div>
+

@@ -16,9 +16,9 @@ namespace Core.Interface.Service
         CompanyInfo GetObjectByName(string Name);
         //CompanyInfo FindOrCreateBaseCompanyInfo();
         CompanyInfo CreateObject(CompanyInfo companyInfo);
-        CompanyInfo CreateObject(string Name, string Address, string PostalCode, string PhoneNumber, string FaxNumber, string Website, string Email);
+        CompanyInfo CreateObject(string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, string Website, string NPWP, DateTime NPWPDate);
         CompanyInfo UpdateObject(CompanyInfo companyInfo);
-        CompanyInfo SoftDeleteObject(CompanyInfo companyInfo);
+        CompanyInfo SoftDeleteObject(CompanyInfo companyInfo, IBranchOfficeService _branchOfficeService);
         bool DeleteObject(int Id);
         bool IsNameDuplicated(CompanyInfo companyInfo);
     }

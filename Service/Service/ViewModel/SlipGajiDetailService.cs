@@ -44,25 +44,30 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public SlipGajiDetail GetObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth)
+        public SlipGajiDetail GetOrNewObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth)
         {
-            return _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTH.Year == YearMonth.Year && x.MONTH.Month == YearMonth.Month).FirstOrDefault();
+            SlipGajiDetail slipGajiDetail = _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTH.Year == YearMonth.Year && x.MONTH.Month == YearMonth.Month).FirstOrDefault();
+            if (slipGajiDetail == null)
+            {
+                slipGajiDetail = new SlipGajiDetail();
+                slipGajiDetail.Errors = new Dictionary<string, string>();
+            }
+            return slipGajiDetail;
         }
 
-        public SlipGajiDetail FindOrCreateObject(SlipGajiDetail slipGajiDetail, IEmployeeService _employeeService, ISlipGajiDetail1Service _slipGajiDetail1Service, ISlipGajiDetail2AService _slipGajiDetail2AService)
+        public SlipGajiDetail CreateOrUpdateObject(SlipGajiDetail slipGajiDetail, IEmployeeService _employeeService, ISlipGajiDetail1Service _slipGajiDetail1Service, ISlipGajiDetail2AService _slipGajiDetail2AService)
         {
             slipGajiDetail.Errors = new Dictionary<String, String>();
             if (_validator.ValidCreateObject(slipGajiDetail, _employeeService, _slipGajiDetail1Service, _slipGajiDetail2AService))
             {
-                SlipGajiDetail slipGajiDetail2 = GetObjectByEmployeeMonth(slipGajiDetail.EmployeeId, slipGajiDetail.MONTH);
-                if (slipGajiDetail2 == null)
+                //SlipGajiDetail slipGajiDetail2 = GetObjectByEmployeeMonth(slipGajiDetail.EmployeeId, slipGajiDetail.MONTH);
+                if (slipGajiDetail.Id > 0)
                 {
-                    _repository.CreateObject(slipGajiDetail);
+                    _repository.UpdateObject(slipGajiDetail);
                 }
                 else
                 {
-                    slipGajiDetail.Id = slipGajiDetail2.Id;
-                    _repository.UpdateObject(slipGajiDetail);
+                    _repository.CreateObject(slipGajiDetail);
                 }
             }
             return slipGajiDetail;

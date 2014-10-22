@@ -11,15 +11,15 @@ namespace Validation.Validation
 {
     public class FormulaValidator : IFormulaValidator
     {
-        public Formula VHasParentSalaryItem(Formula formula, ISalaryItemService _salaryItemService)
-        {
-            SalaryItem salaryItem = _salaryItemService.GetObjectById(formula.SalaryItemId);
-            if (salaryItem == null)
-            {
-                formula.Errors.Add("SalaryItem", "Tidak valid");
-            }
-            return formula;
-        }
+        //public Formula VHasParentSalaryItem(Formula formula, ISalaryItemService _salaryItemService)
+        //{
+        //    SalaryItem salaryItem = _salaryItemService.GetObjectById(formula.SalaryItemId);
+        //    if (salaryItem == null)
+        //    {
+        //        formula.Errors.Add("SalaryItem", "Tidak valid");
+        //    }
+        //    return formula;
+        //}
 
         public Formula VHasFirstSalaryItem(Formula formula, ISalaryItemService _salaryItemService)
         {
@@ -33,7 +33,7 @@ namespace Validation.Validation
 
         public Formula VHasSecondSalaryItem(Formula formula, ISalaryItemService _salaryItemService)
         {
-            if (!formula.IsValue)
+            if (!formula.IsSecondValue)
             {
                 SalaryItem salaryItem = _salaryItemService.GetObjectById(formula.SecondSalaryItemId.GetValueOrDefault());
                 if (salaryItem == null)
@@ -44,13 +44,24 @@ namespace Validation.Validation
             return formula;
         }
 
+        public Formula VHasValidSign(Formula formula)
+        {
+            if (formula.IsSecondValue && formula.ValueSign == 0)
+            {
+                formula.Errors.Add("ValueSign", "Tidak valid");
+            }
+            return formula;
+        }
+
         public bool ValidCreateObject(Formula formula, IFormulaService _formulaService, ISalaryItemService _salaryItemService)
         {
-            VHasParentSalaryItem(formula, _salaryItemService);
-            if (!isValid(formula)) { return false; }
+            //VHasParentSalaryItem(formula, _salaryItemService);
+            //if (!isValid(formula)) { return false; }
             VHasFirstSalaryItem(formula, _salaryItemService);
             if (!isValid(formula)) { return false; }
             VHasSecondSalaryItem(formula, _salaryItemService);
+            if (!isValid(formula)) { return false; }
+            VHasValidSign(formula);
             return isValid(formula);
         }
 

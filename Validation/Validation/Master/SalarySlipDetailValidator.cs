@@ -20,28 +20,49 @@ namespace Validation.Validation
             return salarySlipDetail;
         }
 
-        public SalarySlipDetail VHasSalaryItem(SalarySlipDetail salarySlipDetail, ISalaryItemService _salaryItemService)
+        //public SalarySlipDetail VHasSalaryItem(SalarySlipDetail salarySlipDetail, ISalaryItemService _salaryItemService)
+        //{
+        //    SalaryItem salaryItem = _salaryItemService.GetObjectById(salarySlipDetail.SalaryItemId);
+        //    if (salaryItem == null)
+        //    {
+        //        salarySlipDetail.Errors.Add("SalaryItem", "Tidak ada");
+        //    }
+        //    return salarySlipDetail;
+        //}
+
+        public SalarySlipDetail VHasFormula(SalarySlipDetail salarySlipDetail, IFormulaService _formulaService)
         {
-            SalaryItem salaryItem = _salaryItemService.GetObjectById(salarySlipDetail.SalaryItemId);
-            if (salaryItem == null)
+            Formula formula = _formulaService.GetObjectById(salarySlipDetail.FormulaId);
+            if (formula == null)
             {
-                salarySlipDetail.Errors.Add("SalaryItem", "Tidak ada");
+                salarySlipDetail.Errors.Add("Formula", "Tidak ada");
             }
             return salarySlipDetail;
         }
 
-        public bool ValidCreateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
+        public SalarySlipDetail VIsValidMaxValue(SalarySlipDetail salarySlipDetail)
+        {
+            if (salarySlipDetail.HasMinValue && salarySlipDetail.HasMaxValue && salarySlipDetail.MaxValue < salarySlipDetail.MinValue)
+            {
+                salarySlipDetail.Errors.Add("MaxValue", "Harus lebih besar atau sama dengan MinValue");
+            }
+            return salarySlipDetail;
+        }
+
+        public bool ValidCreateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, IFormulaService _formulaService)
         {
             VHasSalarySlip(salarySlipDetail, _salarySlipService);
             if (!isValid(salarySlipDetail)) { return false; }
-            VHasSalaryItem(salarySlipDetail, _salaryItemService);
+            VHasFormula(salarySlipDetail, _formulaService); // VHasSalaryItem
+            if (!isValid(salarySlipDetail)) { return false; }
+            VIsValidMaxValue(salarySlipDetail);
             return isValid(salarySlipDetail);
         }
 
-        public bool ValidUpdateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, ISalaryItemService _salaryItemService)
+        public bool ValidUpdateObject(SalarySlipDetail salarySlipDetail, ISalarySlipService _salarySlipService, IFormulaService _formulaService)
         {
             salarySlipDetail.Errors.Clear();
-            ValidCreateObject(salarySlipDetail, _salarySlipService, _salaryItemService);
+            ValidCreateObject(salarySlipDetail, _salarySlipService, _formulaService);
             return isValid(salarySlipDetail);
         }
 

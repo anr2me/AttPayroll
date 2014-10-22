@@ -1,0 +1,40 @@
+NoBadge	String	12
+nmkaryawan	string	50
+departemen	string	50
+posisi	string	50
+lokasi	string	50
+marital_status	string	10
+jmlAnak	Number
+sex	string	3
+start_kerja	date
+GajiBasis	Number
+rate_hour	Number
+allowance_rate	Number
+jmlharimasuk	Number
+jmlhariabsent	Number
+jmljamlembur	Number
+JHT_2_persen	Number
+JKK_JKM_204_persen	Number
+Lembur	Number
+TunjanganLap	Number
+Incentive_Hadir	Number
+Kurang_bln_lalu	Number
+others		number
+THR	Number
+Potongan_Absen	Number
+Potongan_lain	Number
+Potongan_Pinjam	Number
+PPH21	Number
+Jamsostek_Persh	Number
+PTKP	Number
+uangmakan	Number
+PeriodeAwal	Date
+PeriodeAkhir	Date
+NoRekening	string	100
+company_code	string	30
+no_npwp		string	30
+place_birth	string	50
+date_birth	date
+npwp_address	string	100
+round		number
+gaji_bersih	number

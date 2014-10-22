@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "Delivery Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/deliveryorder.js")"></script>
+
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title=".: @ViewBag.Title :.">
+<div id="toolbar" class="form_toolbar">
+        <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+        <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+        <a id="btn_add_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add Detail</a>
+        <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+        <a id="btn_confirm" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-approval'">Confirm</a>
+        <a id="btn_unconfirm" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">Unconfirm</a>
+        <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+        <a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>
+    </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; padding:0px 0px 10px" data-options="modal:true"  
+        title=".:  @ViewBag.Title :.">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+               @* <fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                       
+                    <table id = "tablefrm" width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="550">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                             <label>Code</label>
+                            </td>
+                            <td>
+                               <input id="Code" type="text" size="10" disabled="disabled"/>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <label>SalesOrder Id</label></td>
+                            <td>
+                                <input id="SalesOrderId"  class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                                <input id="btnSalesOrder" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                                <input id="SalesOrder" name="SalesOrderId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                        
+                            </tr>
+                        <tr>
+                        <td>
+                                <label>Delivery Date</label></td>
+                         <td>
+                             <div id="DeliveryDateDiv"><input id="DeliveryDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             <div id="DeliveryDateDiv2"><input id="DeliveryDate2" type="text" size="10" disabled="disabled"/></div>
+                                 </td>
+                         </tr>
+                          <tr>
+                            <td>
+                                <label>Warehouse</label></td>
+                            <td>
+                                <input id="WarehouseId"  class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                                <input id="btnWarehouse" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                                <input id="Warehouse" name="WarehouseId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                    </table>
+                    <div id="tabledetail_div">
+                        <div id="toolbardetail" class="grid_toolbar">
+                            <a id="btn_add_new_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+                            <a id="btn_edit_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+                            <a id="btn_del_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+                        </div>
+                                  <table id="listdetail" class="scroll" cellpadding="0" cellspacing="0"></table>
+                        <div id="pagerdetail" class="scroll" style="text-align: center;"></div>
+                    </div>
+               @* </fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+ <!-- Dialog Box  Item-->
+    <div id="item_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px"
+        data-options="modal:true" title=".: Input Item :.">
+
+        <div id="item_toolbar" class="form_toolbar">
+            <a id="item_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="item_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="item_info">
+              <table  width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr>
+                      <td width="139" nowrap style="width: 100px">
+                          Item
+                      </td>
+                      <td>
+                         <input id="ItemId"  class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                         <input id="btnItem" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                         <input id="Item" name="ItemId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                         <input id="SalesOrderDetailId" name="SalesOrderDetailId" type="text" size ="10" hidden="hidden" />
+                      </td>
+                  </tr>
+                    <tr>
+                        <td>
+                            QTY
+                        </td>
+                        <td>
+                               <input id="Quantity" name="Quantity" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                        </td>
+                    </tr>
+              </table>
+          
+        </div>
+    </div>
+<!-- End Dialog Box Item-->
+
+     <!-- Dialog Box Confirm-->
+    <div id="confirm_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px;width :500px"
+        data-options="modal:true" title=".: Confirm Stock Adjustment :.">
+
+        <div id="confirm_toolbar" class="form_toolbar">
+            <a id="confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="confirm_info">
+              <table width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr>
+                      <td width="139" nowrap style="width: 100px">
+                          Id
+                      </td>
+                      <td>
+                         <input id="idconfirm" type="text" size="10" disabled="disabled"/>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          Confirmation Date
+                      </td>
+                      <td>
+                         <input id="ConfirmationDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                         <input name="ConfirmationDate" type="text" size="1" hidden="hidden"/>
+                         <input name="IsConfirmed" type="text" size="1" hidden="hidden"/>
+                      </td>
+                  </tr>
+              </table>
+          
+        </div>
+    </div>
+<!-- End Dialog Box Confirm-->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+
+ <!-- Look Up salesorder -->
+    <div id="lookup_div_salesorder" class="easyui-dialog" title="List SalesOrder" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_salesorder" class="grid_toolbar">
+            <a id="lookup_btn_add_salesorder" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_salesorder" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_salesorder" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_salesorder" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up salesorder -->
+
+
+ <!-- Look Up item -->
+    <div id="lookup_div_item" class="easyui-dialog" title="List Item" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_item" class="grid_toolbar">
+            <a id="lookup_btn_add_item" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_item" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_item" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_item" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up item -->
+
+     <!-- Look Up warehouse -->
+    <div id="lookup_div_warehouse" class="easyui-dialog" title="List Warehouse" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_warehouse" class="grid_toolbar">
+            <a id="lookup_btn_add_warehouse" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_warehouse" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_warehouse" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_warehouse" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up warehouse -->
+  </div>
+

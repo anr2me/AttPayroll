@@ -39,6 +39,22 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
+        public PTKP GetObjectByCode(string code)
+        {
+            return _repository.GetObjectByCode(code);
+        }
+
+        public PTKP CreateObject(string Code, decimal Amount, string Desc)
+        {
+            PTKP ptkp = new PTKP
+            {
+                Code = Code,
+                Amount = Amount,
+                Description = Desc,
+            };
+            return CreateObject(ptkp);
+        }
+
         public PTKP CreateObject(PTKP ptkp)
         {
             ptkp.Errors = new Dictionary<String, String>();
@@ -66,5 +82,35 @@ namespace Service.Service
             IQueryable<PTKP> ptkps = _repository.FindAll(x => x.Code == ptkp.Code && !x.IsDeleted && x.Id != ptkp.Id);
             return (ptkps.Count() > 0 ? true : false);
         }
+
+        //public string GetPTKPCode(bool Single, int NumberOfChildren)
+        //{
+        //    string code = null;
+        //    if (Single)
+        //    {
+        //        code = "TK";
+        //        if (NumberOfChildren > 0)
+        //        {
+        //            code += NumberOfChildren.ToString();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        code = "KW" + NumberOfChildren.ToString();
+        //    }
+        //    return code;
+        //}
+
+        public decimal CalcPTKP(bool Single, int NumberOfChildren)
+        {
+            decimal ptkp = 24300000;
+            if (!Single)
+            {
+                ptkp += 2025000;
+            }
+            ptkp += (NumberOfChildren * 2025000);
+            return ptkp;
+        }
+
     }
 }

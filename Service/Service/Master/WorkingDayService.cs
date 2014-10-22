@@ -34,9 +34,19 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<WorkingDay> GetObjectsByWorkingTimeId(int WorkingTimeId)
+        {
+            return _repository.GetQueryable().Where(x => x.WorkingTimeId == WorkingTimeId).ToList();
+        }
+
         public WorkingDay GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
+        }
+
+        public WorkingDay GetObjectByCode(string code)
+        {
+            return _repository.GetObjectByCode(code);
         }
 
         public WorkingDay CreateObject(WorkingDay workingDay, IWorkingTimeService _workingTimeService)
@@ -48,6 +58,20 @@ namespace Service.Service
         public WorkingDay UpdateObject(WorkingDay workingDay, IWorkingTimeService _workingTimeService)
         {
             return (workingDay = _validator.ValidUpdateObject(workingDay, _workingTimeService) ? _repository.UpdateObject(workingDay) : workingDay);
+        }
+
+        public WorkingDay CreateOrUpdateObject(WorkingDay workingDay, IWorkingTimeService _workingTimeService)
+        {
+            WorkingDay wd = GetObjectById(workingDay.Id);
+            if (wd == null)
+            {
+                CreateObject(workingDay, _workingTimeService);
+            }
+            else
+            {
+                UpdateObject(workingDay, _workingTimeService);
+            }
+            return workingDay;
         }
 
         public WorkingDay SoftDeleteObject(WorkingDay workingDay)

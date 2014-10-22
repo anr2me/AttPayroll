@@ -7,6 +7,7 @@ using System.Text;
 using Data.Context;
 using Data.Repository;
 using System.Data;
+using System.Linq.Dynamic;
 using System.Data.Entity;
 
 namespace Data.Repository
@@ -29,9 +30,14 @@ namespace Data.Repository
             return FindAll(x => !x.IsDeleted).ToList();
         }
 
+        public IList<SalaryStandardDetail> GetObjectsByTitleInfoId(int TitleInfoId)
+        {
+            return FindAll().Include("SalaryStandard").Where(x => !x.IsDeleted && x.SalaryStandard.TitleInfoId == TitleInfoId).ToList();
+        }
+
         public SalaryStandardDetail GetObjectById(int Id)
         {
-            SalaryStandardDetail salaryStandardDetail = Find(x => x.Id == Id && !x.IsDeleted);
+            SalaryStandardDetail salaryStandardDetail = FindAll(x => x.Id == Id && !x.IsDeleted).Include("SalaryStandard").Include("SalaryItem").FirstOrDefault();
             if (salaryStandardDetail != null) { salaryStandardDetail.Errors = new Dictionary<string, string>(); }
             return salaryStandardDetail;
         }

@@ -36,6 +36,13 @@ namespace Data.Repository
             return workingDay;
         }
 
+        public WorkingDay GetObjectByCode(string code)
+        {
+            WorkingDay workingDay = Find(x => x.Code == code && !x.IsDeleted);
+            if (workingDay != null) { workingDay.Errors = new Dictionary<string, string>(); }
+            return workingDay;
+        }
+
         public WorkingDay CreateObject(WorkingDay workingDay)
         {
             workingDay.IsDeleted = false;

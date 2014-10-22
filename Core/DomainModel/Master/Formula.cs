@@ -10,14 +10,18 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
         //public string Code { get; set; }
-        public int SalaryItemId { get; set; } // Parent Id
+        public Nullable<int> SalarySlipDetailId { get; set; } // SalaryItemId // Parent Id
         //public string ItemSign { get; set; } // "-", "+"
         public Nullable<int> FirstSalaryItemId { get; set; } // 1st Operand
         public string FormulaOp { get; set; } // "+", "-", "/", "*"
-        public bool IsValue { get; set; } // 2nd operand is a value (not an item)
+        public bool IsSecondValue { get; set; } // 2nd operand is a value (not an item)
         public Nullable<int> SecondSalaryItemId { get; set; } // 2nd Operand
-        public decimal Value { get; set; }
-        public string ValueSign { get; set; } // "-", "+"
+        public decimal SecondValue { get; set; }
+        public int ValueSign { get; set; } // "-", "+" // -1, 1
+        //public bool HasMinValue { get; set; }
+        //public decimal MinValue { get; set; }
+        //public bool HasMaxValue { get; set; }
+        //public decimal MaxValue { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -28,6 +32,6 @@ namespace Core.DomainModel
 
         public virtual SalaryItem FirstSalaryItem { get; set; }
         public virtual SalaryItem SecondSalaryItem { get; set; }
-        public virtual SalaryItem SalaryItem { get; set; } // Parent
+        public virtual SalarySlipDetail SalarySlipDetail { get; set; } // SalaryItem // Parent
     }
 }

@@ -9,10 +9,9 @@ namespace Core.DomainModel
     public partial class SlipGajiDetail
     {
         public int Id { get; set; }
-        public DateTime MONTH { get; set; } // Tahun dan bulan yg di proses
         public int EmployeeId { get; set; }
-        public Nullable<int> SlipGajiDetail1Id { get; set; }
-        public Nullable<int> SlipGajiDetail2AId { get; set; }
+        //public Nullable<int> SlipGajiDetail2AId { get; set; }
+        public DateTime MONTH { get; set; } // Tahun dan bulan yg di proses
 
         public string NoBadge { get; set; }
         public string Name { get; set; }
@@ -33,8 +32,8 @@ namespace Core.DomainModel
         public string Dikoreksi_oleh { get; set; }
         public string company_code { get; set; }
 
-        public virtual SlipGajiDetail1 SlipGajiDetail1 { get; set; }
-        public virtual SlipGajiDetail2A SlipGajiDetail2A { get; set; }
+        public virtual ICollection<SlipGajiDetail1> SlipGajiDetail1s { get; set; }
+        public virtual ICollection<SlipGajiDetail2A> SlipGajiDetail2As { get; set; }
         public Dictionary<string, string> Errors { get; set; }
     }
 

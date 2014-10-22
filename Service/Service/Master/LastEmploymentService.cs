@@ -34,12 +34,17 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<LastEmployment> GetObjectsByEmployeeId(int EmployeeId)
+        {
+            return _repository.FindAll(x => x.EmployeeId == EmployeeId).ToList();
+        }
+
         public LastEmployment GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
         }
 
-        public LastEmployment CreateObject(string Company, string Title, DateTime StartDate, Nullable<DateTime> EndDate, string ResignReason)
+        public LastEmployment CreateObject(string Company, string Title, DateTime StartDate, Nullable<DateTime> EndDate, string ResignReason, IEmployeeService _employeeService)
         {
             LastEmployment lastEmployment = new LastEmployment
             {
@@ -49,18 +54,18 @@ namespace Service.Service
                 EndDate = EndDate,
                 ResignReason = ResignReason,
             };
-            return this.CreateObject(lastEmployment);
+            return this.CreateObject(lastEmployment, _employeeService);
         }
 
-        public LastEmployment CreateObject(LastEmployment lastEmployment)
+        public LastEmployment CreateObject(LastEmployment lastEmployment, IEmployeeService _employeeService)
         {
             lastEmployment.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(lastEmployment, this) ? _repository.CreateObject(lastEmployment) : lastEmployment);
+            return (_validator.ValidCreateObject(lastEmployment, _employeeService) ? _repository.CreateObject(lastEmployment) : lastEmployment);
         }
 
-        public LastEmployment UpdateObject(LastEmployment lastEmployment)
+        public LastEmployment UpdateObject(LastEmployment lastEmployment, IEmployeeService _employeeService)
         {
-            return (lastEmployment = _validator.ValidUpdateObject(lastEmployment, this) ? _repository.UpdateObject(lastEmployment) : lastEmployment);
+            return (lastEmployment = _validator.ValidUpdateObject(lastEmployment, _employeeService) ? _repository.UpdateObject(lastEmployment) : lastEmployment);
         }
 
         public LastEmployment SoftDeleteObject(LastEmployment lastEmployment)

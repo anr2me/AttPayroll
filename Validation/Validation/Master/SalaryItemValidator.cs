@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Validation.Validation
 {
@@ -32,11 +33,34 @@ namespace Validation.Validation
             return salaryItem;
         }
 
+        public SalaryItem VHasValidCode(SalaryItem salaryItem)
+        {
+            Regex r = new Regex("^[A-Za-z_][A-Za-z0-9_]*$"); // "^\w+$" is equivalent to ^[A-Za-z0-9_]+$ but more broader (includes non-latin characters)
+            if (!r.IsMatch(salaryItem.Code))
+            {
+                salaryItem.Errors.Add("Code", "Hanya boleh menggunakan huruf, angka, dan underscore, dan tidak boleh diawali oleh angka");
+            }
+            return salaryItem;
+        }
+
+        //public SalaryItem VHasValidSign(SalaryItem salaryItem)
+        //{
+        //    if (salaryItem.SalarySign == 0)
+        //    {
+        //        salaryItem.Errors.Add("SalarySign", "Tidak valid");
+        //    }
+        //    return salaryItem;
+        //}
+
         public bool ValidCreateObject(SalaryItem salaryItem, ISalaryItemService _salaryItemService)
         {
             VHasUniqueCode(salaryItem, _salaryItemService);
             if (!isValid(salaryItem)) { return false; }
+            VHasValidCode(salaryItem);
+            if (!isValid(salaryItem)) { return false; }
             VHasDefaultValue(salaryItem);
+            //if (!isValid(salaryItem)) { return false; }
+            //VHasValidSign(salaryItem);
             return isValid(salaryItem);
         }
 

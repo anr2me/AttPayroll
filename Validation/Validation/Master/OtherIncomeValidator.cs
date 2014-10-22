@@ -10,20 +10,22 @@ namespace Validation.Validation
 {
     public class OtherIncomeValidator : IOtherIncomeValidator
     {
-
-        public OtherIncome VHasEmployee(OtherIncome otherIncome, IEmployeeService _employeeService)
+        public OtherIncome VHasUniqueCode(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService)
         {
-            Employee employee = _employeeService.GetObjectById(otherIncome.EmployeeId);
-            if (employee == null)
+            if (String.IsNullOrEmpty(otherIncome.Code) || otherIncome.Code.Trim() == "")
             {
-                otherIncome.Errors.Add("Employee", "Tidak valid");
+                otherIncome.Errors.Add("Code", "Tidak boleh kosong");
+            }
+            else if (_otherIncomeService.IsCodeDuplicated(otherIncome))
+            {
+                otherIncome.Errors.Add("Code", "Tidak boleh ada duplikasi");
             }
             return otherIncome;
         }
 
         public OtherIncome VHasSalaryItem(OtherIncome otherIncome, ISalaryItemService _salaryItemService)
         {
-            SalaryItem salaryItem = _salaryItemService.GetObjectById(otherIncome.SalaryItemId);
+            SalaryItem salaryItem = _salaryItemService.GetObjectById(otherIncome.SalaryItemId.GetValueOrDefault());
             if (salaryItem == null)
             {
                 otherIncome.Errors.Add("SalaryItem", "Tidak valid");
@@ -31,18 +33,16 @@ namespace Validation.Validation
             return otherIncome;
         }
 
-        public bool ValidCreateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
+        public bool ValidCreateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService)
         {
-            VHasEmployee(otherIncome, _employeeService);
-            if (!isValid(otherIncome)) { return false; }
-            VHasSalaryItem(otherIncome, _salaryItemService);
+            VHasUniqueCode(otherIncome, _otherIncomeService);
             return isValid(otherIncome);
         }
 
-        public bool ValidUpdateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
+        public bool ValidUpdateObject(OtherIncome otherIncome, IOtherIncomeService _otherIncomeService)
         {
             otherIncome.Errors.Clear();
-            ValidCreateObject(otherIncome, _employeeService, _salaryItemService);
+            ValidCreateObject(otherIncome, _otherIncomeService);
             return isValid(otherIncome);
         }
 

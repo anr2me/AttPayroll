@@ -9,8 +9,8 @@ namespace Core.Interface.Validation
 {
     public interface ILastEmploymentValidator
     {
-        bool ValidCreateObject(LastEmployment lastEmployment, ILastEmploymentService _lastEmploymentService);
-        bool ValidUpdateObject(LastEmployment lastEmployment, ILastEmploymentService _lastEmploymentService);
+        bool ValidCreateObject(LastEmployment lastEmployment, IEmployeeService _employeeService);
+        bool ValidUpdateObject(LastEmployment lastEmployment, IEmployeeService _employeeService);
         bool ValidDeleteObject(LastEmployment lastEmployment);
         bool isValid(LastEmployment lastEmployment);
         string PrintError(LastEmployment lastEmployment);

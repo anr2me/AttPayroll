@@ -12,9 +12,9 @@ namespace Data.Mapping
         public DepartmentMapping()
         {
             HasKey(d => d.Id);
-            HasRequired(d => d.CompanyInfo)
+            HasRequired(d => d.BranchOffice)
                 .WithMany(ci => ci.Departments)
-                .HasForeignKey(d => d.CompanyInfoId);
+                .HasForeignKey(d => d.BranchOfficeId);
             Ignore(d => d.Errors);
         }
     }

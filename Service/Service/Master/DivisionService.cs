@@ -34,6 +34,11 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<Division> GetObjectsByDepartmentId(int DepartmentId)
+        {
+            return _repository.FindAll(x => x.DepartmentId == DepartmentId && !x.IsDeleted).ToList();
+        }
+
         public Division GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
@@ -44,10 +49,11 @@ namespace Service.Service
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
         }
 
-        public Division CreateObject(string Code, string Name, string Description, IDepartmentService _departmentService)
+        public Division CreateObject(int departmentId, string Code, string Name, string Description, IDepartmentService _departmentService)
         {
             Division division = new Division
             {
+                DepartmentId = departmentId,
                 Code = Code,
                 Name = Name,
                 Description = Description,
@@ -66,15 +72,21 @@ namespace Service.Service
             return (division = _validator.ValidUpdateObject(division, this, _departmentService) ? _repository.UpdateObject(division) : division);
         }
 
-        public Division SoftDeleteObject(Division division)
+        public Division SoftDeleteObject(Division division, IEmployeeService _employeeService)
         {
-            return (division = _validator.ValidDeleteObject(division) ?
+            return (division = _validator.ValidDeleteObject(division, _employeeService) ?
                     _repository.SoftDeleteObject(division) : division);
         }
 
         public bool DeleteObject(int Id)
         {
             return _repository.DeleteObject(Id);
+        }
+
+        public bool IsCodeDuplicated(Division division)
+        {
+            IQueryable<Division> divisions = _repository.FindAll(x => x.Code == division.Code && !x.IsDeleted && x.Id != division.Id);
+            return (divisions.Count() > 0 ? true : false);
         }
 
         public bool IsNameDuplicated(Division division)

@@ -1,0 +1,164 @@
+body, html {
+    font-family: Calibri, Arial;
+    background: url(images/infossSSDxx.jpg) repeat-x top #297dd3xx !important;
+    padding:0px;
+	margin: 0px !important;
+}
+
+.panel-body {
+    background: none !important;
+}
+
+.layout-panel-center {
+    background: #fff !important;
+}
+
+.field-validation-error, .validation-summary-errors {
+    color: rgb(200, 20, 20);
+}
+
+#container_header {
+    padding: 25px 0 0;
+    height: 140px;
+}
+
+    #container_header #logo {
+        margin: 5px -50px -70px 50px;
+        float: left;
+    }
+
+#container_login {
+    background: linear-gradient(to right, #4075FF, white) repeat scroll 0 0 transparent;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 20px;
+    overflow: hidden;
+    width: 600px;
+    font-size: 14px;
+}
+
+    #container_login #login_header {
+        background: linear-gradient(to right, #0400A0, white) repeat scroll 0 0 transparent;
+        font-size: 22px;
+        font-weight: normal;
+        color: #24658c;
+        margin: -20px -20px 20px -20px;
+        padding: 15px 20px;
+        height: 80px;
+    }
+
+    #container_login #login_content {
+        border: solid #e5e5e5 1px;
+        padding: 30px 0px;
+        margin: -20px 0 0 -20px;
+        width: 638px;
+    }
+
+    #container_login #login_footer {
+        background: none repeat scroll 0 0 #002DA0;
+		color: #EFFE00;
+        padding: 10px;
+		text-align: center;
+        width: 640px;
+        margin-left: -20px;
+    }
+
+    #container_login p {
+        padding: 0;
+        margin: 7px 0;
+    }
+
+    #container_login input {
+        border: solid 1px #beb7b7;
+        font-family: Calibri, Arial;
+        font-size: 14px;
+        padding: 3px;
+    }
+
+    #container_login button {
+        font-family: Calibri, Arial;
+        font-size: 14px;
+        background: url(../images/bg_button.gif) repeat-x top #c2c2c2;
+        border: solid 1px #959595;
+        padding: 7px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 15px 0 0;
+        -moz-box-shadow: inset 0px 1px 0px 0px #caefab;
+        -webkit-box-shadow: inset 0px 1px 0px 0px #caefab;
+        box-shadow: inset 0px 1px 0px 0px #caefab;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        display: inline-block;
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+        text-shadow: 1px 1px 0px #aade7c;
+    }
+
+        #container_login button img {
+            margin: -5px 10px -5px 0;
+        }
+
+
+input {
+    text-transform: uppercase;
+}
+
+#panel-menu {
+    margin-top: -20px;
+}
+
+#panel-menuss {
+    border: solid 1px #95B8E7;
+    margin-top: 30px;
+    height: 280px;
+    border-radius: 20px;
+    background: #E0ECFF;
+}
+
+#sidebar-footer {
+    text-align: center;
+    bottom: 0px;
+    position: absolute;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    width: 200px;
+    font-size: 16px;
+}
+
+.form_toolbar {
+    /*margin-left:20px;*/
+    border: 1px solid #ddd;
+}
+
+.grid_toolbar {
+    border: 1px solid #ddd;
+}
+
+.input_form_div {
+    margin: 10px 20px;
+}
+
+.input_form_tbl td {
+    padding: 3px 5px 0px 5px;
+}
+
+
+#delete_confirm_info {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#delete_confirm_info {
+    font-size: 14px;
+}
+
+.layout-panel, .panel, .panel-body {
+    overflow: visible !important;
+}
+
+.tabs-header {
+    background-color: #1BC9E0 !important;
+}

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Core.Constants;
 
 namespace Service.Service
 {
@@ -39,21 +40,69 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public OtherIncome CreateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
+        public OtherIncome CreateObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService)
         {
             otherIncome.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(otherIncome, _employeeService, _salaryItemService) ? _repository.CreateObject(otherIncome) : otherIncome);
+            if(_validator.ValidCreateObject(otherIncome, this))
+            {
+                SalaryItem salaryItem = _salaryItemService.GetObjectByCode(otherIncome.Code);
+                if (salaryItem != null)
+                {
+                    otherIncome.Errors = new Dictionary<string, string>();
+                    otherIncome.Errors.Add("Code", "SalaryItem dengan Code ini sudah ada");
+                    return otherIncome;
+                }
+                salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.OtherIncome, (int)Constant.SalaryItemStatus.Monthly, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
+                if (salaryItem == null)
+                {
+                    otherIncome.Errors = new Dictionary<string, string>();
+                    otherIncome.Errors.Add("Code", "Tidak dapat membuat SalaryItem dengan Code ini");
+                    return otherIncome;
+                }
+                otherIncome.SalaryItemId = salaryItem.Id;
+                _repository.CreateObject(otherIncome);
+            }
+            return otherIncome;
         }
 
-        public OtherIncome UpdateObject(OtherIncome otherIncome, IEmployeeService _employeeService, ISalaryItemService _salaryItemService)
+        public OtherIncome UpdateObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService)
         {
-            return (otherIncome = _validator.ValidUpdateObject(otherIncome, _employeeService, _salaryItemService) ? _repository.UpdateObject(otherIncome) : otherIncome);
+            if(_validator.ValidUpdateObject(otherIncome, this))
+            {
+                SalaryItem salaryItem = _salaryItemService.GetObjectById(otherIncome.SalaryItemId.GetValueOrDefault());
+                if (salaryItem == null)
+                {
+                    salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.SalarySlip, (int)Constant.SalaryItemStatus.Monthly, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
+                    otherIncome.SalaryItemId = salaryItem.Id;
+                }
+                else
+                {
+                    salaryItem.Code = otherIncome.Code;
+                    salaryItem.Name = otherIncome.Name;
+                    _salaryItemService.UpdateObject(salaryItem);
+                    if (salaryItem.Errors.Any())
+                    {
+                        otherIncome.Errors.Clear();
+                        otherIncome.Errors.Add("Code", "Tidak dapat mengubah SalaryItem dengan Code ini");
+                    }
+                }
+                _repository.UpdateObject(otherIncome);
+            }
+            return otherIncome;
         }
 
-        public OtherIncome SoftDeleteObject(OtherIncome otherIncome)
+        public OtherIncome SoftDeleteObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService)
         {
-            return (otherIncome = _validator.ValidDeleteObject(otherIncome) ?
-                    _repository.SoftDeleteObject(otherIncome) : otherIncome);
+            if(_validator.ValidDeleteObject(otherIncome))
+            {
+                SalaryItem salaryItem = _salaryItemService.GetObjectById(otherIncome.SalaryItemId.GetValueOrDefault());
+                _repository.SoftDeleteObject(otherIncome);
+                if (salaryItem != null)
+                {
+                    _salaryItemService.SoftDeleteObject(salaryItem);
+                }
+            }
+            return otherIncome;
         }
 
         public bool DeleteObject(int Id)
@@ -61,6 +110,11 @@ namespace Service.Service
             return _repository.DeleteObject(Id);
         }
 
-        
+        public bool IsCodeDuplicated(OtherIncome otherIncome)
+        {
+            IQueryable<OtherIncome> otherIncomes = _repository.FindAll(x => x.Code == otherIncome.Code && !x.IsDeleted && x.Id != otherIncome.Id);
+            return (otherIncomes.Count() > 0 ? true : false);
+        }
+
     }
 }

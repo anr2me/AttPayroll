@@ -39,9 +39,32 @@ namespace Service.Service
             return _repository.GetAll();
         }
 
+        public IList<SlipGajiDetail1> GetObjectsBySlipGajiDetailId(int SlipGajiDetailId)
+        {
+            return _repository.GetQueryable().Where(x => x.SlipGajiDetailId == SlipGajiDetailId).ToList();
+        }
+
         public SlipGajiDetail1 GetObjectById(int Id)
         {
             return _repository.GetObjectById(Id);
+        }
+
+        public SlipGajiDetail1 CreateOrUpdateObject(SlipGajiDetail1 slipGajiDetail1, ISlipGajiDetailService _slipGajiDetailService)
+        {
+            slipGajiDetail1.Errors = new Dictionary<String, String>();
+            if (_validator.ValidCreateObject(slipGajiDetail1, _slipGajiDetailService))
+            {
+                //SlipGajiDetail1 slipGajiDetail12 = GetObjectByEmployeeMonth(slipGajiDetail.EmployeeId, slipGajiDetail.MONTH);
+                if (slipGajiDetail1.Id > 0)
+                {
+                    _repository.UpdateObject(slipGajiDetail1);
+                }
+                else
+                {
+                    _repository.CreateObject(slipGajiDetail1);
+                }
+            }
+            return slipGajiDetail1;
         }
 
         public SlipGajiDetail1 CreateObject(SlipGajiDetail1 slipGajiDetail1, ISlipGajiDetailService _slipGajiDetailService)

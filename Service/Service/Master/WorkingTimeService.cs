@@ -39,20 +39,92 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
-        public WorkingTime CreateObject(WorkingTime workingTime)
+        public WorkingTime GetObjectByCode(string code)
+        {
+            return _repository.GetObjectByCode(code);
+        }
+
+        public WorkingTime CreateObject(WorkingTime workingTime, IWorkingDayService _workingDayService)
         {
             workingTime.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(workingTime, this) ? _repository.CreateObject(workingTime) : workingTime);
+            if(_validator.ValidCreateObject(workingTime, this))
+            {
+                workingTime.WorkInterval = (decimal)workingTime.CheckOut.Subtract(workingTime.CheckIn).TotalMinutes;
+                workingTime.BreakInterval = (decimal)workingTime.BreakIn.Subtract(workingTime.BreakOut).TotalMinutes;
+                _repository.CreateObject(workingTime);
+                // Also create WorkingDays
+                for (int i = 0; i < 7; i++)
+                {
+                    WorkingDay workingDay = new WorkingDay
+                    {
+                        WorkingTimeId = workingTime.Id,
+                        Code = workingTime.Code + i.ToString(), // ((DayOfWeek)i).ToString()
+                        Name = ((DayOfWeek)i).ToString(),
+                        MinCheckIn = workingTime.MinCheckIn,
+                        CheckIn = workingTime.CheckIn,
+                        MaxCheckIn = workingTime.MaxCheckIn,
+                        MinCheckOut = workingTime.MinCheckOut,
+                        CheckOut = workingTime.CheckOut,
+                        MaxCheckOut = workingTime.MaxCheckOut,
+                        BreakOut = workingTime.BreakOut,
+                        BreakIn = workingTime.BreakIn,
+                        WorkInterval = workingTime.WorkInterval,
+                        BreakInterval = workingTime.BreakInterval,
+                        CheckInTolerance = workingTime.CheckInTolerance,
+                        CheckOutTolerance = workingTime.CheckOutTolerance,
+                    };
+                    workingDay.IsEnabled = (i != 0 && i != 6);
+                    _workingDayService.CreateObject(workingDay, this);
+                }
+            }
+            return workingTime;
         }
 
-        public WorkingTime UpdateObject(WorkingTime workingTime)
+        public WorkingTime UpdateObject(WorkingTime workingTime, IWorkingDayService _workingDayService)
         {
-            return (workingTime = _validator.ValidUpdateObject(workingTime, this) ? _repository.UpdateObject(workingTime) : workingTime);
+            if (_validator.ValidUpdateObject(workingTime, this))
+            {
+                workingTime.WorkInterval = (decimal)workingTime.CheckOut.Subtract(workingTime.CheckIn).TotalMinutes;
+                workingTime.BreakInterval = (decimal)workingTime.BreakIn.Subtract(workingTime.BreakOut).TotalMinutes;
+                _repository.UpdateObject(workingTime);
+                // Also updates WorkingDays
+                for (int i = 0; i < 7; i++)
+                {
+                    string code = workingTime.Code + i.ToString(); // ((DayOfWeek)i).ToString()
+                    WorkingDay workingDay = _workingDayService.GetObjectByCode(code);
+                    if (workingDay == null)
+                    {
+                        workingDay = new WorkingDay();
+                    }
+                    if(workingDay != null)
+                    {
+                        workingDay.WorkingTimeId = workingTime.Id;
+                        workingDay.Code = code;
+                        workingDay.Name = ((DayOfWeek)i).ToString();
+                        //workingDay.IsEnabled = (i != 0 && i != 6);
+                        workingDay.MinCheckIn = workingTime.MinCheckIn;
+                        workingDay.CheckIn = workingTime.CheckIn;
+                        workingDay.MaxCheckIn = workingTime.MaxCheckIn;
+                        workingDay.MinCheckOut = workingTime.MinCheckOut;
+                        workingDay.CheckOut = workingTime.CheckOut;
+                        workingDay.MaxCheckOut = workingTime.MaxCheckOut;
+                        workingDay.BreakOut = workingTime.BreakOut;
+                        workingDay.BreakIn = workingTime.BreakIn;
+                        workingDay.WorkInterval = workingTime.WorkInterval;
+                        workingDay.BreakInterval = workingTime.BreakInterval;
+                        workingDay.CheckInTolerance = workingTime.CheckInTolerance;
+                        workingDay.CheckOutTolerance = workingTime.CheckOutTolerance;
+                        _workingDayService.CreateOrUpdateObject(workingDay, this);
+                    };
+                    
+                }
+            }
+            return workingTime;
         }
 
-        public WorkingTime SoftDeleteObject(WorkingTime workingTime)
+        public WorkingTime SoftDeleteObject(WorkingTime workingTime, IEmployeeWorkingTimeService _employeeWorkingTimeService)
         {
-            return (workingTime = _validator.ValidDeleteObject(workingTime) ?
+            return (workingTime = _validator.ValidDeleteObject(workingTime, _employeeWorkingTimeService) ?
                     _repository.SoftDeleteObject(workingTime) : workingTime);
         }
 

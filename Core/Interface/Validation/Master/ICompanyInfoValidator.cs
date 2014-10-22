@@ -16,7 +16,7 @@ namespace Core.Interface.Validation
         
         bool ValidCreateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
         bool ValidUpdateObject(CompanyInfo companyInfo, ICompanyInfoService _companyInfoService);
-        bool ValidDeleteObject(CompanyInfo companyInfo);
+        bool ValidDeleteObject(CompanyInfo companyInfo, IBranchOfficeService _branchOfficeService);
         bool isValid(CompanyInfo companyInfo);
         string PrintError(CompanyInfo companyInfo);
     }

@@ -66,6 +66,7 @@ namespace Data.Repository
         public bool DeleteObject(int Id)
         {
             Formula formula = Find(x => x.Id == Id);
+            if (formula == null) {return true;}
             return (Delete(formula) == 1) ? true : false;
         }
 

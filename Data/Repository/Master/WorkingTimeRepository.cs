@@ -36,6 +36,13 @@ namespace Data.Repository
             return workingTime;
         }
 
+        public WorkingTime GetObjectByCode(string code)
+        {
+            WorkingTime workingTime = Find(x => x.Code == code && !x.IsDeleted);
+            if (workingTime != null) { workingTime.Errors = new Dictionary<string, string>(); }
+            return workingTime;
+        }
+
         public WorkingTime CreateObject(WorkingTime workingTime)
         {
             workingTime.IsDeleted = false;

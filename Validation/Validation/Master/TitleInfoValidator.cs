@@ -33,6 +33,16 @@ namespace Validation.Validation
             return titleInfo;
         }
 
+        public TitleInfo VDontHaveEmployees(TitleInfo titleInfo, IEmployeeService _employeeService)
+        {
+            IList<Employee> employees = _employeeService.GetObjectsByTitleInfoId(titleInfo.Id);
+            if (employees.Any())
+            {
+                titleInfo.Errors.Add("Generic", "Tidak boleh masih terasosiasi dengan Employees");
+            }
+            return titleInfo;
+        }
+
         public bool ValidCreateObject(TitleInfo titleInfo, ITitleInfoService _titleInfoService)
         {
             VHasUniqueCode(titleInfo, _titleInfoService);
@@ -48,9 +58,10 @@ namespace Validation.Validation
             return isValid(titleInfo);
         }
 
-        public bool ValidDeleteObject(TitleInfo titleInfo)
+        public bool ValidDeleteObject(TitleInfo titleInfo, IEmployeeService _employeeService)
         {
             titleInfo.Errors.Clear();
+            VDontHaveEmployees(titleInfo, _employeeService);
             return isValid(titleInfo);
         }
 

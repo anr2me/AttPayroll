@@ -52,6 +52,15 @@ namespace Validation.Validation
             return employee;
         }
 
+        public Employee VHasBirthDate(Employee employee)
+        {
+            if (employee.BirthDate == null || employee.BirthDate.Equals(DateTime.FromBinary(0)))
+            {
+                employee.Errors.Add("BirthDate", "Tidak valid");
+            }
+            return employee;
+        }
+
         public Employee VHasAddress(Employee employee)
         {
             if (String.IsNullOrEmpty(employee.Address) || employee.Address.Trim() == "")
@@ -79,6 +88,8 @@ namespace Validation.Validation
             VHasUniqueNIK(employee, _employeeService);
             if (!isValid(employee)) { return false; }
             VHasName(employee);
+            if (!isValid(employee)) { return false; }
+            VHasBirthDate(employee);
             if (!isValid(employee)) { return false; }
             VHasAddress(employee);
             if (!isValid(employee)) { return false; }

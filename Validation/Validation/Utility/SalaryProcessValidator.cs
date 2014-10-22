@@ -20,12 +20,16 @@ namespace Validation.Validation
         public ISalaryEmployeeService _salaryEmployeeService { get; set; }
         public ISalaryEmployeeDetailService _salaryEmployeeDetailService { get; set; }
         public IEmployeeAttendanceService _employeeAttendanceService { get; set; }
-        public IEmployeeAttendanceDetailService _employeeAttendanceDetailService { get; set; }
+        //public IEmployeeAttendanceDetailService _employeeAttendanceDetailService { get; set; }
         public ISalarySlipService _salarySlipService { get; set; }
         public ISalarySlipDetailService _salarySlipDetailService { get; set; }
         public IEmployeeLeaveService _employeeLeaveService { get; set; }
         public IGeneralLeaveService _generalLeaveService { get; set; }
         public ISPKLService _spklService { get; set; }
+        public IPTKPService _ptkpService { get; set; }
+        public IPPH21SPTService _pph21sptService { get; set; }
+        public IOtherExpenseService _otherExpenseService { get; set; }
+        public IOtherIncomeService _otherIncomeService { get; set; }
         public ISlipGajiMiniService _slipGajiMiniService { get; set; }
         public ISlipGajiDetailService _slipGajiDetailService { get; set; }
         public ISlipGajiDetail1Service _slipGajiDetail1Service { get; set; }
@@ -50,11 +54,11 @@ namespace Validation.Validation
             return null;
         }
 
-        public string ValidProcessEmployee(int EmployeeId, DateTime yearMonth)
+        public string ValidProcessEmployee(Nullable<int> EmployeeId, DateTime yearMonth)
         {
             string error = VHasDate(yearMonth);
             if (error != null) return error;
-            error = VHasEmployee(EmployeeId);
+            error = VHasEmployee(EmployeeId.GetValueOrDefault());
             return error;
         }
 

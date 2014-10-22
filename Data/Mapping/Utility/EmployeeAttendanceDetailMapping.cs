@@ -12,13 +12,13 @@ namespace Data.Mapping
         public EmployeeAttendanceDetailMapping()
         {
             HasKey(sed => sed.Id);
-            HasRequired(sed => sed.EmployeeAttendance)
-                .WithMany(ss => ss.EmployeeAttendanceDetails)
-                .HasForeignKey(sed => sed.EmployeeAttendanceId);
-            HasRequired(sed => sed.SalaryItem)
-                .WithMany()
-                .HasForeignKey(sed => sed.SalaryItemId)
-                .WillCascadeOnDelete(false);
+            //HasRequired(sed => sed.EmployeeAttendance)
+            //    .WithMany() // ss => ss.EmployeeAttendanceDetails
+            //    .HasForeignKey(sed => sed.EmployeeAttendanceId);
+            //HasRequired(sed => sed.SalaryItem)
+            //    .WithMany()
+            //    .HasForeignKey(sed => sed.SalaryItemId)
+            //    .WillCascadeOnDelete(false);
             Ignore(sed => sed.Errors);
         }
     }

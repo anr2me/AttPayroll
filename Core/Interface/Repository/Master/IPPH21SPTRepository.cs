@@ -11,6 +11,7 @@ namespace Core.Interface.Repository
         IQueryable<PPH21SPT> GetQueryable();
         IList<PPH21SPT> GetAll();
         PPH21SPT GetObjectById(int Id);
+        PPH21SPT GetObjectBySalary(decimal Amount);
         PPH21SPT CreateObject(PPH21SPT pph21spt);
         PPH21SPT UpdateObject(PPH21SPT pph21spt);
         PPH21SPT SoftDeleteObject(PPH21SPT pph21spt);

@@ -13,7 +13,7 @@ namespace Validation.Validation
 
         public WorkingDay VHasWorkingTime(WorkingDay workingDay, IWorkingTimeService _workingTimeService)
         {
-            WorkingTime workingTime = _workingTimeService.GetObjectById(workingDay.WorkingTimeId);
+            WorkingTime workingTime = _workingTimeService.GetObjectById(workingDay.WorkingTimeId.GetValueOrDefault());
             if (workingTime == null)
             {
                 workingDay.Errors.Add("WorkingTime", "Tidak valid");
@@ -39,6 +39,78 @@ namespace Validation.Validation
             return workingDay;
         }
 
+        public WorkingDay VHasMinCheckIn(WorkingDay workingDay)
+        {
+            if (workingDay.MinCheckIn == null || workingDay.MinCheckIn.Equals(DateTime.FromBinary(0)))
+            {
+                workingDay.Errors.Add("MinCheckIn", "Tidak valid");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasMinCheckOut(WorkingDay workingDay)
+        {
+            if (workingDay.MinCheckOut == null || workingDay.MinCheckOut.Equals(DateTime.FromBinary(0)))
+            {
+                workingDay.Errors.Add("MinCheckOut", "Tidak valid");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasMaxCheckIn(WorkingDay workingDay)
+        {
+            if (workingDay.MaxCheckIn == null || workingDay.MaxCheckIn.Equals(DateTime.FromBinary(0)))
+            {
+                workingDay.Errors.Add("MaxCheckIn", "Tidak valid");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasMaxCheckOut(WorkingDay workingDay)
+        {
+            if (workingDay.MaxCheckOut == null || workingDay.MaxCheckOut.Equals(DateTime.FromBinary(0)))
+            {
+                workingDay.Errors.Add("MaxCheckOut", "Tidak valid");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasValidMinCheckIn(WorkingDay workingDay)
+        {
+            if (workingDay.MinCheckIn > workingDay.CheckIn)
+            {
+                workingDay.Errors.Add("MinCheckIn", "Harus lebih kecil atau sama dengan CheckIn");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasValidMaxCheckIn(WorkingDay workingDay)
+        {
+            if (workingDay.MaxCheckIn < workingDay.CheckIn)
+            {
+                workingDay.Errors.Add("MaxCheckIn", "Harus lebih besar atau sama dengan CheckIn");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasValidMinCheckOut(WorkingDay workingDay)
+        {
+            if (workingDay.MinCheckOut > workingDay.CheckOut || workingDay.MinCheckOut <= workingDay.MaxCheckIn)
+            {
+                workingDay.Errors.Add("MinCheckOut", "Harus lebih kecil atau sama dengan CheckOut dan setelah MaxCheckIn");
+            }
+            return workingDay;
+        }
+
+        public WorkingDay VHasValidMaxCheckOut(WorkingDay workingDay)
+        {
+            if (workingDay.MaxCheckOut < workingDay.CheckOut || workingDay.MaxCheckOut >= workingDay.MinCheckIn.AddDays(1))
+            {
+                workingDay.Errors.Add("MaxCheckOut", "Harus lebih besar atau sama dengan CheckOut dan sebelum MinCheckIn hari berikutnya");
+            }
+            return workingDay;
+        }
+
         public bool ValidCreateObject(WorkingDay workingDay, IWorkingTimeService _workingTimeService)
         {
             VHasWorkingTime(workingDay, _workingTimeService);
@@ -46,6 +118,24 @@ namespace Validation.Validation
             VHasCheckIn(workingDay);
             if (!isValid(workingDay)) { return false; }
             VHasCheckOut(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasMinCheckIn(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasMinCheckOut(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasMaxCheckIn(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasMaxCheckOut(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            // Need to fix the day before further validation for correct range checking
+            FixWorkingDayRange(workingDay);
+            VHasValidMinCheckIn(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasValidMaxCheckIn(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasValidMinCheckOut(workingDay);
+            if (!isValid(workingDay)) { return false; }
+            VHasValidMaxCheckOut(workingDay);
             return isValid(workingDay);
         }
 
@@ -79,6 +169,38 @@ namespace Validation.Validation
                 erroroutput += pair.Key + "," + pair.Value;
             }
             return erroroutput;
+        }
+
+        public WorkingDay FixWorkingDayRange(WorkingDay workingDay)
+        {
+            // Need to fix the day for correct hours range checking, all dates must not be null
+            while (workingDay.CheckIn < workingDay.MinCheckIn)
+            {
+                workingDay.CheckIn = workingDay.CheckIn.AddDays(1); // workingDay.MinCheckIn.Date + workingDay.CheckIn.TimeOfDay
+            }
+            while (workingDay.CheckOut < workingDay.MinCheckOut)
+            {
+                workingDay.CheckOut = workingDay.CheckOut.AddDays(1);
+            }
+
+            while (workingDay.CheckOut < workingDay.CheckIn)
+            {
+                workingDay.CheckOut = workingDay.CheckOut.AddDays(1);
+            }
+            while (workingDay.BreakIn < workingDay.BreakOut)
+            {
+                workingDay.BreakIn = workingDay.BreakIn.AddDays(1);
+            }
+
+            while (workingDay.MaxCheckIn < workingDay.CheckIn)
+            {
+                workingDay.MaxCheckIn = workingDay.MaxCheckIn.AddDays(1);
+            }
+            while (workingDay.MaxCheckOut < workingDay.CheckOut)
+            {
+                workingDay.MaxCheckOut = workingDay.MaxCheckOut.AddDays(1);
+            }
+            return workingDay;
         }
 
     }

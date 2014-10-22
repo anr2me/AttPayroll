@@ -12,10 +12,10 @@ namespace Data.Mapping
         public SalaryItemMapping()
         {
             HasKey(si => si.Id);
-            HasOptional(si => si.Formula)
-                .WithMany()
-                .HasForeignKey(si => si.FormulaId)
-                .WillCascadeOnDelete(false);
+            //HasOptional(si => si.Formula)
+            //    .WithMany()
+            //    .HasForeignKey(si => si.FormulaId)
+            //    .WillCascadeOnDelete(false);
             Ignore(si => si.Errors);
         }
     }

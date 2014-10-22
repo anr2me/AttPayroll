@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "User Access Rights";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.tabs.css")">
+    <!-- Additional IE/Win specific style sheet (Conditional Comments) -->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.tabs-ie.css")">
+        <![endif]-->
+}
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.1.3.1.pack.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.history_remote.pack.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.tabs.pack.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.2.2.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/useraccess.js")"></script>
+}
+
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" title=".: User Access Right :.">
+    <div id="ua_form_toolbar" class="form_toolbar">
+        <a id="ua_form_btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+        <a id="ua_form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+    </div>
+    <table cellspacing="0" cellpadding="0" width="100%" style="padding: 10px 15px">
+        <tr>
+            <td>
+                <table id="tbl_users"></table>
+            </td>
+            <td valign="top">
+                <div>
+                    <ul class='tabs' style="width: 600px !important;">
+                        <li><a href='#tab1a'>Master</a></li>
+                        <li><a href='#tab2a'>Transaction</a></li>
+                        <li><a href='#tab3a'>Report</a></li>
+                        <li><a href='#tab4a'>Setting</a></li>
+                    </ul>
+                    <div>
+                        <div id='tab1a' class="tabs-container">
+                            <table id="tbl_access_master"></table>
+                        </div>
+                        <div id='tab2a' class="tabs-container">
+                            <table id="tbl_access_transaction"></table>
+                        </div>
+                        <div id='tab3a' class="tabs-container">
+                            <table id="tbl_access_report"></table>
+                        </div>
+                        <div id='tab4a' class="tabs-container">
+                            <table id="tbl_access_setting"></table>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

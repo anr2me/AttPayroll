@@ -48,16 +48,55 @@ namespace Service.Service
 
         public SalaryItem GetObjectByCode(Constant.LegacyAttendanceItem Code)
         {
+            string scode = Enum.GetName(typeof(Core.Constants.Constant.LegacyAttendanceItem), Code);
+            return _repository.FindAll(x => x.Code == scode && !x.IsDeleted).FirstOrDefault();
+        }
+
+        public SalaryItem GetObjectByCode(Constant.LegacySalaryItem Code)
+        {
             string scode = Enum.GetName(typeof(Core.Constants.Constant.LegacySalaryItem), Code);
             return _repository.FindAll(x => x.Code == scode && !x.IsDeleted).FirstOrDefault();
         }
 
-        public SalaryItem CreateObject(string Code, string Name)
+        public SalaryItem GetObjectByCode(Constant.LegacyMonthlyItem Code)
+        {
+            string scode = Enum.GetName(typeof(Core.Constants.Constant.LegacyMonthlyItem), Code);
+            return _repository.FindAll(x => x.Code == scode && !x.IsDeleted).FirstOrDefault();
+        }
+
+        public SalaryItem FindOrCreateObject(string Code, string Name, int SalarySign, int SalaryItemType, int SalaryStatus, bool IsMainSalary, bool IsDetailSalary, bool IsLegacy)
+        {
+            SalaryItem salaryItem = GetObjectByCode(Code);
+            if (salaryItem != null)
+            {
+                return salaryItem;
+            }
+            salaryItem = new SalaryItem
+            {
+                Code = Code,
+                Name = Name,
+                SalarySign = SalarySign,
+                SalaryItemType = SalaryItemType,
+                SalaryItemStatus = SalaryStatus,
+                IsMainSalary = IsMainSalary,
+                IsDetailSalary = IsDetailSalary,
+                IsLegacy = IsLegacy,
+            };
+            return this.CreateObject(salaryItem);
+        }
+
+        public SalaryItem CreateObject(string Code, string Name, int SalarySign, int SalaryItemType, int SalaryStatus, bool IsMainSalary, bool IsDetailSalary, bool IsLegacy)
         {
             SalaryItem salaryItem = new SalaryItem
             {
                 Code = Code,
                 Name = Name,
+                SalarySign = SalarySign,
+                SalaryItemType = SalaryItemType,
+                SalaryItemStatus = SalaryStatus,
+                IsMainSalary = IsMainSalary,
+                IsDetailSalary = IsDetailSalary,
+                IsLegacy = IsLegacy,
             };
             return this.CreateObject(salaryItem);
         }
@@ -90,39 +129,39 @@ namespace Service.Service
             return (salaryItems.Count() > 0 ? true : false);
         }
 
-        public decimal CalcSalaryItem(int salaryItemId, int employeeId, DateTime date, IFormulaService _formulaService,
-                            ISalaryEmployeeDetailService _salaryEmployeeDetailService, IEmployeeAttendanceDetailService _employeeAttendanceDetailService)
-        {
-            decimal val = 0;
-            SalaryItem salaryItem = GetObjectById(salaryItemId);
-            if (salaryItem != null)
-            {
-                if (salaryItem.FormulaId.GetValueOrDefault() > 0)
-                {
-                    val = _formulaService.CalcFormula(salaryItem.FormulaId.GetValueOrDefault(), employeeId, date, this, _salaryEmployeeDetailService, _employeeAttendanceDetailService);
-                }
-                else
-                {
-                    if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
-                    {
-                        val = _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
-                    {
-                        val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
-                    {
-                        val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else
-                    {
-                        val = salaryItem.DefaultValue;
-                    }
-                }
-            }
-            return val;
-        }
+        //public decimal CalcSalaryItem(int salaryItemId, int employeeId, DateTime date, IFormulaService _formulaService,
+        //                    ISalaryEmployeeDetailService _salaryEmployeeDetailService, IEmployeeAttendanceDetailService _employeeAttendanceDetailService)
+        //{
+        //    decimal val = 0;
+        //    SalaryItem salaryItem = GetObjectById(salaryItemId);
+        //    if (salaryItem != null)
+        //    {
+        //        if (salaryItem.FormulaId.GetValueOrDefault() > 0)
+        //        {
+        //            val = _formulaService.CalcFormula(salaryItem.FormulaId.GetValueOrDefault(), employeeId, date, this, _salaryEmployeeDetailService, _employeeAttendanceDetailService);
+        //        }
+        //        else
+        //        {
+        //            if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
+        //            {
+        //                val = _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+        //            }
+        //            else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
+        //            {
+        //                val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+        //            }
+        //            else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
+        //            {
+        //                val = _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+        //            }
+        //            else
+        //            {
+        //                val = salaryItem.DefaultValue;
+        //            }
+        //        }
+        //    }
+        //    return val;
+        //}
 
         /// <summary>
         /// Menghitung nilai Salary item
@@ -137,30 +176,41 @@ namespace Service.Service
             //SalaryItem salaryItem = GetObjectById(salaryItemId);
             if (salaryItem != null)
             {
-                if (salaryItem.FormulaId.GetValueOrDefault() > 0)
+                try
                 {
-                    var salaryItems = GetQueryable();
-                    val = _formulaService.CalcFormula(salaryItem.Formula, salaryItemsValue, salaryItems);
+                    val = salaryItemsValue[salaryItem.Code];
                 }
-                else
+                catch
                 {
-                    if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
+                    if (salaryItem != null)
                     {
-                        val = salaryItemsValue[salaryItem.Code]; // _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
-                    {
-                        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
-                    {
-                        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
-                    }
-                    else
-                    {
-                        val = salaryItem.DefaultValue;
+                        val = salaryItem.DefaultValue; // CurrentValue
                     }
                 }
+                //if (salaryItem.FormulaId.GetValueOrDefault() > 0)
+                //{
+                //    var salaryItems = GetQueryable();
+                //    val = _formulaService.CalcFormula(salaryItem.Formula, salaryItemsValue, salaryItems);
+                //}
+                //else
+                //{
+                //    if (Enum.IsDefined(typeof(Constant.LegacySalaryItem), salaryItem.Code))
+                //    {
+                //        val = salaryItemsValue[salaryItem.Code]; // _salaryEmployeeDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                //    }
+                //    else if (Enum.IsDefined(typeof(Constant.LegacyAttendanceItem), salaryItem.Code))
+                //    {
+                //        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                //    }
+                //    else if (Enum.IsDefined(typeof(Constant.LegacyMonthlyItem), salaryItem.Code))
+                //    {
+                //        val = salaryItemsValue[salaryItem.Code]; // _employeeAttendanceDetailService.GetObjectByEmployeeIdAndSalaryItemId(employeeId, salaryItem.Id, date).Amount;
+                //    }
+                //    else
+                //    {
+                //        val = salaryItem.DefaultValue;
+                //    }
+                //}
             }
             return val;
         }

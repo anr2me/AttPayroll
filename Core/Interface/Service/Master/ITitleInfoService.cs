@@ -14,9 +14,10 @@ namespace Core.Interface.Service
         IList<TitleInfo> GetAll();
         TitleInfo GetObjectById(int Id);
         TitleInfo GetObjectByCode(string Code);
+        TitleInfo CreateObject(string Code, string Name, string Description, bool IsShiftable);
         TitleInfo CreateObject(TitleInfo titleInfo);
         TitleInfo UpdateObject(TitleInfo titleInfo);
-        TitleInfo SoftDeleteObject(TitleInfo titleInfo);
+        TitleInfo SoftDeleteObject(TitleInfo titleInfo, IEmployeeService _employeeService);
         bool DeleteObject(int Id);
         bool IsCodeDuplicated(TitleInfo titleInfo);
     }

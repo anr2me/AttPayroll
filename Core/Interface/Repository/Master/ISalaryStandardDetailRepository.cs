@@ -10,6 +10,7 @@ namespace Core.Interface.Repository
     {
         IQueryable<SalaryStandardDetail> GetQueryable();
         IList<SalaryStandardDetail> GetAll();
+        IList<SalaryStandardDetail> GetObjectsByTitleInfoId(int TitleInfoId);
         SalaryStandardDetail GetObjectById(int Id);
         SalaryStandardDetail CreateObject(SalaryStandardDetail salaryStandardDetail);
         SalaryStandardDetail UpdateObject(SalaryStandardDetail salaryStandardDetail);

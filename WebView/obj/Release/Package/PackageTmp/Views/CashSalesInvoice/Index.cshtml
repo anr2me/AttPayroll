@@ -1,0 +1,369 @@
+﻿@{
+    ViewBag.Title = "Cash Sales Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/cashsalesinvoice.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title=".: Cash Sales Invoice :.">
+<div id="toolbar" class="form_toolbar">
+        <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+        <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+        <a id="btn_add_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add/Edit Detail</a>
+        <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+        <a id="btn_confirm" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-approval'">Confirm</a>
+        <a id="btn_unconfirm" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">Unconfirm</a>
+        <a id="btn_paid" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-approval'">Paid</a>
+        <a id="btn_unpaid" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">Unpaid</a>
+        <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+        <a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print For Internal</a>
+        <a id="btn_print2" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print For Customer</a>
+    </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; padding:0px 0px 10px; top:100px" data-options="modal:true"  
+        title=".: Master CashSalesInvoice :.">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap hidden>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="550">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Code</label></td>
+                            <td >
+                                <input id="Code" name ="Code" type="text" size="10" disabled="disabled" /></td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <label>Description</label></td>
+                            <td >
+                                @*<input id="Description" name ="Description" type="text" size="60" maxlength="60" align="left"/>*@
+                                <textarea name="Description" id="Description" cols="60" rows="3"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>CashBank</label></td>
+                            <td colspan="3">
+                               <input id="CashBankId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnCashBank" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="CashBankName" name="CashBankId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                                         
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Warehouse</label></td>
+                            <td colspan="3">
+                               <input id="WarehouseId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnWarehouse" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="WarehouseName" name="WarehouseId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                                         
+                        </tr>
+                        @*<tr>
+                            <td>
+                                <label>Discount</label></td>
+                            <td colspan="3">
+                        <input id="Discount" name="Discount" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />%
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Tax</label></td>
+                            <td colspan="3">
+                        <input id="Tax" name="Tax" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />%
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Allowance</label></td>
+                            <td colspan="3">
+                        <input id="Allowance" name="Allowance" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                        </tr>*@
+                        <tr>
+                            <td>
+                                <label>Total</label></td>
+                            <td colspan="3">
+                        <input id="Total" name="Total" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Sales Date</label></td>
+                             <td>
+                             <div id="SalesDateDiv"><input id="SalesDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             <div id="SalesDateDiv2"><input id="SalesDate2" type="text" size="10" disabled="disabled"/></div>
+                                 <input name="SalesDate" type="text" size="1" hidden="hidden"/>
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Due Date</label></td>
+                             <td>
+                             <div id="DueDateDiv"><input id="DueDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             <div id="DueDateDiv2"><input id="DueDate2" type="text" size="10" disabled="disabled"/></div>
+                                 <input name="DueDate" type="text" size="1" hidden="hidden"/>
+                             </td>
+                        </tr>
+                    </table>
+                    <div id="tabledetail_div">
+                        <div id="toolbardetail" class="grid_toolbar">
+                            <a id="btn_add_new_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+                            <a id="btn_edit_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+                            <a id="btn_del_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+                        </div>
+                                  <table id="listdetail" class="scroll" cellpadding="0" cellspacing="0"></table>
+                        <div id="pagerdetail" class="scroll" style="text-align: center;"></div>
+                    </div>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Dialog Box  Item-->
+    <div id="item_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px"
+        data-options="modal:true" title=".: Input Item :.">
+
+        <div id="item_toolbar" class="form_toolbar">
+            <a id="item_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="item_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="item_info">
+              <table  width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr>
+                      <td width="139" nowrap style="width: 100px">
+                          Item
+                      </td>
+                      <td>
+                         <input id="ItemId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                         <input id="btnItem" name="buttonactivated" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                         <input id="Item" name="ItemId" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                         <input id="CashSalesInvoiceId" name="CashSalesInvoiceId" type="text" size ="10" hidden="hidden" />
+                      </td>
+                  </tr>
+                    <tr>
+                        <td>
+                            QTY
+                        </td>
+                        <td>
+                               <input id="Quantity" name="Quantity" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                        </td>
+                    </tr>
+                  <tr>
+                        <td>Is Manual Price Assignment</td>
+                            <td>
+                                <select id="IsManualPriceAssignment" onchange="onManualAssignedPrice()">
+                                  <option value="False">No</option>
+                                  <option value="True">Yes</option>
+                               </select>
+                            </td>
+                  </tr>
+                  <tr>
+                        <td>
+                            Assigned Price
+                        </td>
+                        <td>
+                               <input id="AssignedPrice" name="AssignedPrice" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                        </td>
+                    </tr>
+                  <tr>
+                        <td>
+                            Manual Discount
+                        </td>
+                        <td>
+                               <input id="detailDiscount" name="Discount" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />%
+                        </td>
+                  </tr>
+              </table>
+        </div>
+    </div>
+<!-- End Dialog Box Item-->
+
+<!-- Dialog Box Confirm-->
+    <div id="confirm_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px;width :500px"
+        data-options="modal:true" title=".: Confirm CashSalesInvoice :.">
+
+        <div id="confirm_toolbar" class="form_toolbar">
+            <a id="confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="confirm_info">
+              <table  width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr hidden>
+                      <td width="139" nowrap style="width: 100px">
+                          Id
+                      </td>
+                      <td>
+                         <input id="idconfirm" type="text" size="10" disabled="disabled"/>
+                      </td>
+                  </tr>
+                  <tr>
+                            <td>
+                                <label>Code</label></td>
+                            <td >
+                                <input id="confirmCode" name ="Code" type="text" size="10" disabled="disabled" /></td>
+                  </tr>
+                  <tr>
+                      <td>
+                          Confirmation Date
+                      </td>
+                      <td>
+                         <input id="ConfirmationDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                         <input name="ConfirmationDate" type="text" size="1" hidden="hidden"/>
+                         <input name="IsConfirmed" type="text" size="1" hidden="hidden"/>
+                      </td>
+                  </tr>
+                  <tr>
+                            <td>
+                                <label>Discount</label></td>
+                            <td colspan="3">
+                        <input id="confirmDiscount" name="Discount" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />%
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Tax</label></td>
+                            <td colspan="3">
+                        <input id="confirmTax" name="Tax" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />%
+                        </tr>
+                  <tr>
+                        <td>
+                            <label>Total</label></td>
+                        <td colspan="3">
+                        <input id="confirmTotal" name="Total" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" disabled="disabled" hidden/>
+                        <input id="confirmTotal2" name="Total2" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" disabled="disabled" />
+                  </tr>
+              </table>
+          
+        </div>
+    </div>
+<!-- End Dialog Box Confirm-->
+
+<!-- Dialog Box Paid-->
+    <div id="paid_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px;width :500px"
+        data-options="modal:true" title=".: Paid CashSalesInvoice :.">
+
+        <div id="paid_toolbar" class="form_toolbar">
+            <a id="paid_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="paid_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="paid_info">
+              <table  width="100%" border="0" cellpadding="5" cellspacing="5" class="input_form_tbl">
+                  <tr hidden>
+                      <td width="139" nowrap style="width: 100px">
+                          Id
+                      </td>
+                      <td>
+                         <input id="idpaid" type="text" size="10" disabled="disabled"/>
+                      </td>
+                  </tr>
+                  <tr>
+                            <td>
+                                <label>Code</label></td>
+                            <td >
+                                <input id="paidCode" name ="Code" type="text" size="10" disabled="disabled" /></td>
+                  </tr>
+                  <tr>
+                        <td>
+                            <label>Total</label></td>
+                        <td colspan="3">
+                        <input id="paidTotal" name="Total" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" disabled="disabled" />
+                  </tr>
+                  <tr>
+                        <td>
+                            <label>Amount Paid</label></td>
+                        <td colspan="3">
+                        <input id="AmountPaid" name="AmountPaid" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                  </tr>
+                  <tr>
+                        <td>
+                            <label>Allowance</label></td>
+                        <td colspan="3">
+                        <input id="paidAllowance" name="Allowance" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                  </tr>
+              </table>
+          
+        </div>
+    </div>
+<!-- End Dialog Box Paid-->
+
+<!-- Look Up CashBank -->
+    <div id="lookup_div_cashbank" class="easyui-dialog" title="List CashBank" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_cashbank" class="grid_toolbar">
+            <a id="lookup_btn_add_cashbank" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_cashbank" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_cashbank" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_cashbank" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up CashBank -->
+
+<!-- Look Up Warehouse -->
+    <div id="lookup_div_warehouse" class="easyui-dialog" title="List Warehouse" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_warehouse" class="grid_toolbar">
+            <a id="lookup_btn_add_warehouse" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_warehouse" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_warehouse" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_warehouse" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up Warehouse -->
+
+<!-- Look Up item -->
+    <div id="lookup_div_item" class="easyui-dialog" title="List Item" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_item" class="grid_toolbar">
+            <a id="lookup_btn_add_item" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_item" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_item" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_item" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up item -->
+
+  </div>
+

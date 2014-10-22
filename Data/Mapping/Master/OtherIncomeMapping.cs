@@ -12,11 +12,7 @@ namespace Data.Mapping
         public OtherIncomeMapping()
         {
             HasKey(oi => oi.Id);
-            HasRequired(oi => oi.Employee)
-                .WithMany()
-                .HasForeignKey(oi => oi.EmployeeId)
-                .WillCascadeOnDelete(false);
-            HasRequired(oi => oi.SalaryItem)
+            HasOptional(oi => oi.SalaryItem)
                 .WithMany()
                 .HasForeignKey(oi => oi.SalaryItemId)
                 .WillCascadeOnDelete(false);

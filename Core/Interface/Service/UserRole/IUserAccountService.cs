@@ -14,9 +14,11 @@ namespace Core.Interface.Service
         IList<UserAccount> GetAll();
         UserAccount GetObjectById(int Id);
         UserAccount GetObjectByUsername(string username);
+        UserAccount CreateObject(string username, string password, string name, string description, bool IsAdmin);
         UserAccount CreateObject(UserAccount userAccount);
         UserAccount UpdateObject(UserAccount userAccount);
         UserAccount SoftDeleteObject(UserAccount userAccount, int LoggedId);
         bool DeleteObject(int Id);
+        UserAccount IsLoginValid(string username, string password);
     }
 }

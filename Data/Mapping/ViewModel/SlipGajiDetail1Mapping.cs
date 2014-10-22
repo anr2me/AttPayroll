@@ -13,7 +13,7 @@ namespace Data.Mapping
         {
             HasKey(s => s.Id);
             HasRequired(s => s.SlipGajiDetail)
-                .WithMany()
+                .WithMany(s => s.SlipGajiDetail1s)
                 .HasForeignKey(s => s.SlipGajiDetailId)
                 .WillCascadeOnDelete(true);
             Ignore(s => s.Errors);

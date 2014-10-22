@@ -10,15 +10,16 @@ namespace Core.DomainModel
     {
         public int Id { get; set; }
 
-        public string Code { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string City { get; set; }
         public string PostalCode { get; set; }
         public string PhoneNumber { get; set; }
         public string FaxNumber { get; set; }
-        public string Website { get; set; }
         public string Email { get; set; }
+        public string Website { get; set; }
         public string NPWP { get; set; }
+        public Nullable<DateTime> NPWPDate { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -27,6 +28,6 @@ namespace Core.DomainModel
 
         public Dictionary<string, string> Errors { get; set; }
 
-        public virtual ICollection<Department> Departments { get; set; }
+        //public virtual ICollection<BranchOffice> BranchOffices { get; set; }
     }
 }

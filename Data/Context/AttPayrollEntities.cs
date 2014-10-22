@@ -29,13 +29,14 @@ namespace Data.Context
 
             IList<String> utilityNames = new List<String>() 
                                         { "SPKL", "EmployeeLeave", "GeneralLeave", "EmployeeLoanDetail", "EmployeeLoan", 
-                                          "PensionCompensation", "EmployeeAttendanceDetail", "EmployeeAttendance"};
+                                          "PensionCompensation", /*"EmployeeAttendanceDetail",*/ "EmployeeAttendance"};
 
             IList<String> masterNames = new List<String>() 
                                         { "SalarySlipDetail", "SalarySlip", "SalaryEmployeeDetail", "SalaryEmployee",
-                                          "SalaryStandardDetail", "SalaryStandard", "OtherExpense", "OtherIncome", "Formula",
-                                          "SalaryItem", "PTKP", "PPH21SPT", "WorkingStatus", "LastEducation", "LastEmployment",
-                                          "TitleInfo", "Employee", "Division", "Department", "CompanyInfo"};
+                                          "SalaryStandardDetail", "SalaryStandard", "OtherExpenseDetail", "OtherExpense", "OtherIncomeDetail", "OtherIncome", "Formula",
+                                          "SalaryItem", "PTKP", "PPH21SPT", /*"WorkingStatus",*/ "EmployeeEducation", "LastEmployment",
+                                          "EmployeeWorkingTime", "WorkingDay", "WorkingTime", "Employee", "TitleInfo",
+                                          "Division", "Department", "BranchOffice", "CompanyInfo" };
 
             IList<String> userRoleNames = new List<String>()
                                         { "UserAccount" };
@@ -59,15 +60,18 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new FormulaMapping());
             modelBuilder.Configurations.Add(new SalaryItemMapping());
             modelBuilder.Configurations.Add(new LastEmploymentMapping());
-            modelBuilder.Configurations.Add(new LastEducationMapping());
+            modelBuilder.Configurations.Add(new EmployeeEducationMapping());
             modelBuilder.Configurations.Add(new TitleInfoMapping());
             modelBuilder.Configurations.Add(new DivisionMapping());
             modelBuilder.Configurations.Add(new DepartmentMapping());
+            modelBuilder.Configurations.Add(new BranchOfficeMapping());
             modelBuilder.Configurations.Add(new CompanyInfoMapping());
             modelBuilder.Configurations.Add(new EmployeeMapping());
             modelBuilder.Configurations.Add(new UserAccountMapping());
             modelBuilder.Configurations.Add(new OtherExpenseMapping());
+            modelBuilder.Configurations.Add(new OtherExpenseDetailMapping());
             modelBuilder.Configurations.Add(new OtherIncomeMapping());
+            modelBuilder.Configurations.Add(new OtherIncomeDetailMapping());
             modelBuilder.Configurations.Add(new SPKLMapping());
             modelBuilder.Configurations.Add(new WorkingTimeMapping());
             modelBuilder.Configurations.Add(new WorkingDayMapping());
@@ -75,7 +79,7 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new EmployeeLoanMapping());
             modelBuilder.Configurations.Add(new EmployeeLoanDetailMapping());
             modelBuilder.Configurations.Add(new EmployeeAttendanceMapping());
-            modelBuilder.Configurations.Add(new EmployeeAttendanceDetailMapping());
+            //modelBuilder.Configurations.Add(new EmployeeAttendanceDetailMapping());
             modelBuilder.Configurations.Add(new EmployeeLeaveMapping());
             modelBuilder.Configurations.Add(new GeneralLeaveMapping());
             modelBuilder.Configurations.Add(new PensionCompensationMapping());
@@ -102,28 +106,31 @@ namespace Data.Context
         public DbSet<SalaryEmployee> SalaryEmployees { get; set; }
         public DbSet<SalaryStandardDetail> SalaryStandardDetails { get; set; }
         public DbSet<SalaryStandard> SalaryStandards { get; set; }
+        public DbSet<OtherExpenseDetail> OtherExpenseDetails { get; set; }
         public DbSet<OtherExpense> OtherExpenses { get; set; }
+        public DbSet<OtherIncomeDetail> OtherIncomeDetails { get; set; }
         public DbSet<OtherIncome> OtherIncomes { get; set; }
         public DbSet<SalaryItem> SalaryItems { get; set; }
         public DbSet<Formula> Formulas { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<LastEmployment> LastEmployments { get; set; }
-        public DbSet<LastEducation> LastEducations { get; set; }
+        public DbSet<EmployeeEducation> EmployeeEducations { get; set; }
         public DbSet<TitleInfo> TitleInfos { get; set; }
         public DbSet<Division> Divisions { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<BranchOffice> BranchOffices { get; set; }
         public DbSet<CompanyInfo> CompanyInfos { get; set; }
         public DbSet<PTKP> PTKPs { get; set; }
         public DbSet<PPH21SPT> PPH21SPTs { get; set; }
         public DbSet<SPKL> SPKLs { get; set; }
-        public DbSet<EmployeeLoan> WorkingTimes { get; set; }
-        public DbSet<EmployeeLoan> WorkingDays { get; set; }
-        public DbSet<EmployeeLoan> EmployeeWorkingTimes { get; set; }
+        public DbSet<WorkingTime> WorkingTimes { get; set; }
+        public DbSet<WorkingDay> WorkingDays { get; set; }
+        public DbSet<EmployeeWorkingTime> EmployeeWorkingTimes { get; set; }
         public DbSet<EmployeeLoanDetail> EmployeeLoanDetails { get; set; }
         public DbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public DbSet<GeneralLeave> GeneralLeaves { get; set; }
-        public DbSet<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
+        //public DbSet<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
         public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public DbSet<PensionCompensation> PensionCompensations { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }

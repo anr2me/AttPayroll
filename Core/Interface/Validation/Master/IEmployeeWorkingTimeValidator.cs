@@ -10,9 +10,9 @@ namespace Core.Interface.Validation
     public interface IEmployeeWorkingTimeValidator
     {
 
-        bool ValidCreateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService);
-        bool ValidUpdateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService);
-        bool ValidDeleteObject(EmployeeWorkingTime employeeWorkingTime);
+        bool ValidCreateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService, IEmployeeService _employeeService);
+        bool ValidUpdateObject(EmployeeWorkingTime employeeWorkingTime, IWorkingTimeService _workingTimeService, IEmployeeService _employeeService);
+        bool ValidDeleteObject(EmployeeWorkingTime employeeWorkingTime, IEmployeeService _employeeService);
         bool isValid(EmployeeWorkingTime employeeWorkingTime);
         string PrintError(EmployeeWorkingTime employeeWorkingTime);
     }

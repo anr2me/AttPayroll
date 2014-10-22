@@ -1,0 +1,451 @@
+﻿@{
+    bool underMaintenance = false;
+    string strUnderMaintenance = System.Configuration.ConfigurationManager.AppSettings["UnderMaintenance"];
+    if (!String.IsNullOrEmpty(strUnderMaintenance))
+    {
+        if (!bool.TryParse(strUnderMaintenance, out underMaintenance))
+        {
+            underMaintenance = false;
+        }
+    }
+
+    if (!WebView.AuthenticationModel.IsAuthenticated())
+    {
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title </title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/themes/base/css")
+
+        <script type="text/javascript">
+            var base_url = '@Url.Content("~//")';
+            window.top.location = base_url;
+        </script>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/modernizr")
+        @RenderSection("scripts", required: false)
+        @RenderSection("head", required: false)
+    </head>
+    <body>
+        <span>This site is under maintenance</span>
+    </body>
+    </html>
+        
+    }
+
+       if (underMaintenance)
+    {           // **************************************** Under Maintenance page
+        
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@*@ViewBag.Title -  @infoss.Models.AccountModels.GetCompanyName()*@</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+
+        <script type="text/javascript">
+            window.top.location = '@Url.Action("Logout", "Account")';
+        </script>
+        @RenderBody()
+    </head>
+    <body>
+        <span>This site is under maintenance</span>
+    </body>
+    </html>
+    }           // **************************************** END Under Maintenance page
+    else
+    {       // NOT Under Maintenance
+
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>@ViewBag.Title</title>
+		<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery-ui-timepicker-addon.min.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.timeentry.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.datetimeentry.css")">
+		@Styles.Render("~/Content/css")
+		@Styles.Render("~/Content/themes/base/css")
+
+		<script type="text/javascript">
+			var base_url = '@Url.Content("~//")';
+		</script>
+
+		<script type="text/javascript" src="@Url.Content("~/scripts/jquery-1.8.0.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery.plugin.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery.mousewheel.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery.timeentry.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery.datetimeentry.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/jquery-ui-1.8.2.custom.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery-ui-sliderAccess.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/scripts/jquery-ui-timepicker-addon.js")"></script>
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/locale/i18n/jquery-ui-timepicker-addon-i18n.min.js")"></script>*@
+        <script type='text/javascript' src="@Url.Content("~/scripts/jquery.hoverIntent.minified.js")"></script>
+		<script type='text/javascript' src="@Url.Content("~/scripts/jquery.dcverticalmegamenu.1.1.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/jquery.blockUI.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/locale/i18n/grid.locale-en.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/jquery.jqGrid-4.4.5.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/jquery.easyui.min.js")"></script>
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/jquery.dynDateTime.min.js")"></script>*@
+		<script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+
+		@RenderSection("scripts", required: false)
+
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/easyui/default/easyui.css")">
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/easyui/icon.css")">
+
+		<link rel="stylesheet" type="text/css"  href="@Url.Content("~/Content/vertical_menu.css")" />
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/redmond/jquery-ui-1.8.2.custom.css")" media="screen"/>
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/ui.jqgrid.css")" media="screen"/>
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/easyui/default/easyui.css")">
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/easyui/icon.css")">
+		<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/infoss.css")">
+
+		@RenderSection("head", required: false)
+		<script type="text/javascript">
+			function ShowLoadingImage() {
+				//jQuery.blockUI({ message: jQuery('#loading-panel'), css: { border: 'none', backgroundColor: 'none' } });
+			}
+
+			function HideLoadingImage() {
+				//jQuery.unblockUI();
+			}
+
+			$(window).load(function () {
+				$(".page-loader").fadeOut("slow");
+			})
+
+			$(document).ajaxStart(function () {
+				jQuery.blockUI({ message: jQuery('#loading-panel'), css: { border: 'none', backgroundColor: 'none' }, baseZ: 2000 });
+				//timer = setTimeout(function () { body.addClass("loading"); }, 50)
+			});
+			$(document).ajaxStop(function () {
+				jQuery.unblockUI();
+			});
+
+			$(document).ready(function () {
+				$('#mega-1, .mega-menu').dcVerticalMegaMenu({
+					rowItems: '4',
+					speed: 'fast',
+					effect: 'slide',
+					direction: 'right'
+				});
+
+				Date.prototype.toString = function () { return [['Sunday,', 'Monday,', 'Tuesday,', 'Wednesday,', 'Thursday,', 'Friday,', 'Saturday,'][this.getDay()], this.getDate(), ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][this.getMonth()], this.getFullYear()].join(' ') }
+				var datetime = new Date();
+				$('#datetime_message').text(datetime);
+
+
+				if ($.browser.msie) {
+					$('#menusisi').stop().animate({ 'marginLeft': '-180px' }, 1000);
+					$('#menusisi > li.out').hover(function () {
+						$('ul', $(this)).stop().animate({ 'marginLeft': '-2px' }, 400);
+					}, function () {
+						$('ul', $(this)).stop().animate({ 'marginLeft': '-180px' }, 400);
+					}
+				);
+				} else {
+					$('#menusisi').stop().animate({ 'margin-Left': '-240px' }, 1000);
+					$('#menusisi > div.menuimage, #menusisi').mouseover(function () {
+						//alert('hover')
+						$('#menusisi').stop().animate({ 'margin-left': '-2px' }, 400);
+					});
+					$('#menusisi').mouseout(function () {
+						$('#menusisi').stop().animate({ 'margin-left': '-240px' }, 400);
+					});
+				}
+
+				// Export buttons display toggle
+				$(".btnExport").click(function () {
+					$(".exportpanel").slideToggle('slow');
+
+					// Set Active Class
+					if ($(this).hasClass('btnExportActive'))
+						$(this).removeClass('btnExportActive');
+					else
+						$(this).addClass('btnExportActive');
+
+				});
+
+				/*-------- Change Password -------- */
+				$('#frm_change_pass_div').dialog('close');
+				$("#frm_change_pass_btn_save").click(function () {
+					var v_old_password = $($.trim('#txtoldpass')).val(),
+						v_new_password = $($.trim('#txtnewpass')).val(),
+						v_confirm_password = $($.trim('#txtconfirmpass')).val();
+
+					$.ajax({
+						url: base_url + "User/UpdatePassword",
+						type: "POST",
+						contentType: "application/json",
+						data: JSON.stringify({
+							OldPassword: v_old_password, NewPassword: v_new_password, ConfirmPassword: v_confirm_password
+						}),
+						success: function (result) {
+						    if (JSON.stringify(result.Errors) != '{}') {
+						        for (var key in result.Errors) {
+						            if (key != null && key != undefined && key != 'Generic') {
+						                $('input[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+						                $('textarea[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+						            }
+						            else {
+						                $.messager.alert('Warning', result.Errors[key], 'warning');
+						            }
+						        }
+						    } else {
+						     
+						        $.messager.alert('Success', "Password berhasil diubah", 'info');
+						        clearForm();
+						        $('#frm_change_pass_div').dialog('close');
+						    }
+						}
+					});
+				});
+
+				$('#frm_change_pass_btn_cancel').click(function () {
+					$('#frm_change_pass_div').dialog('close');
+				});
+
+				function clearForm(form) {
+					$('#txtoldpass').val("");
+					$('#txtnewpass').val("");
+					$('#txtconfirmpass').val("");
+				}
+
+				$('#menu_change_pass').click(function () {
+					$('#txtoldpass').focus();
+					$('#frm_change_pass_div').dialog('open');
+				});
+				/*-------- End Change Password -------- */
+
+				$(".btnPrintSA").click(function () {
+					$(".printsapanel").slideToggle('slow');
+
+				});
+
+				$(window).bind('resize', function () {
+					$(".list_master").setGridWidth($(window).width() - 20).setGridHeight($(window).height() - 200);
+				}).trigger('resize');
+
+				$(window).bind('resize', function () {
+					$(".list_master_verify").setGridWidth($(window).width() - 80).setGridHeight($(window).height() - 250);
+				}).trigger('resize');
+			});
+		</script>
+	</head>
+	<body class="easyui-layout">
+		<div class="page-loader"></div>
+		<div id="loading-panel" style="display: none">
+			<div id="loading-overlay">
+			</div>
+			<div id="loading">
+				<span>Loading... </span>
+			</div>
+		</div>
+		<div data-options="region:'north',border:false,draggable:false" style="height: 35px; padding: 10px; background: #727272 !important;">
+
+			<div id="datetime_message">
+			</div>
+			<div id="header-message">| &nbsp; HR, ATTENDANCE & PAYROLL SYSTEM</div>
+
+		      @if (WebView.AuthenticationModel.IsAuthenticated())
+     {
+				<div id="user-greeting">
+					Welcome <strong>@WebView.AuthenticationModel.GetUserName()</strong> &nbsp;|&nbsp; <a href="@Url.Action("Logout", "Authentication")">Logout
+					</a>
+				</div>
+     }
+            
+		</div>
+		<div data-options="region:'south',border:false" style="height: 10px; background: #E7EBF2 !important;">
+			&nbsp;
+		</div>
+		<div data-options="region:'center',border:false" style="margin-right: 5px;">
+
+			<div id="menusisi">
+				<div id="menusisixx">
+					<div id="logo">
+					   @* <img src='@Url.Content(infoss.Models.AccountModels.GetCompanyLogoPath())' 
+							title='@infoss.Models.AccountModels.GetCompanyName()' width='200' height='105'>*@
+					</div>
+
+					<div id="panel-menu">
+						<div class="dcjq-container clear">
+							<div class="dcjq-vertical-mega-menu">
+								<ul id="mega-1" class="mega-menu">
+									<li><a href="/">Home</a></li>
+									<li><a href="#">Master</a>
+										<ul>
+											<li><a href="#">Company</a>
+												<ul>
+											   <li><a href="@Url.Action("Index", "BranchOffice")">Branch Office</a> </li>
+											   <li><a href="@Url.Action("Index", "Department")">Department</a> </li>
+                                               <li><a href="@Url.Action("Index", "Division")">Division</a> </li>
+												</ul>
+											</li>
+										    <li><a href="#">Employee</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "TitleInfo")">Title</a> </li>
+                                                    <li><a href="@Url.Action("Index", "Employee")">Personal Info</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Attendance</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "WorkingTime")">Working Time</a></li>
+                                                    <li><a href="@Url.Action("Index", "WorkingDay")">Working Day</a></li>
+										        </ul>
+											</li>
+                                            <li><a href="#">Salary</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "SalaryStandard")">Salary Standard</a></li>
+                                                    <li><a href="@Url.Action("Index", "SalarySlip")">Salary Slip</a></li>
+                                                    <li><a href="@Url.Action("Index", "PTKP")">PTKP</a></li>
+                                                    <li><a href="@Url.Action("Index", "PPH21SPT")">PPH21 SPT</a></li>
+                                                    <li><a href="@Url.Action("Index", "SalaryItem")">Salary Items</a></li>
+												</ul>
+											</li>
+										</ul>
+										
+									</li>
+									
+									<li><a href="#">Utility</a>
+										<ul>
+											 <li><a href="#">Attendance</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "GeneralLeave")">General Leave</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeLeave")">Employee Leave</a></li>
+                                                    <li><a href="@Url.Action("Index", "SPKL")">SPKL</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeWorkingTime")">Employee Working Time</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeAttendance")">Manual Attendance</a></li>
+												</ul>
+											 </li>
+											 <li><a href="#">Salary</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "SalaryEmployee")">Employee Salary</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeLoan")">Employee Loan</a></li>
+													<li><a href="@Url.Action("Index", "OtherIncome")">Other Income</a></li>
+                                                    <li><a href="@Url.Action("Index", "OtherExpense")">Other Expense</a></li>
+                                                    <li><a href="@Url.Action("Index", "PensionCompensation")">Pension Compensation</a></li>
+												</ul>
+											 </li>
+                                             <li><a href="#">Process</a>
+												<ul>
+													<li><a href="@Url.Action("Index", "SalaryProcess")">Process Salary</a></li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li><a href="#">Report</a>
+										<ul>
+											
+											<li><a href="#">Salary</a>
+												<ul>
+													<li><a href="@Url.Action("SlipGajiDetail", "Report")">Slip Gaji Detail</a> </li>
+                                                    <li><a href="@Url.Action("SlipGajiMini", "Report")">Slip Gaji Standard</a> </li>
+                                                    <li><a href="@Url.Action("SalarySummary", "Report")">Salary Summary</a> </li>
+                                                    <li><a href="@Url.Action("PPH21", "Report")">PPH21</a> </li>
+												</ul>
+											</li>
+                                            <li><a href="#">Employee</a>
+												<ul>
+													<li><a href="@Url.Action("EmployeeAttendance", "Report")">Employee Attendance</a> </li>
+                                                    <li><a href="@Url.Action("EmployeeInstallment", "Report")">Employee Installment</a> </li>
+												</ul>
+											</li>
+                                            @*<li><a href="#">Finance Report</a>
+                                                <ul>
+												    <li><a href="@Url.Action("Index", "ChartOfAccount")">Chart Of Account</a></li>
+													<li><a href="@Url.Action("Index", "GeneralLedger")">General Ledger</a></li>
+                                                    <li><a href="@Url.Action("Index", "Closing")">Closing</a></li>
+                                                    <li><a href="@Url.Action("Index", "ValidComb")">Valid Combination</a></li>
+													<li><a href="@Url.Action("IncomeStatement", "FinanceReport")">Income Statement</a></li>
+                                                    <li><a href="@Url.Action("BalanceSheet", "FinanceReport")">Balance Sheet</a></li>
+												</ul>
+											</li>*@
+										</ul>
+									</li>
+									<li id="menu-item-51"><a href="#">Setting</a>
+										<ul>
+                                            <li><a href="@Url.Action("Index", "CompanyInfo")">Company Info</a></li>
+                                            <li><a href="@Url.Action("Index", "User")">User</a></li>
+											<li><a href="@Url.Action("Index", "UserAccess")">User Access Right</a></li>
+											<li><a href="#" id="menu_change_pass">Change Password</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div style="clear: both"></div>
+					<div hidden id="sidebar-footer">
+						Copyright &copy; 2014
+						<br />
+						PT. Solusi Sentral Data
+					</div>
+				</div>
+				<div class="menuimage" style="text-align: center; width: 15px; height: 170px; border: solid 1px #4cff00; float: left; background: #b6ff00; margin-top: 150px; border-bottom-right-radius: 10px; border-top-right-radius: 10px;">
+					<br />
+					M<br />
+					A<br />
+					I<br />
+					N<br />
+					<br />
+					M<br />
+					E<br />
+					N<br />
+					U
+				</div>
+			</div>
+
+			<div style="margin: 10px;">
+				@RenderBody()
+			</div>
+		</div>
+
+		<div id="frm_change_pass_div" class="easyui-dialog" style="text-align: left; width: 360px;"
+			data-options="modal:true" title=".: CHANGE PASSWORD :.">
+
+			<div id="frm_change_pass_toolbar" style="border: 1px solid #ddd;" class="form_toolbar">
+				<a id="frm_change_pass_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">SAVE</a>
+				<a id="frm_change_pass_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+			</div>
+
+			<div style="height: 160px; overflow: auto">
+				<form id="frm_change_pass">
+					<fieldset class="ui-widget-content ui-corner-all input_form_div">
+						<table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+							<tr>
+								<td>
+									<label>Old Password</label></td>
+								<td>
+									<input id="txtoldpass" type="password" size="20" maxlength="20" align="left" /></td>
+							</tr>
+							<tr>
+								<td>
+									<label>New Password</label></td>
+								<td>
+									<input id="txtnewpass" type="password" size="20" maxlength="20" align="left" /></td>
+							</tr>
+							<tr>
+								<td>
+									<label>Confirm Password</label></td>
+								<td>
+									<input id="txtconfirmpass" type="password" size="20" maxlength="20" align="left" /></td>
+							</tr>
+						</table>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</body>
+	</html>
+}
+    }   // END NOT Under Maintenance

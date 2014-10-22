@@ -1,0 +1,170 @@
+﻿@model WebView.Controllers.EmployeeWorkingTimeController
+@{
+    ViewBag.Title = "Employee Working Time";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/employeeworkingtime.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<table width="100%">
+        <tr>
+            <td width="30%">
+                <div id="panel" class="easyui-panel">
+                    <div id="toolbar" class="form_toolbar">
+                        <div style="float: left">
+                            <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+                        </div>
+                    </div>
+                     <div id="table_div">
+                        <table id="list"></table>
+                        <div id="pager" class="scroll" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </td>
+            <td width ="70%" align="top">
+                <div id="detail_panel" class="easyui-panel">
+                    <div id="detail_toolbar" class="form_toolbar">
+                        <div style="float: left">
+                            <a id="detail_btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+                            <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add</a>
+                            <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+                            <a id="btn_delete" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+                        </div>
+                    </div>
+                    <div id="table_detail_div">
+                        <table id="list_detail"></table>
+                        <div id="pager_detail" class="scroll" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl" >
+                        <tr nowrap>
+                            <td width="80" nowrap style="width: 80px">
+                                <label>ID</label></td>
+                            <td>
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label>WorkingTime</label></td>
+                            <td >
+                               <input id="WorkingTimeId" name="WorkingTimeId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnWorkingTime" name="btnWorkingTime" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="WorkingTimeCode" name="WorkingTimeCode" type="text" size="10" maxlength="7" class="editable upper" disabled="disabled" />
+                               <input id="WorkingTimeName" name="WorkingTime" type="text" size="30" maxlength="7" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Employee</label></td>
+                            <td >
+                               <input id="EmployeeId" name="EmployeeId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnEmployee" name="btnEmployee" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="EmployeeNIK" name="EmployeeNIK" type="text" size="15" maxlength="15" class="editable upper" disabled="disabled" />
+                               <input id="EmployeeName" name="Employee" type="text" size="35" maxlength="35" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label for="IsShiftable">Shiftable </label></td>
+                            <td>
+                                <input type="checkbox" id="IsShiftable" name="IsShiftable" value="value"></td>
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label for="IsEnabled">Enabled </label></td>
+                            <td>
+                                <input type="checkbox" id="IsEnabled" name="IsEnabled" value="value"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Start Date</label></td>
+                             <td>
+                             <div id="StartDateDiv"><input id="StartDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="StartDateDiv2"><input id="StartDate2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>End Date</label></td>
+                             <td>
+                             <div id="EndDateDiv"><input id="EndDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                            </div>
+                             @*<div id="EndDateDiv2"><input id="EndDate2" type="text" size="10" disabled="disabled"/></div>*@
+                             </td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Look Up Employee -->
+    <div id="lookup_div_employee" class="easyui-dialog" title="List Employee" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_employee" class="grid_toolbar">
+            <a id="lookup_btn_add_employee" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_employee" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_employee" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_employee" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up Employee -->
+
+<!-- Look Up WorkingTime -->
+    <div id="lookup_div_workingtime" class="easyui-dialog" title="List Working Time" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_workingtime" class="grid_toolbar">
+            <a id="lookup_btn_add_workingtime" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_workingtime" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_workingtime" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_workingtime" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up WorkingTime -->
+
+  </div>
+

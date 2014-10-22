@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +49,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{94721595-1c93-45c5-bdd8-890b60ad9339}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{14f5dc8f-6aae-4971-b71f-b08f2b638c17}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service\Service.csproj">
+      <Project>{315dd18e-c3bf-4450-bb5c-2c3d0b72b10a}</Project>
+      <Name>Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestValidation\TestValidation.csproj">
+      <Project>{8d383b96-1364-4375-bdac-484dd52503b8}</Project>
+      <Name>TestValidation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Validation\Validation.csproj">
+      <Project>{83002d9a-a1cd-47ee-8272-8a9906de25dc}</Project>
+      <Name>Validation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

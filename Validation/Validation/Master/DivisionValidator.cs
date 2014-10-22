@@ -20,6 +20,19 @@ namespace Validation.Validation
             return division;
         }
 
+        public Division VHasUniqueCode(Division division, IDivisionService _divisionService)
+        {
+            if (String.IsNullOrEmpty(division.Code) || division.Code.Trim() == "")
+            {
+                division.Errors.Add("Code", "Tidak boleh kosong");
+            }
+            else if (_divisionService.IsCodeDuplicated(division))
+            {
+                division.Errors.Add("Code", "Tidak boleh ada duplikasi");
+            }
+            return division;
+        }
+
         public Division VHasUniqueName(Division division, IDivisionService _divisionService)
         {
             if (String.IsNullOrEmpty(division.Name) || division.Name.Trim() == "")
@@ -33,9 +46,21 @@ namespace Validation.Validation
             return division;
         }
 
+        public Division VDontHaveEmployees(Division division, IEmployeeService _employeeService)
+        {
+            IList<Employee> employees = _employeeService.GetObjectsByDivisionId(division.Id);
+            if (employees.Any())
+            {
+                division.Errors.Add("Generic", "Tidak boleh masih memiliki Employees");
+            }
+            return division;
+        }
+
         public bool ValidCreateObject(Division division, IDivisionService _divisionService, IDepartmentService _departmentService)
         {
             VHasDepartment(division, _departmentService);
+            if (!isValid(division)) { return false; }
+            VHasUniqueCode(division, _divisionService);
             if (!isValid(division)) { return false; }
             VHasUniqueName(division, _divisionService);
             return isValid(division);
@@ -48,9 +73,10 @@ namespace Validation.Validation
             return isValid(division);
         }
 
-        public bool ValidDeleteObject(Division division)
+        public bool ValidDeleteObject(Division division, IEmployeeService _employeeService)
         {
             division.Errors.Clear();
+            VDontHaveEmployees(division, _employeeService);
             return isValid(division);
         }
 
