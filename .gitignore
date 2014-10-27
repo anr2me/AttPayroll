@@ -1209,3 +1209,6 @@ packages/nspec.0.9.68/content/DebuggerShim.cs
 packages/nspec.0.9.68/nspec.0.9.68.nupkg
 packages/nspec.0.9.68/tools/NSpecRunner.exe.config
 packages/nspec.0.9.68/tools/nunit.framework.xml
+*/Release/*
+*/Debug/*
+TestValidation/obj/Release/build.force
