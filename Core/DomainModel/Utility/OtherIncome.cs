@@ -15,7 +15,7 @@ namespace Core.DomainModel
         public bool IsMainSalary { get; set; }
         public bool IsDetailSalary { get; set; }
         //public int SalarySign { get; set; } // 0 = expense, 1 = income
-        //public int SalaryStatus { get; set; } // evently, daily, weekly, monthly, yearly
+        public int SalaryStatus { get; set; } // evently, daily, weekly, monthly, yearly
         public Nullable<int> SalaryItemId { get; set; }
 
         public bool IsDeleted { get; set; }

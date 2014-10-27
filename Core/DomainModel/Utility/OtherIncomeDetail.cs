@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Core.DomainModel
 {
-    public partial class OtherExpenseDetail
+    public partial class OtherIncomeDetail
     {
         public int Id { get; set; }
-        public int OtherExpenseId { get; set; }
+        public int OtherIncomeId { get; set; }
         public int EmployeeId { get; set; }
         public decimal Amount { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int Recurring { get; set; } // repeat times
         public string Remark { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -23,6 +25,6 @@ namespace Core.DomainModel
         public Dictionary<string, string> Errors { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual OtherExpense OtherExpense { get; set; }
+        public virtual OtherIncome OtherIncome { get; set; }
     }
 }

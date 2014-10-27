@@ -52,7 +52,7 @@ namespace Service.Service
                     otherExpense.Errors.Add("Code", "SalaryItem dengan Code ini sudah ada");
                     return otherExpense;
                 }
-                salaryItem = _salaryItemService.CreateObject(otherExpense.Code, otherExpense.Name, (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemType.OtherExpense, (int)Constant.SalaryItemStatus.Monthly, otherExpense.IsMainSalary, otherExpense.IsDetailSalary, false);
+                salaryItem = _salaryItemService.CreateObject(otherExpense.Code, otherExpense.Name, (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemType.OtherExpense, otherExpense.SalaryStatus, otherExpense.IsMainSalary, otherExpense.IsDetailSalary, false);
                 if (salaryItem == null)
                 {
                     otherExpense.Errors = new Dictionary<string, string>();
@@ -72,13 +72,14 @@ namespace Service.Service
                 SalaryItem salaryItem = _salaryItemService.GetObjectById(otherExpense.SalaryItemId.GetValueOrDefault());
                 if (salaryItem == null)
                 {
-                    salaryItem = _salaryItemService.CreateObject(otherExpense.Code, otherExpense.Name, (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemType.SalarySlip, (int)Constant.SalaryItemStatus.Monthly, otherExpense.IsMainSalary, otherExpense.IsDetailSalary, false);
+                    salaryItem = _salaryItemService.CreateObject(otherExpense.Code, otherExpense.Name, (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemType.SalarySlip, otherExpense.SalaryStatus, otherExpense.IsMainSalary, otherExpense.IsDetailSalary, false);
                     otherExpense.SalaryItemId = salaryItem.Id;
                 }
                 else
                 {
                     salaryItem.Code = otherExpense.Code;
                     salaryItem.Name = otherExpense.Name;
+                    salaryItem.SalaryItemStatus = otherExpense.SalaryStatus;
                     _salaryItemService.UpdateObject(salaryItem);
                     if (salaryItem.Errors.Any())
                     {

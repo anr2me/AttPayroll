@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.DomainModel
 {
-    public partial class OtherExpense
+    public partial class THR
     {
         public int Id { get; set; }
         public string Code { get; set; }
@@ -17,6 +17,7 @@ namespace Core.DomainModel
         //public int SalarySign { get; set; } // 0 = expense, 1 = income
         //public int SalaryStatus { get; set; } // evently, daily, weekly, monthly, yearly
         public Nullable<int> SalaryItemId { get; set; }
+        public DateTime EffectiveDate { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -26,6 +27,6 @@ namespace Core.DomainModel
         public Dictionary<string, string> Errors { get; set; }
 
         public virtual SalaryItem SalaryItem { get; set; }
-        public virtual ICollection<OtherExpenseDetail> OtherExpenseDetails { get; set; }
+        public virtual ICollection<THRDetail> THRDetails { get; set; }
     }
 }

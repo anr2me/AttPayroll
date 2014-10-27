@@ -52,7 +52,7 @@ namespace Service.Service
                     otherIncome.Errors.Add("Code", "SalaryItem dengan Code ini sudah ada");
                     return otherIncome;
                 }
-                salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.OtherIncome, (int)Constant.SalaryItemStatus.Monthly, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
+                salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.OtherIncome, otherIncome.SalaryStatus, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
                 if (salaryItem == null)
                 {
                     otherIncome.Errors = new Dictionary<string, string>();
@@ -72,13 +72,14 @@ namespace Service.Service
                 SalaryItem salaryItem = _salaryItemService.GetObjectById(otherIncome.SalaryItemId.GetValueOrDefault());
                 if (salaryItem == null)
                 {
-                    salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.SalarySlip, (int)Constant.SalaryItemStatus.Monthly, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
+                    salaryItem = _salaryItemService.CreateObject(otherIncome.Code, otherIncome.Name, (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.SalarySlip, otherIncome.SalaryStatus, otherIncome.IsMainSalary, otherIncome.IsDetailSalary, false);
                     otherIncome.SalaryItemId = salaryItem.Id;
                 }
                 else
                 {
                     salaryItem.Code = otherIncome.Code;
                     salaryItem.Name = otherIncome.Name;
+                    salaryItem.SalaryItemStatus = otherIncome.SalaryStatus;
                     _salaryItemService.UpdateObject(salaryItem);
                     if (salaryItem.Errors.Any())
                     {
