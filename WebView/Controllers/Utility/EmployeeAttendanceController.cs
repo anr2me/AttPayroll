@@ -10,6 +10,7 @@ using Data.Repository;
 using Validation.Validation;
 using System.Linq.Dynamic;
 using System.Data.Entity;
+using System.Data.Objects;
 
 namespace WebView.Controllers
 {
@@ -56,7 +57,7 @@ namespace WebView.Controllers
             if (filter == "") filter = "true";
 
             // Get Data
-            var q = _employeeAttendanceService.GetQueryable().Include("Employee").Include("Division").Include("TitleInfo").Include("EmployeeWorkingTimes").Include("Department").Include("BranchOffice").Where(x => (ParentId == 0 || x.Employee.DivisionId == ParentId) && (findDate == null || x.AttendanceDate == findDate.Value));
+            var q = _employeeAttendanceService.GetQueryable().Include("Employee").Include("Division").Include("TitleInfo").Include("EmployeeWorkingTimes").Include("Department").Include("BranchOffice").Where(x => (ParentId == 0 || x.Employee.DivisionId == ParentId) && (findDate == null || EntityFunctions.TruncateTime(x.CheckIn) == findDate.Value));
 
             var query = (from model in q
                          select new
@@ -69,7 +70,7 @@ namespace WebView.Controllers
                              Division = model.Employee.Division.Name,
                              Department = model.Employee.Division.Department.Name,
                              BranchOffice = model.Employee.Division.Department.BranchOffice.Name,
-                             model.AttendanceDate,
+                             AttendanceDate = EntityFunctions.TruncateTime(model.CheckIn),
                              model.Shift,
                              model.Status,
                              model.CheckIn,
@@ -162,7 +163,7 @@ namespace WebView.Controllers
                 Division = model.Employee.Division.Name,
                 Department = model.Employee.Division.Department.Name,
                 BranchOffice = model.Employee.Division.Department.BranchOffice.Name,
-                model.AttendanceDate,
+                AttendanceDate = model.CheckIn.Date,
                 model.Shift,
                 model.Status,
                 model.CheckIn,
@@ -203,7 +204,7 @@ namespace WebView.Controllers
                 Division = model.Employee.Division.Name,
                 Department = model.Employee.Division.Department.Name,
                 BranchOffice = model.Employee.Division.Department.BranchOffice.Name,
-                model.AttendanceDate,
+                AttendanceDate = model.CheckIn.Date,
                 model.Shift,
                 model.Status,
                 model.CheckIn,

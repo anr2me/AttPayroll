@@ -523,7 +523,7 @@
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'nik', index: 'nik', width: 100 },
 				  { name: 'name', index: 'name', width: 180 },
-                  { name: 'title', index: 'title', width: 150 },
+                  { name: 'titleinfoname', index: 'titleinfoname', width: 150 },
         ],
         page: '1',
         pager: $('#lookup_pager_employee'),

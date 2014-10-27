@@ -45,8 +45,8 @@ namespace Service.Service
             return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
         }
 
-        public SalarySlip CreateObject(string Code, string Name, int SalarySign, int SalaryStatus, bool IsMainSalary, bool IsDetailSalary, 
-                                bool IsVisible, bool IsPTKP, bool IsPPH21, ISalaryItemService _salaryItemService)
+        public SalarySlip CreateObject(string Code, string Name, int SalarySign, int SalaryStatus, bool IsMainSalary, bool IsDetailSalary,
+                                bool IsEnabled, bool IsPTKP, bool IsPPH21, ISalaryItemService _salaryItemService)
         {
             SalarySlip salarySlip = new SalarySlip
             {
@@ -55,7 +55,7 @@ namespace Service.Service
                 SalarySign = SalarySign,
                 IsMainSalary = IsMainSalary,
                 IsDetailSalary = IsDetailSalary,
-                IsVisible = IsVisible,
+                IsEnabled = IsEnabled,
                 IsPTKP = IsPTKP,
                 IsPPH21 = IsPPH21,
             };
@@ -80,6 +80,25 @@ namespace Service.Service
         public SalarySlip CreateObject(SalarySlip salarySlip, ISalaryItemService _salaryItemService)
         {
             salarySlip.Errors = new Dictionary<String, String>();
+            SalaryItem salaryItem = _salaryItemService.GetObjectById(salarySlip.SalaryItemId.GetValueOrDefault());
+            if (salaryItem == null)
+            {
+                salaryItem = _salaryItemService.GetObjectByCode(salarySlip.Code);
+                if (salaryItem != null)
+                {
+                    salarySlip.Errors = new Dictionary<string, string>();
+                    salarySlip.Errors.Add("Code", "SalaryItem dengan Code ini sudah ada");
+                    return salarySlip;
+                }
+                salaryItem = _salaryItemService.CreateObject(salarySlip.Code, salarySlip.Name, salarySlip.SalarySign, (int)Constant.SalaryItemType.SalarySlip, (int)Constant.SalaryItemStatus.Monthly, salarySlip.IsMainSalary, salarySlip.IsDetailSalary, false);
+                if (salaryItem == null)
+                {
+                    salarySlip.Errors = new Dictionary<string, string>();
+                    salarySlip.Errors.Add("Code", "Tidak dapat membuat SalaryItem dengan Code ini");
+                    return salarySlip;
+                }
+                salarySlip.SalaryItemId = salaryItem.Id;
+            }
             if(_validator.ValidCreateObject(salarySlip, this, _salaryItemService)) 
             {
                 salarySlip.Index = GetQueryable().Count() + 1;

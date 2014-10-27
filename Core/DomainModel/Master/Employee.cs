@@ -36,7 +36,7 @@ namespace Core.DomainModel
         public string BankAccount { get; set; }
         public string BankAccountName { get; set; }
         public int WorkingStatus { get; set; } // Magang/Kontrak/MasaPercobaan/PegawaiTetap
-        public Nullable<DateTime> StartWorkingDate { get; set; }
+        public DateTime StartWorkingDate { get; set; }
         public Nullable<DateTime> AppointmentDate { get; set; } // Mulai jadi pegawai tetap
         public Nullable<int> EmployeeEducationId { get; set; }
         public Nullable<int> LastEmploymentId { get; set; }

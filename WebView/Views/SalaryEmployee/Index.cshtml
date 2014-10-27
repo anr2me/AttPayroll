@@ -87,11 +87,22 @@
                         </tr>
                     </table>
                     <div id="tabledetail_div">
+                        <div id="effectivedatehistory" style="background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+                            <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Effective Date : </label>
+                            <select id="datehistory" >
+                                @*<option value="0">-- Select Date --</option>*@
+                                @foreach (var item in Model._salaryEmployeeService.GetAll().OrderByDescending(x => x.EffectiveDate))
+                                {
+                                    <option value="@item.Id">@item.EffectiveDate.ToString("MM/dd/yyyy")</option>
+                                }
+                            </select>
+                        </div>
                         <div id="toolbardetail" class="grid_toolbar">
                             @*<a id="btn_add_new_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>*@
                             <a id="btn_edit_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
                             @*<a id="btn_del_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>*@
                         </div>
+                        
                             <table id="listdetail" class="scroll" cellpadding="0" cellspacing="0"></table>
                         <div id="pagerdetail" class="scroll" style="text-align: center;"></div>
                     </div>

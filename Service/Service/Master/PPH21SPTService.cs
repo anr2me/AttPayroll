@@ -112,14 +112,16 @@ namespace Service.Service
             int i = 0;
             foreach (var pph21spt in pph21spts)
             {
-                TaxableIncome = Math.Max(0, TaxableIncome);
-                pphlist[i] = (TaxableIncome * pph21spt.Percent)/100;
+                income = Math.Max(0, income);
+                decimal range = pph21spt.MaxAmount - pph21spt.MinAmount;
+                if (income < range || range <= 0) range = income;
+                pphlist.Add((range * pph21spt.Percent) / 100); // pphlist[i] = (TaxableIncome * pph21spt.Percent) / 100;
                 if (!HasNPWP)
                 {
                     pphlist[i] = (pphlist[i] * 120) / 100;
                 }
                 pph21 += pphlist[i++];
-                TaxableIncome -= Math.Abs(pph21spt.MaxAmount - pph21spt.MinAmount);
+                income -= range;
             };
             return pph21;
         }

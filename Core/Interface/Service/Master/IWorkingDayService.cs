@@ -20,5 +20,7 @@ namespace Core.Interface.Service
         WorkingDay UpdateObject(WorkingDay workingDay, IWorkingTimeService _workingTimeService);
         WorkingDay SoftDeleteObject(WorkingDay workingDay);
         bool DeleteObject(int Id);
+        int CountEnabledDays(WorkingDay workingDay);
+        bool IsShortestWorkingDay(WorkingDay workingDay);
     }
 }

@@ -34,6 +34,8 @@ namespace Core.DomainModel
 
         public virtual ICollection<SlipGajiDetail1> SlipGajiDetail1s { get; set; }
         public virtual ICollection<SlipGajiDetail2A> SlipGajiDetail2As { get; set; }
+
+        public virtual Employee Employee { get; set; }
         public Dictionary<string, string> Errors { get; set; }
     }
 

@@ -78,6 +78,17 @@
                               <textarea name="Description" id="Description" cols="60" rows="3"></textarea>
                             </label></td>
                         </tr>
+                        <tr>
+                            <td>
+                                <label>Salary Status </label></td>
+                            <td>
+                                <select id="SalaryStatus" name="SalaryStatus">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.SalaryItemStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.SalaryItemStatus), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
                     </table>
                     <div id="tabledetail_div">
                         <div id="toolbardetail" class="grid_toolbar">
@@ -148,20 +159,29 @@
                              </td>
                         </tr>
                         <tr>
+                            <td>
+                                Recurring
+                            </td>
+                            <td>
+                                <input id="Recurring" name="Recurring" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Amount
+                            </td>
+                            <td>
+                                <input id="Amount" name="Amount" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
                             <td valign="top">
                                 <label>Remark</label></td>
                             <td colspan="3"><label>
                               <textarea name="Remark" id="Remark" cols="60" rows="3"></textarea>
                             </label></td>
                         </tr>
-                  <tr>
-                        <td>
-                            Amount
-                        </td>
-                        <td>
-                            <input id="Amount" name="Amount" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
-                        </td>
-                  </tr>
+                  
               </table>
         </div>
     </div>

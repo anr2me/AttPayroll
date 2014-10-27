@@ -7,14 +7,17 @@
         // Clear Search string jqGrid
         //$('input[id*="gs_"]').val("");
 
-        var id = $('#parenttype option:selected').text();
+        var text = $('#parenttype option:selected').text();
         var value = $('#parenttype').val();
 
         $("#list").setGridParam({ url: base_url + 'SalaryEmployee/GetList', postData: { filters: null, ParentId: value }, page: 'first' }).trigger("reloadGrid");
     }
 
     function ReloadGridDetail() {
-        $("#listdetail").setGridParam({ url: base_url + 'SalaryEmployee/GetListDetail?Id=' + $("#id").val(), postData: { filters: null } }).trigger("reloadGrid");
+        var text = $('#datehistory option:selected').text();
+        var value = $('#datehistory').val();
+
+        $("#listdetail").setGridParam({ url: base_url + 'SalaryEmployee/GetListDetail?Id=' + value /*$("#id").val()*/, postData: { filters: null } }).trigger("reloadGrid");
     }
 
     function ClearErrorMessage() {
@@ -29,6 +32,22 @@
 
     $("#parenttype").live("change", function () {
         ReloadGrid();
+    });
+
+    $("#datehistory").live("change", function () {
+        var text = $('#datehistory option:selected').text();
+        var value = $('#datehistory').val();
+
+        ReloadGridDetail();
+        var curDate = new Date( $('#EffectiveDate').datebox('getValue'));
+        var selDate = new Date(text);
+        var isactive = (selDate >= curDate);
+
+        if (isactive) {
+            $('#btn_edit_detail').removeAttr('disabled');
+        } else {
+            $('#btn_edit_detail').attr('disabled', true);
+        }
     });
 
     $("#form_div").dialog('close');
@@ -516,7 +535,7 @@
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'nik', index: 'nik', width: 100 },
 				  { name: 'name', index: 'name', width: 180 },
-                  { name: 'title', index: 'title', width: 150 },
+                  { name: 'titleinfoname', index: 'titleinfoname', width: 150 },
         ],
         page: '1',
         pager: $('#lookup_pager_employee'),

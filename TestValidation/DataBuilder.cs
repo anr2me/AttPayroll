@@ -43,7 +43,11 @@ namespace TestValidation
         public IPTKPService _ptkpService;
         public IPPH21SPTService _pph21sptService;
         public IOtherExpenseService _otherExpenseService;
+        public IOtherExpenseDetailService _otherExpenseDetailService;
         public IOtherIncomeService _otherIncomeService;
+        public IOtherIncomeDetailService _otherIncomeDetailService;
+        public ITHRService _thrService;
+        public ITHRDetailService _thrDetailService;
         public ISlipGajiMiniService _slipGajiMiniService;
         public ISlipGajiDetailService _slipGajiDetailService;
         public ISlipGajiDetail1Service _slipGajiDetail1Service;
@@ -71,7 +75,11 @@ namespace TestValidation
         public SalaryEmployee se1, se2;
         public SalaryEmployeeDetail sed1, sed2;
         public OtherIncome incomelain;
+        public OtherIncomeDetail incomelaindet;
         public OtherExpense expenselain;
+        public OtherExpenseDetail expenselaindet;
+        public THR thr;
+        public THRDetail thrdet;
         public PTKP ptkp;
         public PPH21SPT pph21spt;
         public SalaryItem salaryitem;
@@ -107,7 +115,11 @@ namespace TestValidation
             _ptkpService = new PTKPService(new PTKPRepository(), new PTKPValidator());
             _pph21sptService = new PPH21SPTService(new PPH21SPTRepository(), new PPH21SPTValidator());
             _otherExpenseService = new OtherExpenseService(new OtherExpenseRepository(), new OtherExpenseValidator());
+            _otherExpenseDetailService = new OtherExpenseDetailService(new OtherExpenseDetailRepository(), new OtherExpenseDetailValidator());
             _otherIncomeService = new OtherIncomeService(new OtherIncomeRepository(), new OtherIncomeValidator());
+            _otherIncomeDetailService = new OtherIncomeDetailService(new OtherIncomeDetailRepository(), new OtherIncomeDetailValidator());
+            _thrService = new THRService(new THRRepository(), new THRValidator());
+            _thrDetailService = new THRDetailService(new THRDetailRepository(), new THRDetailValidator());
             _slipGajiMiniService = new SlipGajiMiniService(new SlipGajiMiniRepository(), new SlipGajiMiniValidator());
             _slipGajiDetailService = new SlipGajiDetailService(new SlipGajiDetailRepository(), new SlipGajiDetailValidator());
             _slipGajiDetail1Service = new SlipGajiDetail1Service(new SlipGajiDetail1Repository(), new SlipGajiDetail1Validator());
@@ -125,7 +137,11 @@ namespace TestValidation
                 _ptkpService = _ptkpService,
                 _pph21sptService = _pph21sptService,
                 _otherExpenseService = _otherExpenseService,
+                _otherExpenseDetailService = _otherExpenseDetailService,
                 _otherIncomeService = _otherIncomeService,
+                _otherIncomeDetailService = _otherIncomeDetailService,
+                _thrService = _thrService,
+                _thrDetailService = _thrDetailService,
                 _workingDayService = _workingDayService,
                 _workingTimeService = _workingTimeService,
                 _salaryEmployeeDetailService = _salaryEmployeeDetailService,
@@ -155,7 +171,8 @@ namespace TestValidation
 
         public void PopulateCompanyData()
         {
-            comp1 = _companyInfoService.CreateObject("SRU", "PT. SINAR RODA UTAMA", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "admin@gmail.com", "12345678", DateTime.Now);
+            //comp1 = _companyInfoService.CreateObject("PT. SINAR RODA UTAMA", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "admin@gmail.com", "www.sru.com", "01-345-789-1-345-789", DateTime.Now);
+            comp1 = _companyInfoService.CreateObject("PT. KTC COAL MINING & ENERGY", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "admin@gmail.com", "www.ktc.com", "01-345-789-1-345-789", DateTime.Now);
             branch1 = _branchOfficeService.CreateObject("HQ", "HEADQUARTER", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "hq@gmail.com");
             dept1 = _departmentService.CreateObject(branch1.Id, "HRD", "HRD", "Human Resource Development", _branchOfficeService);
             dept2 = _departmentService.CreateObject(branch1.Id, "IT", "IT", "Information Technology", _branchOfficeService);
@@ -172,13 +189,13 @@ namespace TestValidation
                 Code = "N",
                 Name = "Normal",
                 MinCheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(05, 00, 00),
-                CheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(07, 00, 00),
+                CheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(09, 00, 00),
                 MaxCheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(10, 00, 00),
                 MinCheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(14, 00, 00),
-                CheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(18, 00, 00),
+                CheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(17, 00, 00),
                 MaxCheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(04, 59, 00),
-                BreakOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(12, 00, 00),
-                BreakIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(13, 00, 00),
+                BreakOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(11, 30, 00),
+                BreakIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(12, 30, 00),
             };
             _workingTimeService.CreateObject(wt1, _workingDayService);
 
@@ -190,10 +207,10 @@ namespace TestValidation
                 CheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(19, 00, 00),
                 MaxCheckIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(22, 00, 00),
                 MinCheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(02, 00, 00),
-                CheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(06, 00, 00),
+                CheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(03, 00, 00),
                 MaxCheckOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(16, 59, 00),
-                BreakOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(23, 00, 00),
-                BreakIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(01, 00, 00),
+                BreakOut = (DateTime)SqlDateTime.MinValue + new TimeSpan(22, 30, 00),
+                BreakIn = (DateTime)SqlDateTime.MinValue + new TimeSpan(23, 30, 00),
             };
             _workingTimeService.CreateObject(wt2, _workingDayService);
         }
@@ -239,25 +256,36 @@ namespace TestValidation
             _salaryItemService.FindOrCreateObject("TOT20", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.TOT20), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.Salary, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
             _salaryItemService.FindOrCreateObject("TOT30", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.TOT30), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.Salary, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
             _salaryItemService.FindOrCreateObject("TOT40", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.TOT40), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.Salary, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
-
-            _salaryItemService.FindOrCreateObject("THR", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.THR), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.THR, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            
             _salaryItemService.FindOrCreateObject("PTKP", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PTKP), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.Salary/*PTKP*/, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            
+            _salaryItemService.FindOrCreateObject("THR", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.THR), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.THR, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            _salaryItemService.FindOrCreateObject("TOTTJ", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.TOTTJ), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.OtherIncome, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            _salaryItemService.FindOrCreateObject("TOTPT", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.TOTPT), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemType.OtherExpense, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
 
             _salaryItemService.FindOrCreateObject("PPH05D", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH05D), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
             _salaryItemService.FindOrCreateObject("PPH15D", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH15D), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
             _salaryItemService.FindOrCreateObject("PPH25D", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH25D), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
             _salaryItemService.FindOrCreateObject("PPH30D", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH30D), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
 
+            _salaryItemService.FindOrCreateObject("PPH05P", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH05P), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            _salaryItemService.FindOrCreateObject("PPH15P", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH15P), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            _salaryItemService.FindOrCreateObject("PPH25P", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH25P), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+            _salaryItemService.FindOrCreateObject("PPH30P", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.PPH30P), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemType.PPH21, (int)Constant.SalaryItemStatus.Monthly, true, true, true);
+
         }
 
         public void PopulateSlipData()
         {
             // Custom Salary Slip/Items (details may have formula)
+            slip = _salarySlipService.CreateObject("TOT10", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOT10), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TOT15", "*", "", 1.5m, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TOT20", "*", "", 2, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TOT30", "*", "", 3, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TOT40", "*", "", 4, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+
             slip = _salarySlipService.CreateObject("TOVTM", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOVTM), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "OVTRT", "*", "TOT15", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "OVTRT", "*", "TOT20", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "OVTRT", "*", "TOT30", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "OVTRT", "*", "TOT40", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "OVTRT", "*", "TOT10", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TTJLP", Constant.GetEnumDesc(Constant.UserMonthlyItem.TTJLP), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TJLAP", "*", "PRESN", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
@@ -271,16 +299,18 @@ namespace TestValidation
             slip = _salarySlipService.CreateObject("TTJTR", Constant.GetEnumDesc(Constant.UserMonthlyItem.TTJTR), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TJTRN", "*", "PRESN", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("TOTTJ", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOTTJ), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            //slip = _salarySlipService.CreateObject("TOTTJ", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOTTJ), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("KBLLU", Constant.GetEnumDesc(Constant.UserMonthlyItem.KBLLU), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
 
-            //slip = _salarySlipService.CreateObject("THR", Constant.GetEnumDesc(Constant.LegacyMonthlyItem.THR), (int)Constant.SalaryItemType.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            //slip = _salarySlipService.CreateObject("THR", Constant.GetEnumDesc(Constant.UserMonthlyItem.THR), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Yearly, true, true, true, false, false, _salaryItemService);
+            //_salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJPOK", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            //_salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TOTTJ", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("PTABS", Constant.GetEnumDesc(Constant.UserMonthlyItem.PTABS), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("PTABS", Constant.GetEnumDesc(Constant.UserMonthlyItem.PTABS), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "LTTRT", "*", "ALPHA", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("TOTPT", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOTPT), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            //slip = _salarySlipService.CreateObject("TOTPT", Constant.GetEnumDesc(Constant.UserMonthlyItem.TOTPT), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("GJKOT", Constant.GetEnumDesc(Constant.UserMonthlyItem.GJKOT), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJPOK", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
@@ -294,32 +324,32 @@ namespace TestValidation
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PTABS", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TOTPT", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("PTPJM", Constant.GetEnumDesc(Constant.UserMonthlyItem.PTPJM), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("PTPJM", Constant.GetEnumDesc(Constant.UserMonthlyItem.PTPJM), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("JMSTK", Constant.GetEnumDesc(Constant.UserMonthlyItem.JMSTK), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("JMSTK", Constant.GetEnumDesc(Constant.UserMonthlyItem.JMSTK), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJPOK", "*", "", 0.02m, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("PJ204", Constant.GetEnumDesc(Constant.UserMonthlyItem.PJ204), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJPOK", "*", "", 0.0204m, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJPOK", "*", "", 0.02040m, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKOT", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKOT), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJKOT", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "PJ204", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("PJTJJB", Constant.GetEnumDesc(Constant.UserMonthlyItem.PJTJJB), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("PJTJJB", Constant.GetEnumDesc(Constant.UserMonthlyItem.PJTJJB), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKOT", "*", "", 0.05m, false, 0, true, 500000, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("PPTKP", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPTKP), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("PPTKP", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPTKP), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PTKP", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("TPPJK", Constant.GetEnumDesc(Constant.UserMonthlyItem.TPPJK), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            slip = _salarySlipService.CreateObject("TPPJK", Constant.GetEnumDesc(Constant.UserMonthlyItem.TPPJK), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PJTJJB", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "JMSTK", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PPTKP", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPJ", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPJ), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKOT", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TPPJK", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TPPJK", "+", "", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPJ", "*", "", 12, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
@@ -328,37 +358,37 @@ namespace TestValidation
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT", "%", "PPH05D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("PPH05", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH05), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT05", "*", "", 0.05m, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT05", "*", "PPH05P", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT2", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT2), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT", "-", "PPH05D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT15", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT15), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT2", "%", "PPH15D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT2", "%", "PPH15D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("PPH15", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH15), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT15", "*", "", 0.15m, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT15", "*", "PPH15P", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT3", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT3), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT2", "-", "PPH15D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT2", "-", "PPH15D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT25", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT25), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT3", "%", "PPH25D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT3", "%", "PPH25D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("PPH25", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH25), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT25", "*", "", 0.25m, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT25", "*", "PPH25P", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("TDKPT4", Constant.GetEnumDesc(Constant.UserMonthlyItem.TDKPT4), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT3", "-", "PPH25D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT3", "-", "PPH25D", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("PPH30", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH30), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "TDKPT4", "*", "", 0.30m, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "TDKPT4", "*", "PPH30P", 0, true, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
-            slip = _salarySlipService.CreateObject("PPH21", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH21), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PPH05", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PPH15", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PPH25", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
-            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Expense, "PPH30", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            slip = _salarySlipService.CreateObject("PPH21", Constant.GetEnumDesc(Constant.UserMonthlyItem.PPH21), (int)Constant.SalarySign.Expense, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "PPH05", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "PPH15", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "PPH25", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
+            _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "PPH30", "/", "", 12, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
 
             slip = _salarySlipService.CreateObject("GJBSP", Constant.GetEnumDesc(Constant.UserMonthlyItem.GJBSP), (int)Constant.SalarySign.Income, (int)Constant.SalaryItemStatus.Monthly, true, true, true, false, false, _salaryItemService);
             _salarySlipDetailService.CreateObject(slip.Id, (int)Constant.SalarySign.Income, "GJKOT", "+", "", 0, false, 0, false, 0, _salarySlipService, _formulaService, _salaryItemService);
@@ -427,7 +457,7 @@ namespace TestValidation
                     //IsShiftable = false,
                     //IsEnabled = true,
                     StartDate = new DateTime(2012, 1, 1),
-                    EndDate = new DateTime(2012, 2, 29),
+                    EndDate = new DateTime(2012, 12, 31),
                 };
                 _employeeWorkingTimeService.CreateObject(ewt1, _workingTimeService, _employeeService);
                 //emp1.EmployeeWorkingTimeId = ewt1.Id;
@@ -442,7 +472,7 @@ namespace TestValidation
             Random rnd = new Random();
 
             DateTime startDate = new DateTime(2012, 1, 1);
-            DateTime endDate = new DateTime(2012, 2, 29);
+            DateTime endDate = new DateTime(2012, 12, 31);
 
             var wt = _workingTimeService.GetObjectByCode("N");
 
@@ -553,18 +583,18 @@ namespace TestValidation
         public void PopulateOtherData()
         {
             _ptkpService.CreateObject("TK", 24300000, "TIDAK KAWIN");
-            _ptkpService.CreateObject("KW0", 26325000, "KAWIN TANPA ANAK");
-            _ptkpService.CreateObject("KW1", 28350000, "KAWIN DENGAN 1 ANAK");
-            _ptkpService.CreateObject("KW2", 30375000, "KAWIN DENGAN 2 ANAK");
-            _ptkpService.CreateObject("KW3", 32400000, "KAWIN DENGAN 3 ANAK");
-            _ptkpService.CreateObject("TK1", 26325000, "TIDAK KAWIN DENGAN 1 ANAK");
-            _ptkpService.CreateObject("TK2", 28350000, "TIDAK KAWIN DENGAN 2 ANAK");
-            _ptkpService.CreateObject("TK3", 30375000, "TIDAK KAWIN DENGAN 3 ANAK");
+            _ptkpService.CreateObject("KW_00", 26325000, "KAWIN TANPA ANAK");
+            _ptkpService.CreateObject("KW_01", 28350000, "KAWIN DENGAN 1 ANAK");
+            _ptkpService.CreateObject("KW_02", 30375000, "KAWIN DENGAN 2 ANAK");
+            _ptkpService.CreateObject("KW_03", 32400000, "KAWIN DENGAN 3 ANAK");
+            _ptkpService.CreateObject("TK_01", 26325000, "TIDAK KAWIN DENGAN 1 ANAK");
+            _ptkpService.CreateObject("TK_02", 28350000, "TIDAK KAWIN DENGAN 2 ANAK");
+            _ptkpService.CreateObject("TK_03", 30375000, "TIDAK KAWIN DENGAN 3 ANAK");
 
-            _pph21sptService.CreateObject("PPH05D", 0, false, 50000000, 5, "");
-            _pph21sptService.CreateObject("PPH15D", 50000001, false, 250000000, 15, "");
-            _pph21sptService.CreateObject("PPH25D", 250000001, false, 500000000, 25, "");
-            _pph21sptService.CreateObject("PPH30D", 500000001, true, 0, 30, "");
+            _pph21sptService.CreateObject("PPH05", 0, false, 50000000, 5, "");
+            _pph21sptService.CreateObject("PPH15", 50000001, false, 250000000, 15, "");
+            _pph21sptService.CreateObject("PPH25", 250000001, false, 500000000, 25, "");
+            _pph21sptService.CreateObject("PPH30", 500000001, true, 0, 30, "");
         }
 
     }

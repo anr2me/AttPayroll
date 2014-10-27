@@ -30,6 +30,7 @@ namespace Core.DomainModel
         public decimal BreakInterval { get; set; } // waktu istirahat (minutes)
         public Nullable<int> WorkingTimeId { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsShortestDay { get; set; } // Hari kerja terpendek
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

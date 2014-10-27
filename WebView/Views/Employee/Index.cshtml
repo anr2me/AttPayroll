@@ -104,7 +104,7 @@
                                 <label>Division</label></td>
                             <td colspan="3">
                                <input id="DivisionId" name="DivisionId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
-                               <input id="btnDivision" name="btnDivision" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." disabled />
+                               <input id="btnDivision" name="btnDivision" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
                                <input id="DivisionName" name="Division" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
                         </tr>
                         <tr>
@@ -152,7 +152,8 @@
                                     {
                                         <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Sex), item)</option>
                                     }
-                                </select></td>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -302,6 +303,20 @@
         <div id="lookup_pager_titleinfo" class="scroll" style="text-align: center;"></div>
     </div>
 <!-- END Look Up TitleInfo -->
+
+<!-- Look Up Division -->
+    <div id="lookup_div_division" class="easyui-dialog" title="List Division" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_division" class="grid_toolbar">
+            <a id="lookup_btn_add_division" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_division" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_division" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_division" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up Division -->
 
   </div>
 

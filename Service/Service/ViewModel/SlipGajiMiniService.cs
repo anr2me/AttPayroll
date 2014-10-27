@@ -46,7 +46,7 @@ namespace Service.Service
 
         public SlipGajiMini GetOrNewObjectByEmployeeMonth(int EmployeeId, DateTime YearMonth)
         {
-            SlipGajiMini slipGajiMini = _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTH.Year == YearMonth.Year && x.MONTH.Month == YearMonth.Month).FirstOrDefault();
+            SlipGajiMini slipGajiMini = _repository.FindAll(x => x.EmployeeId == EmployeeId && x.MONTHyear.Year == YearMonth.Year && x.MONTHyear.Month == YearMonth.Month).FirstOrDefault();
             if (slipGajiMini == null)
             {
                 slipGajiMini = new SlipGajiMini();

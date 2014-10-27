@@ -57,7 +57,7 @@ namespace Service.Service
             {
                 formula.IsSecondValue = true;
                 formula.SecondValue = SecondValue;
-                formula.ValueSign = (int)Constant.SalarySign.Income;
+                //formula.ValueSign = (int)Constant.SalarySign.Income;
             } 
             else 
             {

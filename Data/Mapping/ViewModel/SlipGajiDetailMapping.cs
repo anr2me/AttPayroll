@@ -16,6 +16,10 @@ namespace Data.Mapping
             //    .WithMany()
             //    .HasForeignKey(s => s.SlipGajiDetail2AId)
             //    .WillCascadeOnDelete(true);
+            HasRequired(s => s.Employee)
+                .WithMany()
+                .HasForeignKey(s => s.EmployeeId)
+                .WillCascadeOnDelete(false);
             HasMany(s => s.SlipGajiDetail2As);
             HasMany(s => s.SlipGajiDetail1s);
             Ignore(s => s.Errors);

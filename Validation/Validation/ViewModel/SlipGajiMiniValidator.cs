@@ -22,7 +22,7 @@ namespace Validation.Validation
 
         public SlipGajiMini VHasMonth(SlipGajiMini slipGajiMini)
         {
-            if (slipGajiMini.MONTH.Equals(DateTime.FromBinary(0)))
+            if (slipGajiMini.MONTHyear.Equals(DateTime.FromBinary(0)))
             {
                 slipGajiMini.Errors.Add("Month", "Tidak valid");
             }

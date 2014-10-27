@@ -29,7 +29,11 @@ namespace Validation.Validation
         public IPTKPService _ptkpService { get; set; }
         public IPPH21SPTService _pph21sptService { get; set; }
         public IOtherExpenseService _otherExpenseService { get; set; }
+        public IOtherExpenseDetailService _otherExpenseDetailService { get; set; }
         public IOtherIncomeService _otherIncomeService { get; set; }
+        public IOtherIncomeDetailService _otherIncomeDetailService { get; set; }
+        public ITHRService _thrService { get; set; }
+        public ITHRDetailService _thrDetailService { get; set; }
         public ISlipGajiMiniService _slipGajiMiniService { get; set; }
         public ISlipGajiDetailService _slipGajiDetailService { get; set; }
         public ISlipGajiDetail1Service _slipGajiDetail1Service { get; set; }

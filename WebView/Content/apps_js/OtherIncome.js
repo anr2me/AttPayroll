@@ -42,13 +42,14 @@
         url: base_url + 'OtherIncome/GetList',
         postData: { 'ParentId': function () { return $("#parenttype").val(); } },
         datatype: "json",
-        colNames: ['ID', 'SalaryItem ID', 'Code', 'Name', 'Description', 'Created At', 'Updated At'],
+        colNames: ['ID', 'SalaryItem ID', 'Code', 'Name', 'Description', 'Salary Status', 'Created At', 'Updated At'],
         colModel: [
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'salaryitemid', index: 'salaryitemid', width: 100, hidden: true },
                   { name: 'code', index: 'code', width: 100 },
                   { name: 'name', index: 'name', width: 150 },
                   { name: 'description', index: 'description', width: 200 },
+                  { name: 'salarystatus', index: 'salarystatus', width: 100, stype: 'select', editoptions: { value: getSelectOption("#SalaryStatus") } },
 				  { name: 'createdat', index: 'createdat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
 				  { name: 'updatedat', index: 'updatedat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
         ],
@@ -68,6 +69,12 @@
         },
         gridComplete:
 		  function () {
+		      var ids = $(this).jqGrid('getDataIDs');
+		      for (var i = 0; i < ids.length; i++) {
+		          var cl = ids[i];
+		          rowStatus = document.getElementById("SalaryStatus").options[$(this).getRowData(cl).salarystatus].text;
+		          $(this).jqGrid('setRowData', ids[i], { salarystatus: rowStatus });
+		      }
 		      //var ids = $(this).jqGrid('getDataIDs');
 		      //for (var i = 0; i < ids.length; i++) {
 		      //    var cl = ids[i];
@@ -136,6 +143,7 @@
                             $('#Code').val(result.Code);
                             $('#Name').val(result.Name);
                             $('#Description').val(result.Description);
+                            document.getElementById("SalaryStatus").selectedIndex = result.SalaryStatus;
                             $('#Description').removeAttr('disabled');
                             $('#btnEmployee').removeAttr('disabled');
                             $('#tabledetail_div').hide();
@@ -226,6 +234,7 @@
             url: submitURL,
             data: JSON.stringify({
                 Id: id, Description: $("#Description").val(), Code: $("#Code").val(), Name: $("#Name").val(),
+                SalaryStatus: document.getElementById("SalaryStatus").selectedIndex,
             }),
             async: false,
             cache: false,
@@ -257,15 +266,16 @@
     $("#listdetail").jqGrid({
         url: base_url,
         datatype: "json",
-        colNames: ['OtherIncome ID', 'Employee ID', 'Employee NIK', 'Employee Name', 'Amount', 'Remark', 'Effective Date'],
+        colNames: ['OtherIncome ID', 'Employee ID', 'Employee NIK', 'Employee Name', 'Amount', 'Effective Date', 'Recurring', 'Remark'],
         colModel: [
 				  { name: 'otherincomeid', index: 'otherincomeid', hidden: true, width: 80, sortable: false },
 				  { name: 'employeeid', index: 'employeeid', hidden: true, width: 80, sortable: false },
 				  { name: 'employeenik', index: 'employeenik', width: 100, sortable: true },
 				  { name: 'employeename', index: 'employeename', width: 150, sortable: true },
 				  { name: 'amount', index: 'amount', width: 80, formatter: 'integer', formatoptions: { thousandsSeparator: ",", defaultValue: '0' }, sortable: true },
-                  { name: 'remark', index: 'remark', width: 200, sortable: true },
                   { name: 'effectivedate', index: 'effectivedate', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
+                  { name: 'recurring', index: 'recurring', width: 100, sortable: true },
+                  { name: 'remark', index: 'remark', width: 200, sortable: true },
         ],
         page: '1',
         pager: $('#pagerdetail'),
@@ -316,6 +326,8 @@
                             $('#EmployeeNIK').val(result.EmployeeNIK);
                             $('#EmployeeName').val(result.EmployeeName);
                             $('#Remark').val(result.Remark);
+                            $('#Recurring').numberbox('setValue', result.Recurring);
+                            $('#Amount').numberbox('setValue', result.Amount);
                             $('#EffectiveDate').datebox('setValue', dateEnt(result.EffectiveDate));
                             $('#EffectiveDate2').val(dateEnt(result.EffectiveDate));
                             //$('#EffectiveDateDiv').hide();
@@ -340,6 +352,7 @@
         clearForm('#detail_div');
         $("#detail_btn_submit").data('kode', '');
         $('#Amount').numberbox('setValue', '');
+        $('#Recurring').numberbox('setValue', '1');
         $('#EffectiveDate').datebox('setValue', $.datepicker.formatDate('mm/dd/yy', new Date()));
         $('#detail_div').dialog('open');
     });
@@ -372,6 +385,7 @@
                             $('#EmployeeName').val(result.EmployeeName);
                             $('#Remark').val(result.Remark);
                             $('#Amount').numberbox('setValue', result.Amount);
+                            $('#Recurring').numberbox('setValue', result.Recurring);
                             $('#EffectiveDate').datebox('setValue', dateEnt(result.EffectiveDate));
                             $('#EffectiveDate2').val(dateEnt(result.EffectiveDate));
                             $('#detail_div').dialog('open');
@@ -447,7 +461,7 @@
             url: submitURL,
             data: JSON.stringify({
                 Id: id, OtherIncomeId: $("#id").val(), EmployeeId: $("#EmployeeId").val(), Amount: $("#Amount").numberbox('getValue'),
-                EffectiveDate: $("#EffectiveDate").datebox('getValue'), Remark: $("#Remark").val()
+                EffectiveDate: $("#EffectiveDate").datebox('getValue'), Remark: $("#Remark").val(), Recurring: $("#Recurring").numberbox('getValue'),
             }),
             async: false,
             cache: false,
@@ -518,7 +532,7 @@
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'nik', index: 'nik', width: 100 },
 				  { name: 'name', index: 'name', width: 180 },
-                  { name: 'title', index: 'title', width: 150 },
+                  { name: 'titleinfoname', index: 'titleinfoname', width: 150 },
         ],
         page: '1',
         pager: $('#lookup_pager_employee'),

@@ -44,14 +44,14 @@ namespace Validation.Validation
             return formula;
         }
 
-        public Formula VHasValidSign(Formula formula)
-        {
-            if (formula.IsSecondValue && formula.ValueSign == 0)
-            {
-                formula.Errors.Add("ValueSign", "Tidak valid");
-            }
-            return formula;
-        }
+        //public Formula VHasValidSign(Formula formula)
+        //{
+        //    if (formula.IsSecondValue && formula.ValueSign == 0)
+        //    {
+        //        formula.Errors.Add("ValueSign", "Tidak valid");
+        //    }
+        //    return formula;
+        //}
 
         public bool ValidCreateObject(Formula formula, IFormulaService _formulaService, ISalaryItemService _salaryItemService)
         {
@@ -60,8 +60,8 @@ namespace Validation.Validation
             VHasFirstSalaryItem(formula, _salaryItemService);
             if (!isValid(formula)) { return false; }
             VHasSecondSalaryItem(formula, _salaryItemService);
-            if (!isValid(formula)) { return false; }
-            VHasValidSign(formula);
+            //if (!isValid(formula)) { return false; }
+            //VHasValidSign(formula);
             return isValid(formula);
         }
 

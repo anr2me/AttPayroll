@@ -9,51 +9,52 @@ namespace Core.DomainModel
     public partial class SlipGajiMini
     {
         public int Id { get; set; }
-        public DateTime MONTH { get; set; } // Tahun dan bulan yg di proses
+        public DateTime MONTHyear { get; set; } // Tahun dan bulan yg di proses
         public int EmployeeId { get; set; }
 
-        public string company_name { get; set; }
+        public string month	{ get; set; }
         public string employee_code { get; set; }
         public string employee_name { get; set; }
-        public string department_name { get; set; }
-        public string division_name { get; set; }
+        public string title_code { get; set; }
         public string title_name { get; set; }
         public DateTime start_working { get; set; }
-        public string STATUS { get; set; }
-        public decimal number_wd { get; set; }
+        public string no_rekening { get; set; }
 
-        public decimal basic_salary { get; set; }
-        public decimal transport_d { get; set; }
-        public decimal transport_m { get; set; }
-        public decimal fix_charge { get; set; }
-        public decimal var_charge { get; set; }
-        public decimal other { get; set; }
-        public decimal bonus_thr { get; set; }
-        public decimal company_astek_p { get; set; }
-        public decimal gross_paid { get; set; }
+        public decimal salary_basic { get; set; }
+        public decimal rate_hour { get; set; }
+        public decimal allowance_rate { get; set; }
+        public decimal uang_makan { get; set; }
+        public decimal jml_jam_lembur { get; set; }
+        public decimal jml_lembur { get; set; }
+        public decimal jml_hari_absen { get; set; }
+        public decimal tunj_lap { get; set; }
+        public decimal insentive_hadir { get; set; }
+        public decimal krg_bln_lalu { get; set; }
+        public decimal thr { get; set; }
+        public decimal pot_absensi { get; set; }
+        public decimal pot_others { get; set; }
+        public decimal gaji_kotor { get; set; }
+        public decimal pot_pinjaman { get; set; }
+        public decimal pot_jamsostek { get; set; }
+        public decimal pjk_jkk_jkm_204 { get; set; }
+        public decimal tot_dpt_kotor { get; set; }
+        public decimal pjk_tunj_jabatan { get; set; }
+        public decimal pjk_ptkp { get; set; }
+        public decimal tot_pengurang_pajak { get; set; }
+        public decimal tot_dpt_kena_pajak { get; set; }
+        public decimal tot_dpt_kena_pajak_tahun { get; set; }
+        public decimal pph_5_persen { get; set; }
+        public decimal pph_15_persen { get; set; }
+        public decimal pph_25_persen { get; set; }
+        public decimal pph_30_persen { get; set; }
+        public decimal pph21 { get; set; }
+        public decimal round { get; set; }
+        public decimal gaji_bersih { get; set; }
 
-        public decimal employee_astek { get; set; }
-        public decimal company_astek_m { get; set; }
-        public decimal deduction_koperasi { get; set; }
-        public decimal deduction_union { get; set; }
-        public decimal deduction_all { get; set; }
-
-        public decimal t_jabatan { get; set; }
-        public decimal nett_paid { get; set; }
-        public decimal nett_paid_tax { get; set; }
-        public decimal pph_in_year { get; set; }
-        public decimal ptkp { get; set; }
-
-        public decimal pkp { get; set; }
-        public decimal pkp_5 { get; set; }
-        public decimal pkp_15 { get; set; }
-        public decimal pkp_25 { get; set; }
-        public decimal pkp_30 { get; set; }
-
-        public decimal tax_month { get; set; }
-        public decimal thp { get; set; }
-        public decimal balance_tax { get; set; }
-        public decimal total_thp { get; set; }
+        public string company_code { get; set; }
+        public string Disiapkan_oleh { get; set; }
+        public string Disetujui_oleh { get; set; }
+        public string Dikoreksi_oleh { get; set; }
 
         public Dictionary<string, string> Errors { get; set; }
     }

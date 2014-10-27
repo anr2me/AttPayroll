@@ -43,7 +43,11 @@ namespace WebView.Controllers
         public IPTKPService _ptkpService;
         public IPPH21SPTService _pph21sptService;
         public IOtherExpenseService _otherExpenseService;
+        public IOtherExpenseDetailService _otherExpenseDetailService;
         public IOtherIncomeService _otherIncomeService;
+        public IOtherIncomeDetailService _otherIncomeDetailService;
+        public ITHRService _thrService;
+        public ITHRDetailService _thrDetailService;
         public ISlipGajiMiniService _slipGajiMiniService;
         public ISlipGajiDetailService _slipGajiDetailService;
         public ISlipGajiDetail1Service _slipGajiDetail1Service;
@@ -83,7 +87,11 @@ namespace WebView.Controllers
             _ptkpService = new PTKPService(new PTKPRepository(), new PTKPValidator());
             _pph21sptService = new PPH21SPTService(new PPH21SPTRepository(), new PPH21SPTValidator());
             _otherExpenseService = new OtherExpenseService(new OtherExpenseRepository(), new OtherExpenseValidator());
+            _otherExpenseDetailService = new OtherExpenseDetailService(new OtherExpenseDetailRepository(), new OtherExpenseDetailValidator());
             _otherIncomeService = new OtherIncomeService(new OtherIncomeRepository(), new OtherIncomeValidator());
+            _otherIncomeDetailService = new OtherIncomeDetailService(new OtherIncomeDetailRepository(), new OtherIncomeDetailValidator());
+            _thrService = new THRService(new THRRepository(), new THRValidator());
+            _thrDetailService = new THRDetailService(new THRDetailRepository(), new THRDetailValidator());
             _slipGajiMiniService = new SlipGajiMiniService(new SlipGajiMiniRepository(), new SlipGajiMiniValidator());
             _slipGajiDetailService = new SlipGajiDetailService(new SlipGajiDetailRepository(), new SlipGajiDetailValidator());
             _slipGajiDetail1Service = new SlipGajiDetail1Service(new SlipGajiDetail1Repository(), new SlipGajiDetail1Validator());
@@ -100,7 +108,11 @@ namespace WebView.Controllers
                 _ptkpService = _ptkpService,
                 _pph21sptService = _pph21sptService,
                 _otherExpenseService = _otherExpenseService,
+                _otherExpenseDetailService = _otherExpenseDetailService,
                 _otherIncomeService = _otherIncomeService,
+                _otherIncomeDetailService = _otherIncomeDetailService,
+                _thrService = _thrService,
+                _thrDetailService = _thrDetailService,
                 _workingDayService = _workingDayService,
                 _workingTimeService = _workingTimeService,
                 _salaryEmployeeDetailService = _salaryEmployeeDetailService,
@@ -130,7 +142,7 @@ namespace WebView.Controllers
             
             Dictionary<string, string> Errors = new Dictionary<string, string>();
             string error = "";
-            try
+            //try
             {
                 for (var monthYear = StartPeriod; monthYear <= EndPeriod; monthYear = monthYear.AddMonths(1))
                 {
@@ -149,11 +161,11 @@ namespace WebView.Controllers
                     }
                 }  
             }
-            catch (Exception ex)
-            {
-                LOG.Error("Process Failed", ex);
-                Errors.Add("Generic", "Error " + ex);
-            }
+            //catch (Exception ex)
+            //{
+            //    LOG.Error("Process Failed", ex);
+            //    Errors.Add("Generic", "Error " + ex);
+            //}
 
             if (error != null && !Errors.Any())
             {

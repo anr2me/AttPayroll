@@ -27,7 +27,11 @@ namespace Core.Interface.Validation
         IPTKPService _ptkpService { get; set; }
         IPPH21SPTService _pph21sptService { get; set; }
         IOtherExpenseService _otherExpenseService { get; set; }
+        IOtherExpenseDetailService _otherExpenseDetailService { get; set; }
         IOtherIncomeService _otherIncomeService { get; set; }
+        IOtherIncomeDetailService _otherIncomeDetailService { get; set; }
+        ITHRService _thrService { get; set; }
+        ITHRDetailService _thrDetailService { get; set; }
         ISlipGajiMiniService _slipGajiMiniService { get; set; }
         ISlipGajiDetailService _slipGajiDetailService { get; set; }
         ISlipGajiDetail1Service _slipGajiDetail1Service { get; set; }

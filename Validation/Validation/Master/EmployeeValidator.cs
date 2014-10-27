@@ -79,6 +79,15 @@ namespace Validation.Validation
             return employee;
         }
 
+        public Employee VHasStartWorkingDate(Employee employee)
+        {
+            if (employee.StartWorkingDate == null || employee.StartWorkingDate.Equals(DateTime.FromBinary(0)))
+            {
+                employee.Errors.Add("StartWorkingDate", "Tidak valid");
+            }
+            return employee;
+        }
+
         public bool ValidCreateObject(Employee employee, IEmployeeService _employeeService, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             VHasDivision(employee, _divisionService);
@@ -94,6 +103,8 @@ namespace Validation.Validation
             VHasAddress(employee);
             if (!isValid(employee)) { return false; }
             VHasPhoneNumber(employee);
+            if (!isValid(employee)) { return false; }
+            VHasStartWorkingDate(employee);
             return isValid(employee);
         }
 

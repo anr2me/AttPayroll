@@ -29,7 +29,8 @@ namespace Data.Context
 
             IList<String> utilityNames = new List<String>() 
                                         { "SPKL", "EmployeeLeave", "GeneralLeave", "EmployeeLoanDetail", "EmployeeLoan", 
-                                          "PensionCompensation", /*"EmployeeAttendanceDetail",*/ "EmployeeAttendance"};
+                                          "THRDetail", "THR",
+                                          "PensionCompensation", "EmployeeAttendance"};
 
             IList<String> masterNames = new List<String>() 
                                         { "SalarySlipDetail", "SalarySlip", "SalaryEmployeeDetail", "SalaryEmployee",
@@ -72,6 +73,8 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new OtherExpenseDetailMapping());
             modelBuilder.Configurations.Add(new OtherIncomeMapping());
             modelBuilder.Configurations.Add(new OtherIncomeDetailMapping());
+            modelBuilder.Configurations.Add(new THRMapping());
+            modelBuilder.Configurations.Add(new THRDetailMapping());
             modelBuilder.Configurations.Add(new SPKLMapping());
             modelBuilder.Configurations.Add(new WorkingTimeMapping());
             modelBuilder.Configurations.Add(new WorkingDayMapping());
@@ -79,7 +82,6 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new EmployeeLoanMapping());
             modelBuilder.Configurations.Add(new EmployeeLoanDetailMapping());
             modelBuilder.Configurations.Add(new EmployeeAttendanceMapping());
-            //modelBuilder.Configurations.Add(new EmployeeAttendanceDetailMapping());
             modelBuilder.Configurations.Add(new EmployeeLeaveMapping());
             modelBuilder.Configurations.Add(new GeneralLeaveMapping());
             modelBuilder.Configurations.Add(new PensionCompensationMapping());
@@ -97,6 +99,8 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new SlipGajiDetail1Mapping());
             modelBuilder.Configurations.Add(new SlipGajiDetail2AMapping());
 
+            modelBuilder.Entity<Formula>().Property(x => x.SecondValue).HasPrecision(19, 4);
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -110,6 +114,8 @@ namespace Data.Context
         public DbSet<OtherExpense> OtherExpenses { get; set; }
         public DbSet<OtherIncomeDetail> OtherIncomeDetails { get; set; }
         public DbSet<OtherIncome> OtherIncomes { get; set; }
+        public DbSet<THRDetail> THRDetails { get; set; }
+        public DbSet<THR> THRs { get; set; }
         public DbSet<SalaryItem> SalaryItems { get; set; }
         public DbSet<Formula> Formulas { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -130,7 +136,6 @@ namespace Data.Context
         public DbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public DbSet<GeneralLeave> GeneralLeaves { get; set; }
-        //public DbSet<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
         public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public DbSet<PensionCompensation> PensionCompensations { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }

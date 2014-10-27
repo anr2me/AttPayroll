@@ -59,6 +59,7 @@ namespace WebView.Controllers
                              model.Code,
                              model.Name,
                              model.Description,
+                             model.SalaryStatus,
                              model.CreatedAt,
                              model.UpdatedAt,
                          }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
@@ -97,6 +98,7 @@ namespace WebView.Controllers
                              model.Code,
                              model.Name,
                              model.Description,
+                             model.SalaryStatus,
                              model.CreatedAt,
                              model.UpdatedAt,
                       }
@@ -131,6 +133,7 @@ namespace WebView.Controllers
                 model.Code,
                 model.Name,
                 model.Description,
+                model.SalaryStatus,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -161,6 +164,7 @@ namespace WebView.Controllers
                 model.Code,
                 model.Name,
                 model.Description,
+                model.SalaryStatus,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -222,6 +226,7 @@ namespace WebView.Controllers
                 data.Code = model.Code;
                 data.Name = model.Name;
                 data.Description = model.Description;
+                data.SalaryStatus = model.SalaryStatus;
                 model = _otherExpenseService.UpdateObject(data, _salaryItemService);
             }
             catch (Exception ex)
@@ -300,8 +305,9 @@ namespace WebView.Controllers
                              EmployeeNIK = model.Employee.NIK,
                              EmployeeName = model.Employee.Name,
                              model.Amount,
+                             model.EffectiveDate,
+                             model.Recurring,
                              model.Remark,
-                             model.EffectiveDate
                          }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
 
             var list = query.AsEnumerable();
@@ -338,8 +344,9 @@ namespace WebView.Controllers
                              model.EmployeeNIK,
                              model.EmployeeName,
                              model.Amount,
-                             model.Remark,
                              model.EffectiveDate,
+                             model.Recurring,
+                             model.Remark,
                       }
                     }).ToArray()
             }, JsonRequestBehavior.AllowGet);
@@ -372,8 +379,9 @@ namespace WebView.Controllers
                 EmployeeNIK = model.Employee.NIK,
                 EmployeeName = model.Employee.Name,
                 model.Amount,
-                model.Remark,
                 model.EffectiveDate,
+                model.Recurring,
+                model.Remark,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -383,7 +391,7 @@ namespace WebView.Controllers
         {
             try
             {
-                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.EmployeeSalary, Core.Constants.Constant.MenuGroupName.Utility))
+                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.OtherExpense, Core.Constants.Constant.MenuGroupName.Utility))
                 {
                     Dictionary<string, string> Errors = new Dictionary<string, string>();
                     Errors.Add("Generic", "You are Not Allowed to Edit record");
@@ -419,7 +427,7 @@ namespace WebView.Controllers
         {
             try
             {
-                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.EmployeeSalary, Core.Constants.Constant.MenuGroupName.Utility))
+                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.OtherExpense, Core.Constants.Constant.MenuGroupName.Utility))
                 {
                     Dictionary<string, string> Errors = new Dictionary<string, string>();
                     Errors.Add("Generic", "You are Not Allowed to Edit record");
@@ -434,6 +442,7 @@ namespace WebView.Controllers
                 data.EmployeeId = model.EmployeeId;
                 data.Amount = model.Amount;
                 data.Remark = model.Remark;
+                data.Recurring = model.Recurring;
                 data.EffectiveDate = model.EffectiveDate;
                 data.OtherExpenseId = model.OtherExpenseId;
                 model = _otherExpenseDetailService.UpdateObject(data, _otherExpenseService, _employeeService);
@@ -461,7 +470,7 @@ namespace WebView.Controllers
         {
             try
             {
-                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.EmployeeSalary, Core.Constants.Constant.MenuGroupName.Utility))
+                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.OtherExpense, Core.Constants.Constant.MenuGroupName.Utility))
                 {
                     Dictionary<string, string> Errors = new Dictionary<string, string>();
                     Errors.Add("Generic", "You are Not Allowed to Edit record");

@@ -308,6 +308,7 @@ namespace WebView.Controllers
                              SalaryItemCode = model.SalaryItem.Code,
                              SalaryItemName = model.SalaryItem.Name,
                              model.Amount,
+                             //IsActive = model.SalaryEmployee.IsActive,
                          }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
 
             var list = query.AsEnumerable();
@@ -344,6 +345,7 @@ namespace WebView.Controllers
                              model.SalaryItemCode,
                              model.SalaryItemName,
                              model.Amount,
+                             //model.IsActive,
                       }
                     }).ToArray()
             }, JsonRequestBehavior.AllowGet);

@@ -9,9 +9,9 @@ namespace Core.DomainModel
     public partial class SalarySlipDetail
     {
         public int Id { get; set; }
+        public int Index { get; set; }
         public int SalarySign { get; set; } // addition or deduction to parent's amount
         public int SalarySlipId { get; set; }
-        public int Index { get; set; }
         public int FormulaId { get; set; } // SalaryItemId
         public decimal Value { get; set; } // Base value
         public bool HasMinValue { get; set; }

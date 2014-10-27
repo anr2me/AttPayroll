@@ -12,7 +12,7 @@ namespace Core.DomainModel
 
         //public DateTime EntryDate { get; set; } // Posting date = created at
         //public string UserName { get; set; } // Poster
-        public DateTime AttendanceDate { get; set; }
+        public DateTime AttendanceDate { get; set; } // Date of CheckIn
         public int Shift { get; set; } // Normal, Malam, Sabtu, Sabtu Malam, Minggu/HariLibur, Sabtu Tgl Merah, AllShift
         //public bool AllEmployees { get; set; }
         public int EmployeeId { get; set; }
@@ -20,10 +20,10 @@ namespace Core.DomainModel
         //public DateTime FromDate { get; set; } // used for multiple entry in a single post (creating multiple records per day/attendance date)
         //public DateTime ToDate { get; set; }
         
-        public Nullable<DateTime> CheckIn { get; set; } // CheckIn Time on a day
-        public Nullable<DateTime> CheckOut { get; set; } // CheckOut Time on a day
-        public Nullable<DateTime> BreakOut { get; set; } // BreakOut Time on a day
-        public Nullable<DateTime> BreakIn { get; set; } // BreakIn Time on a day
+        public DateTime CheckIn { get; set; } // CheckIn Date+Time on a day
+        public Nullable<DateTime> CheckOut { get; set; } // CheckOut Date+Time on a day
+        public Nullable<DateTime> BreakOut { get; set; } // BreakOut Date+Time on a day
+        public Nullable<DateTime> BreakIn { get; set; } // BreakIn Date+Time on a day
         public string Remark { get; set; }
 
         //public int BreakMinutes { get; set; }
@@ -41,6 +41,5 @@ namespace Core.DomainModel
         public Dictionary<string, string> Errors { get; set; }
 
         public virtual Employee Employee { get; set; }
-        //public virtual ICollection<EmployeeAttendanceDetail> EmployeeAttendanceDetails { get; set; }
     }
 }

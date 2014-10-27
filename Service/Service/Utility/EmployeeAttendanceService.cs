@@ -42,12 +42,21 @@ namespace Service.Service
         public EmployeeAttendance CreateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
         {
             employeeAttendance.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employeeAttendance, _employeeService) ? _repository.CreateObject(employeeAttendance) : employeeAttendance);
+            if (_validator.ValidCreateObject(employeeAttendance, _employeeService)) 
+            {
+
+                _repository.CreateObject(employeeAttendance);
+            }
+            return employeeAttendance;
         }
 
         public EmployeeAttendance UpdateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
         {
-            return (employeeAttendance = _validator.ValidUpdateObject(employeeAttendance, _employeeService) ? _repository.UpdateObject(employeeAttendance) : employeeAttendance);
+            if (_validator.ValidUpdateObject(employeeAttendance, _employeeService)) {
+
+                _repository.UpdateObject(employeeAttendance);
+            }
+            return employeeAttendance;
         }
 
         public EmployeeAttendance SoftDeleteObject(EmployeeAttendance employeeAttendance)

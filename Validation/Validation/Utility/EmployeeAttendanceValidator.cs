@@ -57,9 +57,10 @@ namespace Validation.Validation
             if (!isValid(employeeAttendance)) { return false; }
             VHasAttendanceDate(employeeAttendance);
             if (!isValid(employeeAttendance)) { return false; }
+            FixDateTime(employeeAttendance);
             VHasCheckInTime(employeeAttendance);
-            if (!isValid(employeeAttendance)) { return false; }
-            VHasCheckOutTime(employeeAttendance);
+            //if (!isValid(employeeAttendance)) { return false; }
+            //VHasCheckOutTime(employeeAttendance);
             return isValid(employeeAttendance);
         }
 
@@ -94,6 +95,29 @@ namespace Validation.Validation
             }
             return erroroutput;
         }
+
+        public EmployeeAttendance FixDateTime(EmployeeAttendance employeeAttendance)
+        {
+            employeeAttendance.AttendanceDate = employeeAttendance.AttendanceDate.Date;
+            employeeAttendance.CheckIn = employeeAttendance.AttendanceDate.Add(employeeAttendance.CheckIn.Subtract(employeeAttendance.CheckIn.Date));
+            employeeAttendance.CheckOut = employeeAttendance.AttendanceDate.Add(employeeAttendance.CheckOut.GetValueOrDefault().Subtract(employeeAttendance.CheckOut.GetValueOrDefault().Date));
+            employeeAttendance.BreakOut = employeeAttendance.AttendanceDate.Add(employeeAttendance.BreakOut.GetValueOrDefault().Subtract(employeeAttendance.BreakOut.GetValueOrDefault().Date));
+            employeeAttendance.BreakIn = employeeAttendance.AttendanceDate.Add(employeeAttendance.BreakIn.GetValueOrDefault().Subtract(employeeAttendance.BreakIn.GetValueOrDefault().Date));
+            if (employeeAttendance.BreakOut != null && employeeAttendance.BreakOut.GetValueOrDefault() < employeeAttendance.CheckIn)
+            {
+                employeeAttendance.BreakOut = employeeAttendance.BreakOut.GetValueOrDefault().AddDays(1);
+            }
+            if (employeeAttendance.BreakIn != null && employeeAttendance.BreakIn.GetValueOrDefault() < employeeAttendance.CheckIn)
+            {
+                employeeAttendance.BreakIn = employeeAttendance.BreakIn.GetValueOrDefault().AddDays(1);
+            }
+            if (employeeAttendance.CheckOut != null && employeeAttendance.CheckOut.GetValueOrDefault() < employeeAttendance.CheckIn)
+            {
+                employeeAttendance.CheckOut = employeeAttendance.CheckOut.GetValueOrDefault().AddDays(1);
+            }
+            return employeeAttendance;
+        }
+
 
     }
 }

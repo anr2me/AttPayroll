@@ -49,7 +49,7 @@ namespace WebView.Controllers
             if (filter == "") filter = "true";
 
             // Get Data
-            var q = _divisionService.GetQueryable().Include("Department").Where(x => x.DepartmentId == ParentId);
+            var q = _divisionService.GetQueryable().Include("Department").Where(x => (ParentId == 0 || x.DepartmentId == ParentId));
 
             var query = (from model in q
                          select new

@@ -57,11 +57,21 @@ namespace Service.Service
         public Formula CreateObject(Formula formula, ISalaryItemService _salaryItemService)
         {
             formula.Errors = new Dictionary<String, String>();
+            formula.FormulaOp = formula.FormulaOp.Trim();
+            if (formula.FormulaOp == null || formula.FormulaOp == "")
+            {
+                formula.FormulaOp = "+";
+            }
             return (_validator.ValidCreateObject(formula, this, _salaryItemService) ? _repository.CreateObject(formula) : formula);
         }
 
         public Formula UpdateObject(Formula formula, ISalaryItemService _salaryItemService)
         {
+            formula.FormulaOp = formula.FormulaOp.Trim();
+            if (formula.FormulaOp == null || formula.FormulaOp == "")
+            {
+                formula.FormulaOp = "+";
+            }
             return (formula = _validator.ValidUpdateObject(formula, this, _salaryItemService) ? _repository.UpdateObject(formula) : formula);
         }
 

@@ -49,9 +49,11 @@
     <Compile Include="Context\AttPayrollEntities.cs" />
     <Compile Include="Mapping\Master\BranchOfficeMapping.cs" />
     <Compile Include="Mapping\Master\CompanyInfoMapping.cs" />
-    <Compile Include="Mapping\Master\OtherExpenseDetailMapping.cs" />
-    <Compile Include="Mapping\Master\OtherExpenseMapping.cs" />
-    <Compile Include="Mapping\Master\OtherIncomeDetailMapping.cs" />
+    <Compile Include="Mapping\Utility\THRDetailMapping.cs" />
+    <Compile Include="Mapping\Utility\THRMapping.cs" />
+    <Compile Include="Mapping\Utility\OtherExpenseDetailMapping.cs" />
+    <Compile Include="Mapping\Utility\OtherExpenseMapping.cs" />
+    <Compile Include="Mapping\Utility\OtherIncomeDetailMapping.cs" />
     <Compile Include="Mapping\Master\WorkingDayMapping.cs" />
     <Compile Include="Mapping\Master\WorkingTimeMapping.cs" />
     <Compile Include="Mapping\Master\EmployeeWorkingTimeMapping.cs" />
@@ -64,7 +66,7 @@
     <Compile Include="Mapping\Master\SalaryItemMapping.cs" />
     <Compile Include="Mapping\Master\PTKPMapping.cs" />
     <Compile Include="Mapping\Master\PPH21SPTMapping.cs" />
-    <Compile Include="Mapping\Master\OtherIncomeMapping.cs" />
+    <Compile Include="Mapping\Utility\OtherIncomeMapping.cs" />
     <Compile Include="Mapping\Master\LastEmployementMapping.cs" />
     <Compile Include="Mapping\Master\EmployeeEducationMapping.cs" />
     <Compile Include="Mapping\Master\TitleInfoMapping.cs" />
@@ -80,7 +82,6 @@
     <Compile Include="Mapping\Utility\GeneralLeaveMapping.cs" />
     <Compile Include="Mapping\Utility\EmployeeLeaveMapping.cs" />
     <Compile Include="Mapping\Utility\EmployeeLoanMapping.cs" />
-    <Compile Include="Mapping\Utility\EmployeeAttendanceDetailMapping.cs" />
     <Compile Include="Mapping\ViewModel\SlipGajiMiniMapping.cs" />
     <Compile Include="Mapping\ViewModel\SlipGajiDetail2AMapping.cs" />
     <Compile Include="Mapping\ViewModel\SlipGajiDetail1Mapping.cs" />
@@ -90,9 +91,11 @@
     <Compile Include="Repository\EfRepository.cs" />
     <Compile Include="Repository\Master\BranchOfficeRepository.cs" />
     <Compile Include="Repository\Master\CompanyInfoRepository.cs" />
-    <Compile Include="Repository\Master\OtherExpenseDetailRepository.cs" />
-    <Compile Include="Repository\Master\OtherExpenseRepository.cs" />
-    <Compile Include="Repository\Master\OtherIncomeDetailRepository.cs" />
+    <Compile Include="Repository\Utility\THRDetailRepository.cs" />
+    <Compile Include="Repository\Utility\THRRepository.cs" />
+    <Compile Include="Repository\Utility\OtherExpenseDetailRepository.cs" />
+    <Compile Include="Repository\Utility\OtherExpenseRepository.cs" />
+    <Compile Include="Repository\Utility\OtherIncomeDetailRepository.cs" />
     <Compile Include="Repository\Master\WorkingDayRepository.cs" />
     <Compile Include="Repository\Master\EmployeeWorkingTimeRepository.cs" />
     <Compile Include="Repository\Master\WorkingTimeRepository.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="Repository\Master\SalaryItemRepository.cs" />
     <Compile Include="Repository\Master\PPH21SPTRepository.cs" />
     <Compile Include="Repository\Master\PTKPRepository.cs" />
-    <Compile Include="Repository\Master\OtherIncomeRepository.cs" />
+    <Compile Include="Repository\Utility\OtherIncomeRepository.cs" />
     <Compile Include="Repository\Master\LastEmploymentRepository.cs" />
     <Compile Include="Repository\Master\EmployeeEducationRepository.cs" />
     <Compile Include="Repository\Master\FormulaRepository.cs" />
@@ -121,7 +124,6 @@
     <Compile Include="Repository\Utility\GeneralLeaveRepository.cs" />
     <Compile Include="Repository\Utility\PensionCompensationRepository.cs" />
     <Compile Include="Repository\Utility\EmployeeAttendanceRepository.cs" />
-    <Compile Include="Repository\Utility\EmployeeAttendanceDetailRepository.cs" />
     <Compile Include="Repository\ViewModel\SlipGajiDetail2ARepository.cs" />
     <Compile Include="Repository\ViewModel\SlipGajiDetail1Repository.cs" />
     <Compile Include="Repository\ViewModel\SlipGajiMiniRepository.cs" />

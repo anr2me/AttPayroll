@@ -85,6 +85,17 @@ namespace Service.Service
             return _repository.DeleteObject(Id);
         }
 
-        
+        public int CountEnabledDays(WorkingDay workingDay)
+        {
+            return GetQueryable().Where(x => x.WorkingTimeId == workingDay.WorkingTimeId && x.IsEnabled).Count();
+        }
+
+        public bool IsShortestWorkingDay(WorkingDay workingDay)
+        {
+            if(!workingDay.IsEnabled) return false;
+            return !GetQueryable().Where(x => x.WorkingTimeId == workingDay.WorkingTimeId && x.IsEnabled && 
+                (x.WorkInterval < workingDay.WorkInterval || (x.WorkInterval == workingDay.WorkInterval && x.Id != workingDay.Id))).Any();
+        }
+
     }
 }

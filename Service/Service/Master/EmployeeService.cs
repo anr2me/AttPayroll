@@ -125,12 +125,12 @@ namespace Service.Service
                 code = "TK";
                 if (NumberOfChildren > 0)
                 {
-                    code += NumberOfChildren.ToString();
+                    code += "_" + NumberOfChildren.ToString("D2");
                 }
             }
             else
             {
-                code = "KW" + NumberOfChildren.ToString();
+                code = "KW_" + NumberOfChildren.ToString("D2");
             }
             return code;
         }

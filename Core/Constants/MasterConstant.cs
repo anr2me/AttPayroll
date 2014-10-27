@@ -57,6 +57,7 @@ namespace Core.Constants
             public static string EmployeeLoan = "Employee Loan";
             public static string OtherIncome = "Other Income";
             public static string OtherExpense = "Other Expense";
+            public static string THR = "THR";
             public static string PensionCompensation = "Pension Compensation";
             public static string SalaryProcess = "Salary Process";
 
@@ -139,8 +140,8 @@ namespace Core.Constants
 
         public enum ActiveStatus
         {
-            NonActive,
             Active,
+            NonActive,
             //MedicalCheck,
         }
 
@@ -184,6 +185,11 @@ namespace Core.Constants
 
         public enum LegacyAttendanceItem // untuk perhitungan lembur dan potongan telat
         {
+            [Description("Masa Kerja")]
+            WKAGE, // = "WKAGE", // masa kerja semenjak awal kerja (dlm hari)
+            [Description("Masa Kerja Permanen")]
+            PMAGE, // = "PMAGE", // masa kerja semenjak jadi pegawai tetap (dlm hari)
+
             [Description("Jam Kerja Regular")]
             REGWT, // = "WKTM", // regular working hours on a day
             [Description("Jam Kerja")]
@@ -242,8 +248,6 @@ namespace Core.Constants
             ALPHA, // = "ALPA", // alpha days on a month
             [Description("Telat")]
             LATE, // = "LATE", // telat days on a month
-            [Description("Masa Kerja")]
-            WKAGE, // = "WKAGE", // masa kerja semenjak awal kerja (dlm hari)
 
             [Description("Total Jam Lembur 1.5x")]
             TOT15, // = "OTR1", // rate lembur 1.5x on a month
@@ -255,7 +259,12 @@ namespace Core.Constants
             TOT40, // = "OTR4", // rate lembur 4x on a month
 
             [Description("Tunjangan Hari Raya")]
-            THR, // pph 5%
+            THR, // take home pay amount?
+
+            [Description("Total Tunjangan Lainnya")]
+            TOTTJ, // total tunjangan lainnya
+            [Description("Potongan Lainnya")]
+            TOTPT, // potongan lainnya
 
             [Description("PTKP")]
             PTKP, // = "PTKP", // pendapatan tidak kena pajak
@@ -268,6 +277,15 @@ namespace Core.Constants
             PPH25D, // pph 25%
             [Description("PPH21 30% Delta")]
             PPH30D, // pph 30%
+
+            [Description("PPH21 5% Percent")]
+            PPH05P, // pph 5% = 0.05m
+            [Description("PPH21 15% Percent")]
+            PPH15P, // pph 15% = 0.15m
+            [Description("PPH21 25% Percent")]
+            PPH25P, // pph 25% = 0.25m
+            [Description("PPH21 30% Percent")]
+            PPH30P, // pph 30% = 0.30m
 
             //[Description("PPH21 5%")]
             //PPH05, // pph 5%
@@ -287,6 +305,8 @@ namespace Core.Constants
         public enum UserMonthlyItem // Used for Salary Slip and it's calculation
         {
             // User Defined Slip items
+            [Description("Total Jam Lembur dlm 1x")]
+            TOT10, // = "OTR1", // rate lembur setelah di conversi ke 1x dlm sebulan
             // Total uang lembur
             [Description("Total Uang Lembur")]
             TOVTM,
@@ -300,19 +320,19 @@ namespace Core.Constants
             TTJTR, // total tunjangan transport (dlm sebulan)
             [Description("Total Insentif Hadir")]
             TINHD, // total insentif hadir
-            [Description("Total Tunjangan Lainnya")]
-            TOTTJ, // total tunjangan lainnya
+            //[Description("Total Tunjangan Lainnya")]
+            //TOTTJ, // total tunjangan lainnya
             [Description("Kekurangan Bulan Lalu")]
             KBLLU, // kekurangan bulan lalu
 
-            //[Description("THR")]
-            //THR, // THR
+            //[Description("Tunjangan Hari Raya")]
+            //THR, // take home pay amount?
 
             // Potongan penerimaan
             [Description("Potongan Absensi")]
             PTABS, // potongan absensi
-            [Description("Potongan Lainnya")]
-            TOTPT, // potongan lainnya
+            //[Description("Potongan Lainnya")]
+            //TOTPT, // potongan lainnya
 
             [Description("Gaji Kotor")]
             GJKOT, // gaji kotor

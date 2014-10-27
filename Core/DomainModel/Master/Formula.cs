@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,11 +14,12 @@ namespace Core.DomainModel
         public Nullable<int> SalarySlipDetailId { get; set; } // SalaryItemId // Parent Id
         //public string ItemSign { get; set; } // "-", "+"
         public Nullable<int> FirstSalaryItemId { get; set; } // 1st Operand
+        [StringLength(3)]
         public string FormulaOp { get; set; } // "+", "-", "/", "*"
         public bool IsSecondValue { get; set; } // 2nd operand is a value (not an item)
         public Nullable<int> SecondSalaryItemId { get; set; } // 2nd Operand
         public decimal SecondValue { get; set; }
-        public int ValueSign { get; set; } // "-", "+" // -1, 1
+        //public int ValueSign { get; set; } // "-", "+" // -1, 1
         //public bool HasMinValue { get; set; }
         //public decimal MinValue { get; set; }
         //public bool HasMaxValue { get; set; }

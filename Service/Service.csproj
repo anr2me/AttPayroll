@@ -55,9 +55,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Master\BranchOfficeService.cs" />
     <Compile Include="Service\Master\CompanyInfoService.cs" />
-    <Compile Include="Service\Master\OtherExpenseDetailService.cs" />
-    <Compile Include="Service\Master\OtherExpenseService.cs" />
-    <Compile Include="Service\Master\OtherIncomeDetailService.cs" />
+    <Compile Include="Service\Utility\THRDetailService.cs" />
+    <Compile Include="Service\Utility\THRService.cs" />
+    <Compile Include="Service\Utility\OtherExpenseDetailService.cs" />
+    <Compile Include="Service\Utility\OtherExpenseService.cs" />
+    <Compile Include="Service\Utility\OtherIncomeDetailService.cs" />
     <Compile Include="Service\Master\WorkingDayService.cs" />
     <Compile Include="Service\Master\EmployeeWorkingTimeService.cs" />
     <Compile Include="Service\Master\WorkingTimeService.cs" />
@@ -70,7 +72,7 @@
     <Compile Include="Service\Master\SalaryItemService.cs" />
     <Compile Include="Service\Master\PPH21SPTService.cs" />
     <Compile Include="Service\Master\PTKPService.cs" />
-    <Compile Include="Service\Master\OtherIncomeService.cs" />
+    <Compile Include="Service\Utility\OtherIncomeService.cs" />
     <Compile Include="Service\Master\LastEmploymentService.cs" />
     <Compile Include="Service\Master\EmployeeEducationService.cs" />
     <Compile Include="Service\Master\FormulaService.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Service\Utility\EmployeeAttendanceService.cs" />
     <Compile Include="Service\Utility\GeneralLeaveService.cs" />
     <Compile Include="Service\Utility\EmployeeLeaveService.cs" />
-    <Compile Include="Service\Utility\EmployeeAttendanceDetailService.cs" />
     <Compile Include="Service\ViewModel\SlipGajiMiniService.cs" />
     <Compile Include="Service\ViewModel\SlipGajiDetail2AService.cs" />
     <Compile Include="Service\ViewModel\SlipGajiDetail1Service.cs" />

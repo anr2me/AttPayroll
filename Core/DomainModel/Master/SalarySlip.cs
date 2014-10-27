@@ -21,7 +21,7 @@ namespace Core.DomainModel
         //public Nullable<int> PTKPId { get; set; }
         public bool IsPPH21 { get; set; }
         //public Nullable<int> PPH21SPTId { get; set; }
-        public bool IsVisible { get; set; }
+        public bool IsEnabled { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

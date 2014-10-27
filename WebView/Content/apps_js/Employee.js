@@ -103,18 +103,20 @@
     $("#form_div").dialog('close');
     $("#delete_confirm_div").dialog('close');
     $('#lookup_div_titleinfo').dialog('close');
+    $('#lookup_div_division').dialog('close');
 
     //GRID +++++++++++++++
     $("#list").jqGrid({
         url: base_url + 'Employee/GetList',
         postData: { 'ParentId': function () { return $("#parenttype").val(); } },
         datatype: "json",
-        colNames: ['ID', 'NIK', 'Name', 'Title', 'Place of Birth', 'Birth Date', 'Address', 'Phone Number', 'Email', 'Sex', 'Marital Status', 'Children', 'Religion', 'NPWP', 'NPWP Date', 'Jamsostek', 'Working Status', 'Start Working', 'Appointment', 'Is Active', 'Non-Active Date', 'Created At', 'Updated At'],
+        colNames: ['ID', 'NIK', 'Name', 'Title', 'Religion', 'Place of Birth', 'Birth Date', 'Address', 'Phone Number', 'Email', 'Sex', 'Marital Status', 'Children', 'NPWP', 'NPWP Date', 'Jamsostek', 'Working Status', 'Start Working', 'Appointment', 'Is Active', 'Non-Active Date', 'Created At', 'Updated At'],
         colModel: [
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'nik', index: 'nik', width: 100 },
 				  { name: 'name', index: 'name', width: 180 },
                   { name: 'titleinfoname', index: 'titleinfoname', width: 100 },
+                  { name: 'religion', index: 'religion', width: 100, stype: 'select', editoptions: { value: getSelectOption("#Religion") } },
                   { name: 'placeofbirth', index: 'placeofbirth', width: 100 },
                   { name: 'birthdate', index: 'birthdate', hidden: true, search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
                   { name: 'address', index: 'address', width: 250 },
@@ -123,7 +125,6 @@
                   { name: 'sex', index: 'sex', width: 100, stype: 'select', editoptions: { value: getSelectOption("#Sex") } }, // ':All;0:Male;1:Female'
                   { name: 'maritalstatus', index: 'maritalstatus', width: 100, stype: 'select', editoptions: { value: getSelectOption("#MaritalStatus") } },
                   { name: 'children', index: 'children', width: 100 },
-                  { name: 'religion', index: 'religion', width: 100, stype: 'select', editoptions: { value: getSelectOption("#Religion") } },
                   { name: 'npwp', index: 'npwp', width: 100 },
                   { name: 'npwpdate', index: 'npwpdate', hidden:true, search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
                   { name: 'jamsostek', index: 'jamsostek', width: 100 },
@@ -422,7 +423,7 @@
         url: base_url,
         datatype: "json",
         mtype: 'GET',
-        colNames: ['ID', 'Code', 'Name', 'Description', 'Shiftable', 'Salary All In', 'Access Level', 'Created At', 'Updated At'],
+        colNames: ['ID', 'Code', 'Name', 'Description', 'Shiftable', 'Salary All In', 'Access Level'],
         colModel: [
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'code', index: 'code', width: 100 },
@@ -441,8 +442,6 @@
                       formatter: cboxIsSalaryAllIn, formatoptions: { disabled: false }
                   },
                   { name: 'accesslevel', index: 'accesslevel', width: 100 },
-				  { name: 'createdat', index: 'createdat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
-				  { name: 'updatedat', index: 'updatedat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
         ],
         page: '1',
         pager: $('#lookup_pager_titleinfo'),
@@ -483,6 +482,69 @@
 
 
     // ---------------------------------------------End Lookup TitleInfo----------------------------------------------------------------
+
+    // -------------------------------------------------------Look Up Division-------------------------------------------------------
+    $('#btnDivision').click(function () {
+        var lookUpURL = base_url + 'Division/GetList';
+        var lookupGrid = $('#lookup_table_division');
+        lookupGrid.setGridParam({
+            url: lookUpURL
+        }).trigger("reloadGrid");
+        $('#lookup_div_division').dialog('open');
+    });
+
+    jQuery("#lookup_table_division").jqGrid({
+        url: base_url,
+        datatype: "json",
+        mtype: 'GET',
+        colNames: ['ID', 'Code', 'Name', 'Description', 'Department Id', 'Department Code', 'Department Name'],
+        colModel: [
+    			  { name: 'id', index: 'id', width: 80, align: "center" },
+                  { name: 'code', index: 'code', width: 100 },
+				  { name: 'name', index: 'name', width: 180 },
+                  { name: 'description', index: 'description', width: 250 },
+                  { name: 'departmentid', index: 'departmentid', width: 100, hidden: true },
+                  { name: 'departmentcode', index: 'departmentcode', width: 150, hidden: true },
+                  { name: 'departmentname', index: 'departmentname', width: 180 },
+        ],
+        page: '1',
+        pager: $('#lookup_pager_division'),
+        rowNum: 20,
+        rowList: [20, 30, 60],
+        sortname: 'id',
+        viewrecords: true,
+        scrollrows: true,
+        shrinkToFit: false,
+        sortorder: "ASC",
+        width: $("#lookup_div_division").width() - 10,
+        height: $("#lookup_div_division").height() - 110,
+        ondblClickRow: function (rowid) {
+            $("#lookup_btn_add_division").trigger("click");
+        },
+    });
+    $("#lookup_table_division").jqGrid('navGrid', '#lookup_toolbar_division', { del: false, add: false, edit: false, search: true })
+           .jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
+
+    // Cancel or CLose
+    $('#lookup_btn_cancel_division').click(function () {
+        $('#lookup_div_division').dialog('close');
+    });
+
+    // ADD or Select Data
+    $('#lookup_btn_add_division').click(function () {
+        var id = jQuery("#lookup_table_division").jqGrid('getGridParam', 'selrow');
+        if (id) {
+            var ret = jQuery("#lookup_table_division").jqGrid('getRowData', id);
+
+            $('#DivisionId').val(ret.id).data("kode", id);
+            $('#DivisionCode').val(ret.code);
+            $('#DivisionName').val(ret.name);
+            $('#lookup_div_division').dialog('close');
+        } else {
+            $.messager.alert('Information', 'Please Select Data...!!', 'info');
+        };
+    });
+    // ---------------------------------------------End Lookup Division----------------------------------------------------------------
 
     
 }); //END DOCUMENT READY

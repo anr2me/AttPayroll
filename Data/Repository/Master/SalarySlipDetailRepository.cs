@@ -31,7 +31,7 @@ namespace Data.Repository
 
         public SalarySlipDetail GetObjectById(int Id)
         {
-            SalarySlipDetail salarySlipDetail = FindAll(x => x.Id == Id && !x.IsDeleted).Include("SalarySlip").Include("FirstSalaryItem").Include("SecondSalaryItem").FirstOrDefault();
+            SalarySlipDetail salarySlipDetail = FindAll(x => x.Id == Id && !x.IsDeleted).Include("SalarySlip").Include("Formula").FirstOrDefault();
             if (salarySlipDetail != null) { salarySlipDetail.Errors = new Dictionary<string, string>(); }
             return salarySlipDetail;
         }
