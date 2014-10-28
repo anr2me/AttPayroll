@@ -16,6 +16,7 @@
     function ReloadGridDetail() {
         var text = $('#datehistory option:selected').text();
         var value = $('#datehistory').val();
+        if (value == null) value = 0;
 
         $("#listdetail").setGridParam({ url: base_url + 'SalaryEmployee/GetListDetail?Id=' + value /*$("#id").val()*/, postData: { filters: null } }).trigger("reloadGrid");
     }
@@ -30,24 +31,133 @@
         ClearErrorMessage();
     }
 
+    function fillData() {
+        //$("#datehistory").data('kode', "0");
+        var kode = "0";
+        var selid = jQuery("#list").jqGrid('getGridParam', 'selrow');
+        if (selid) {
+            var ret = jQuery("#list").jqGrid('getRowData', selid);
+            kode = ret.id;
+        }
+        $.ajax({
+            url: base_url + "SalaryEmployee/GetList",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                filters: null,
+                nd: new Date().getTime(), // Date.parse(new Date()),
+                rows: 32767,
+                page: 1,
+                sidx: "EffectiveDate",
+                sord: "desc",
+                full: true,
+            }),
+            success: function (result) {
+                var objDropDown = $('#datehistory'); // $(this).parent('td').next().find('select');
+                $(objDropDown).empty();
+                //$(objDropDown).append('<option value="0">--Select Department--</option>');
+                //$(objDropDown).append('<tr><th>ID</th><th>Code</th><th>Name</th></tr>');
+                if (result != null) {
+                    for (var item in result.rows) {
+                        $(objDropDown).append('<option value="' + result.rows[item].cell[0] + '">' + dateEnt(result.rows[item].cell[5]) + '</option>');
+                        //$(objDropDown).append('<tr><td>' + result.rows[item].cell[0] + '</td><td>' + result.rows[item].cell[1] + '</td><td>' + result.rows[item].cell[2] + '</td></tr>');
+                    }
+                    var e = document.getElementById('datehistory');
+                    e.value = kode;
+                    //var kode = $("#datehistory").data('kode');
+                    //if (kode) {
+                        //e.options[kode].selected = true;
+                    //}
+                    //for (var item in e.options) {
+                    //    if (e.options[item].value == kode) {
+                    //        e.options[item].selected = true; break;
+                    //    }
+                    //}
+                }
+            }
+        });
+
+    }
+
     $("#parenttype").live("change", function () {
         ReloadGrid();
     });
 
-    $("#datehistory").live("change", function () {
+    $("#datehistory").change(function () {
         var text = $('#datehistory option:selected').text();
-        var value = $('#datehistory').val();
+        var id = $('#datehistory').val();
 
-        ReloadGridDetail();
-        var curDate = new Date( $('#EffectiveDate').datebox('getValue'));
+        //ReloadGridDetail();
+        var curDate = new Date($('#EffectiveDate').datebox('getValue'));
+        var selid = jQuery("#list").jqGrid('getGridParam', 'selrow');
+        if (selid) {
+            var ret = jQuery("#list").jqGrid('getRowData', selid);
+            curDate = new Date(ret.effectivedate);
+        }
+
+        
         var selDate = new Date(text);
         var isactive = (selDate >= curDate);
 
+        //document.getElementById("EffectiveDate").disabled = !isactive;
+        document.getElementById("btnEmployee").disabled = !isactive;
+
         if (isactive) {
-            $('#btn_edit_detail').removeAttr('disabled');
+            $('#btn_edit_detail').removeClass('ui-state-disabled disabled');
+            $('#form_btn_save').removeClass('ui-state-disabled disabled');
+            $('#form_btn_del').removeClass('ui-state-disabled disabled');
+            $('#EffectiveDate').removeClass('ui-state-disabled disabled');
+            $('#detail_btn_submit').removeClass('ui-state-disabled disabled');
+            //$('#btnEmployee').removeAttr('disabled');
+            //$('#EffectiveDate').removeAttr('data-options');
         } else {
-            $('#btn_edit_detail').attr('disabled', true);
+            $('#btn_edit_detail').addClass('ui-state-disabled disabled');
+            $('#form_btn_save').addClass('ui-state-disabled disabled');
+            $('#form_btn_del').addClass('ui-state-disabled disabled');
+            $('#EffectiveDate').addClass('ui-state-disabled disabled');
+            $('#detail_btn_submit').addClass('ui-state-disabled disabled');
+            //$('#btnEmployee').attr('disabled', true);
+            //$('#EffectiveDate').attr('data-options', '{"mode":"calbox", "hideInput": "true", "hideButton": "true", "useInline": "true"}');
         }
+
+        $.ajax({
+            dataType: "json",
+            url: base_url + "SalaryEmployee/GetInfo?Id=" + id,
+            success: function (result) {
+                if (result.Id == null) {
+                    $.messager.alert('Information', 'Data Not Found...!!', 'info');
+                }
+                else {
+                    if (JSON.stringify(result.Errors) != '{}') {
+                        var error = '';
+                        for (var key in result.Errors) {
+                            error = error + "<br>" + key + " " + result.Errors[key];
+                        }
+                        $.messager.alert('Warning', error, 'warning');
+                    }
+                    else {
+                        $("#form_btn_save").data('kode', id);
+                        $('#id').val(result.Id);
+                        $('#EmployeeId').val(result.EmployeeId);
+                        $('#EmployeeNIK').val(result.EmployeeNIK);
+                        $('#EmployeeName').val(result.EmployeeName);
+                        $('#Description').val(result.Description);
+                        $('#EffectiveDate').datebox('setValue', dateEnt(result.EffectiveDate));
+                        $('#EffectiveDate2').val(dateEnt(result.EffectiveDate));
+                        if (isactive) {
+                            $('#Description').removeAttr('disabled');
+                            $('#EffectiveDateDiv2').hide();
+                            $('#EffectiveDateDiv').show();
+                        } else {
+                            $('#Description').attr('disabled', true);
+                            $('#EffectiveDateDiv2').show();
+                            $('#EffectiveDateDiv').hide();
+                        }
+                        ReloadGridDetail();
+                    }
+                }
+            }
+        });
     });
 
     $("#form_div").dialog('close');
@@ -124,8 +234,14 @@
         $('#EffectiveDateDiv').show();
         $('#btnEmployee').removeAttr('disabled');
         $('#Description').removeAttr('disabled');
+        $('#btn_edit_detail').removeClass('ui-state-disabled disabled');
+        $('#form_btn_save').removeClass('ui-state-disabled disabled');
+        $('#EffectiveDate').removeClass('ui-state-disabled disabled');
+        $('#detail_btn_submit').removeClass('ui-state-disabled disabled');
+        //$('#form_btn_del').addClass('ui-state-disabled disabled');
         $('#form_btn_save').data('kode', '');
         $('#form_btn_save').show();
+        $('#form_btn_del').hide();
         $('#tabledetail_div').hide();
         vStatusSaving = 0; //add data mode	
         $('#form_div').dialog('open');
@@ -134,6 +250,7 @@
     $('#btn_edit').click(function () {
         ClearData();
         clearForm("#frm");
+        fillData();
         var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
         if (id) {
             vStatusSaving = 1;//edit data mode
@@ -154,6 +271,7 @@
                         }
                         else {
                             $("#form_btn_save").data('kode', id);
+                            $("#datehistory").data('kode', result.Id); // .toString()
                             $('#id').val(result.Id);
                             $('#EmployeeId').val(result.EmployeeId);
                             $('#EmployeeNIK').val(result.EmployeeNIK);
@@ -162,10 +280,16 @@
                             $('#Description').removeAttr('disabled');
                             $('#btnEmployee').removeAttr('disabled');
                             $('#EffectiveDate').datebox('setValue', dateEnt(result.EffectiveDate));
+                            $('#btn_edit_detail').removeClass('ui-state-disabled disabled');
+                            $('#form_btn_save').removeClass('ui-state-disabled disabled');
+                            $('#form_btn_del').removeClass('ui-state-disabled disabled');
+                            $('#EffectiveDate').removeClass('ui-state-disabled disabled');
+                            $('#detail_btn_submit').removeClass('ui-state-disabled disabled');
                             $('#EffectiveDateDiv2').hide();
                             $('#EffectiveDateDiv').show();
                             $('#tabledetail_div').hide();
                             $('#form_btn_save').show();
+                            $('#form_btn_del').show();
                             $('#tabledetail_div').show();
                             ReloadGridDetail();
                             $("#form_div").dialog("open");
@@ -173,6 +297,20 @@
                     }
                 }
             });
+        } else {
+            $.messager.alert('Information', 'Please Select Data...!!', 'info');
+        }
+    });
+
+    $('#form_btn_del').click(function () {
+        //clearForm("#frm");
+
+        var id = $('#id').val(); // jQuery("#list").jqGrid('getGridParam', 'selrow');
+        if (id) {
+            //var ret = jQuery("#list").jqGrid('getRowData', id);
+            $('#delete_confirm_btn_submit').data('Id', id);
+            $("#delete_confirm_div").dialog("open");
+            $("#form_div").dialog('close');
         } else {
             $.messager.alert('Information', 'Please Select Data...!!', 'info');
         }

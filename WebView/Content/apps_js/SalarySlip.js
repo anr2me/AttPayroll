@@ -28,7 +28,15 @@
         ClearErrorMessage();
     }
 
+    //$("#datatable").multicolselect({
+    //    buttonImage: "Content/spinnerText.png", //"selectbutton.gif",
+    //    valueCol: 1,
+    //    hideCol: 0
+    //});
+
     function fillData() {
+        $("#FirstSalaryItem").data('kode', "0");
+        $("#SecondSalaryItem").data('kode', "0");
         $.ajax({
             url: base_url + "SalaryItem/GetList",
             type: "POST",
@@ -47,14 +55,19 @@
                 $(objDropDown).empty();
                 $(objDropDown2).empty();
                 //$(objDropDown).append('<option value="0">--Select Department--</option>');
+                //$(objDropDown).append('<tr><th>ID</th><th>Code</th><th>Name</th></tr>');
                 if (result != null) {
                     for (var item in result.rows) {
                         $(objDropDown).append('<option value="' + result.rows[item].cell[0] + '">' + result.rows[item].cell[1] + '</option>');
                         $(objDropDown2).append('<option value="' + result.rows[item].cell[0] + '">' + result.rows[item].cell[1] + '</option>');
+                        //$(objDropDown).append('<tr><td>' + result.rows[item].cell[0] + '</td><td>' + result.rows[item].cell[1] + '</td><td>' + result.rows[item].cell[2] + '</td></tr>');
                     }
+                    document.getElementById('FirstSalaryItem').options[$("#FirstSalaryItem").data('kode')].selected = true;
+                    document.getElementById('SecondSalaryItem').options[$("#SecondSalaryItem").data('kode')].selected = true;
                 }
             }
         });
+        
     }
 
     $("#parenttype").live("change", function () {
@@ -117,29 +130,6 @@
     //$("input[name*=cbIsEnabled]").live("click", function () {
     //    UpdateEnable($(this).attr('rel')/*, $(this).is(":checked")*/);
     //});
-
-    //$("input[name*=cbIsMain]").live("click", function () {
-    //    UpdateEnable($(this).attr('rel')/*, $(this).is(":checked")*/);
-    //});
-
-    //$("input[name*=cbIsDetail]").live("click", function () {
-    //    UpdateEnable($(this).attr('rel')/*, $(this).is(":checked")*/);
-    //});
-
-    //function cboxIsEnabled(cellvalue, options, rowObject) {
-    //    return '<input name="cbIsEnabled' + options.rowId + '" rel="' + /*rowObject.id*/options.rowId + '" type="checkbox"' + (cellvalue ? ' checked="checked"' : '') +
-    //        '/>';
-    //}
-
-    //function cboxIsMain(cellvalue, options, rowObject) {
-    //    return '<input name="cbIsMain' + options.rowId +'" rel="' + /*rowObject.id*/options.rowId + '" type="checkbox"' + (cellvalue ? ' checked="checked"' : '') +
-    //        '/>';
-    //}
-
-    //function cboxIsDetail(cellvalue, options, rowObject) {
-    //    return '<input name="cbIsDetail' + options.rowId + '" rel="' + /*rowObject.id*/options.rowId + '" type="checkbox"' + (cellvalue ? ' checked="checked"' : '') +
-    //        '/>';
-    //}
 
     //GRID +++++++++++++++
     $("#list").jqGrid({
@@ -551,20 +541,23 @@
                         }
                         else {
                             $("#detail_btn_submit").data('kode', result.Id);
-                            $('#SalaryslipId').val(result.SalarySlipId);
+                            $('#SalarySlipId').val(result.SalarySlipId);
                             $('#detailIndex').numberbox('setValue', result.Index);
                             $('#SalaryItemSign').val(result.SalarySign);
-                            var e = document.getElementById('FirstSalaryItem');
-                            for (var item in e.options) {
-                                if (e.options[item].text == result.FirstCode) {
-                                    e.options[item].selected = true; break;
+                            //setTimeout(function (){  }, 1000);
+                            var e1 = document.getElementById('FirstSalaryItem');
+                            for (var item in e1.options) {
+                                if (e1.options[item].text == result.FirstCode) {
+                                    $("#FirstSalaryItem").data('kode', item);
+                                    e1.options[item].selected = true; break;
                                 }
                             }
                             $('#FormulaOp').val(result.FormulaOp);
-                            var e = document.getElementById('SecondSalaryItem');
-                            for (var item in e.options) {
-                                if (e.options[item].text == result.SecondCode) {
-                                    e.options[item].selected = true; break;
+                            var e2 = document.getElementById('SecondSalaryItem');
+                            for (var item in e2.options) {
+                                if (e2.options[item].text == result.SecondCode) {
+                                    $("#SecondSalaryItem").data('kode', item);
+                                    e2.options[item].selected = true; break;
                                 }
                             }
                             document.getElementById("HasMinValue").checked = result.HasMinValue;

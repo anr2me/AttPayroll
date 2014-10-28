@@ -12,6 +12,7 @@ namespace Core.Interface.Service
         ISalaryEmployeeValidator GetValidator();
         IQueryable<SalaryEmployee> GetQueryable();
         IList<SalaryEmployee> GetAll();
+        SalaryEmployee GetActiveObject();
         SalaryEmployee GetObjectById(int Id);
         SalaryEmployee CreateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService,
                             ISalaryEmployeeDetailService _salaryEmployeeDetailService, ISalaryItemService _salaryItemService,

@@ -21,27 +21,35 @@ namespace Validation.Validation
             return salaryEmployee;
         }
 
-        public SalaryEmployee VHasEffectiveDate(SalaryEmployee salaryEmployee)
+        public SalaryEmployee VHasEffectiveDate(SalaryEmployee salaryEmployee, ISalaryEmployeeService _salaryEmployeeService)
         {
             if (salaryEmployee.EffectiveDate == null || salaryEmployee.EffectiveDate.Equals(DateTime.FromBinary(0)))
             {
                 salaryEmployee.Errors.Add("EffectiveDate", "Tidak valid");
             }
+            else
+            {
+                SalaryEmployee active = _salaryEmployeeService.GetActiveObject();
+                if (active != null && salaryEmployee.EffectiveDate < active.EffectiveDate)
+                {
+                    salaryEmployee.Errors.Add("EffectiveDate", "Harus lebih besar atau sama dengan SalaryEmployee yang Aktif");
+                }
+            }
             return salaryEmployee;
         }
 
-        public bool ValidCreateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService)
+        public bool ValidCreateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService, ISalaryEmployeeService _salaryEmployeeService)
         {
             VHasEmployee(salaryEmployee, _employeeService);
             if (!isValid(salaryEmployee)) { return false; }
-            VHasEffectiveDate(salaryEmployee);
+            VHasEffectiveDate(salaryEmployee, _salaryEmployeeService);
             return isValid(salaryEmployee);
         }
 
-        public bool ValidUpdateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService)
+        public bool ValidUpdateObject(SalaryEmployee salaryEmployee, IEmployeeService _employeeService, ISalaryEmployeeService _salaryEmployeeService)
         {
             salaryEmployee.Errors.Clear();
-            ValidCreateObject(salaryEmployee, _employeeService);
+            ValidCreateObject(salaryEmployee, _employeeService, _salaryEmployeeService);
             return isValid(salaryEmployee);
         }
 

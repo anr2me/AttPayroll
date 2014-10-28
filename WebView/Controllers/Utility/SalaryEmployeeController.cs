@@ -42,7 +42,7 @@ namespace WebView.Controllers
             return View(this);
         }
 
-        public dynamic GetList(string _search, long nd, int rows, int? page, string sidx, string sord, string filters = "", int ParentId = 0)
+        public dynamic GetList(string _search, long nd, int rows, int? page, string sidx, string sord, string filters = "", int ParentId = 0, Nullable<bool> full = false)
         {
             // Construct where statement
             string strWhere = GeneralFunction.ConstructWhere(filters);
@@ -51,7 +51,7 @@ namespace WebView.Controllers
             if (filter == "") filter = "true";
 
             // Get Data
-            var q = _salaryEmployeeService.GetQueryable().Include("Employee").Include("SalaryEmployeeDetails").Include("TitleInfo");
+            var q = _salaryEmployeeService.GetQueryable().Where(x => (full.Value || x.IsActive)).Include("Employee").Include("SalaryEmployeeDetails").Include("TitleInfo");
 
             var query = (from model in q
                          select new

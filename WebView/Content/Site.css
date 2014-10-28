@@ -31,6 +31,11 @@ textarea {
     display: none;
 }
 
+.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+
 .editor-label {
     margin: 1em 0 0 0;
 }
