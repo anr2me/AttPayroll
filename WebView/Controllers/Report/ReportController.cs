@@ -233,7 +233,7 @@ namespace WebView.Controllers
             //var q = _slipGajiDetailService.GetQueryable().Include("SlipGajiDetail1s").Include("SlipGajiDetail2As").Where(x => (Id == null || Id.Value == 0 || x.EmployeeId == Id.Value) && x.MONTH.Year == year.Year);
             //.ToList();
             //var q2 = _slipGajiDetail1Service.GetQueryable().Include("SlipGajiDetail").Where(x => (Id == null || Id.Value == 0 || x.SlipGajiDetail.EmployeeId == Id.Value) && x.SlipGajiDetail.MONTH.Year == year.Year).ToList();
-            var q = _slipGajiDetail2AService.GetQueryable().Include("SlipGajiDetail").Where(x => (Id == null || Id.Value == 0 || x.SlipGajiDetail.EmployeeId == Id.Value) && x.SlipGajiDetail.MONTH.Year == year.Year).OrderBy(x => x.SlipGajiDetail.MONTH).AsEnumerable();
+            var q = _slipGajiDetail2AService.GetQueryable().Include("SlipGajiDetail").Where(x => (Id == null || Id.Value == 0 || x.SlipGajiDetail.EmployeeId == Id.Value) && x.SlipGajiDetail.MONTH.Year == year.Year).OrderBy(x => x.SlipGajiDetail.MONTH).ToList();
 
             string user = AuthenticationModel.GetUserName();
 

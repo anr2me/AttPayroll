@@ -229,6 +229,7 @@ namespace WebView.Controllers
                 var data = _titleInfoService.GetObjectById(model.Id);
                 data.Code = model.Code;
                 data.Name = model.Name;
+                data.Description = model.Description;
                 data.IsShiftable = model.IsShiftable;
                 data.IsSalaryAllIn = model.IsSalaryAllIn;
                 data.AccessLevel = model.AccessLevel;

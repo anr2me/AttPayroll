@@ -42,12 +42,22 @@ namespace Service.Service
         public EmployeeLeave CreateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService)
         {
             employeeLeave.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(employeeLeave, _employeeService) ? _repository.CreateObject(employeeLeave) : employeeLeave);
+            if (_validator.ValidCreateObject(employeeLeave, _employeeService))
+            {
+                employeeLeave.LeaveInterval = (int)employeeLeave.EndDate.Subtract(employeeLeave.StartDate).TotalDays + 1;
+                _repository.CreateObject(employeeLeave);
+            }
+            return employeeLeave;
         }
 
         public EmployeeLeave UpdateObject(EmployeeLeave employeeLeave, IEmployeeService _employeeService)
         {
-            return (employeeLeave = _validator.ValidUpdateObject(employeeLeave, _employeeService) ? _repository.UpdateObject(employeeLeave) : employeeLeave);
+            if (_validator.ValidUpdateObject(employeeLeave, _employeeService))
+            {
+                employeeLeave.LeaveInterval = (int)employeeLeave.EndDate.Subtract(employeeLeave.StartDate).TotalDays + 1;
+                _repository.UpdateObject(employeeLeave);
+            }
+            return employeeLeave;
         }
 
         public EmployeeLeave SoftDeleteObject(EmployeeLeave employeeLeave)
