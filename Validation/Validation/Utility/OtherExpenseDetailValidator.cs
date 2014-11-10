@@ -63,8 +63,8 @@ namespace Validation.Validation
             VHasOtherExpense(otherExpenseDetail, _otherExpenseService);
             if (!isValid(otherExpenseDetail)) { return false; }
             VHasEmployee(otherExpenseDetail, _employeeService);
-            if (!isValid(otherExpenseDetail)) { return false; }
-            VHasEffectiveDate(otherExpenseDetail);
+            //if (!isValid(otherExpenseDetail)) { return false; }
+            //VHasEffectiveDate(otherExpenseDetail);
             if (!isValid(otherExpenseDetail)) { return false; }
             VHasAmount(otherExpenseDetail);
             if (!isValid(otherExpenseDetail)) { return false; }

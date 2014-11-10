@@ -62,7 +62,11 @@ namespace WebView.Controllers
                              Division = model.Employee.Division.Name,
                              model.StartDate,
                              model.EndDate,
+                             model.LeaveInterval,
+                             model.LeaveType,
                              model.Remark,
+                             model.IsApproved,
+                             model.IsRealized,
                              model.CreatedAt,
                              model.UpdatedAt,
                          }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
@@ -104,7 +108,11 @@ namespace WebView.Controllers
                              model.Division,
                              model.StartDate,
                              model.EndDate,
+                             model.LeaveInterval,
+                             model.LeaveType,
                              model.Remark,
+                             model.IsApproved,
+                             model.IsRealized,
                              model.CreatedAt,
                              model.UpdatedAt,
                       }
@@ -138,8 +146,13 @@ namespace WebView.Controllers
                 model.EmployeeId,
                 EmployeeNIK = model.Employee.NIK,
                 EmployeeName = model.Employee.Name,
+                EmployeeTitleInfo = model.Employee.TitleInfo.Name,
+                EmployeeDivision = model.Employee.Division.Name,
+                EmployeeBranchOffice = model.Employee.Division.Department.BranchOffice.Name,
                 model.StartDate,
                 model.EndDate,
+                model.LeaveInterval,
+                model.LeaveType,
                 model.Remark,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
@@ -170,8 +183,13 @@ namespace WebView.Controllers
                 model.EmployeeId,
                 EmployeeNIK = model.Employee.NIK,
                 EmployeeName = model.Employee.Name,
+                EmployeeTitleInfo = model.Employee.TitleInfo.Name,
+                EmployeeDivision = model.Employee.Division.Name,
+                EmployeeBranchOffice = model.Employee.Division.Department.BranchOffice.Name,
                 model.StartDate,
                 model.EndDate,
+                model.LeaveInterval,
+                model.LeaveType,
                 model.Remark,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
@@ -233,7 +251,46 @@ namespace WebView.Controllers
                 data.EmployeeId = model.EmployeeId;
                 data.StartDate = model.StartDate;
                 data.EndDate = model.EndDate;
+                data.LeaveType = model.LeaveType;
                 data.Remark = model.Remark;
+                model = _employeeLeaveService.UpdateObject(data, _employeeService);
+            }
+            catch (Exception ex)
+            {
+                LOG.Error("Update Failed", ex);
+                Dictionary<string, string> Errors = new Dictionary<string, string>();
+                Errors.Add("Generic", "Error " + ex);
+
+                return Json(new
+                {
+                    Errors
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                model.Errors
+            });
+        }
+
+        [HttpPost]
+        public dynamic Approve(EmployeeLeave model)
+        {
+            try
+            {
+                if (!AuthenticationModel.IsAllowed("Edit", Core.Constants.Constant.MenuName.EmployeeLeave, Core.Constants.Constant.MenuGroupName.Setting))
+                {
+                    Dictionary<string, string> Errors = new Dictionary<string, string>();
+                    Errors.Add("Generic", "You are Not Allowed to Edit record");
+
+                    return Json(new
+                    {
+                        Errors
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                var data = _employeeLeaveService.GetObjectById(model.Id);
+                data.IsApproved = model.IsApproved;
                 model = _employeeLeaveService.UpdateObject(data, _employeeService);
             }
             catch (Exception ex)

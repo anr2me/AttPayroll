@@ -19,9 +19,9 @@
 
     function onInfiniteMaxAmount() {
         if (document.getElementById('IsInfiniteMaxAmount').value == 'True') {
-            $('#MaxAmount').removeAttr('disabled');
-        } else {
             $('#MaxAmount').attr('disabled', true);
+        } else {
+            $('#MaxAmount').removeAttr('disabled');
         }
     };
 

@@ -255,7 +255,7 @@
 
 			<div id="datetime_message">
 			</div>
-			<div id="header-message">| &nbsp; HR, ATTENDANCE & PAYROLL SYSTEM</div>
+			<div id="header-message">| &nbsp; HRMS, ATTENDANCE & PAYROLL SYSTEM</div>
 
 		      @if (WebView.AuthenticationModel.IsAuthenticated())
      {
@@ -285,6 +285,12 @@
 									<li><a href="/">Home</a></li>
 									<li><a href="#">Master</a>
 										<ul>
+                                            <li><a href="#">Data</a>
+												<ul>
+											   <li><a href="@Url.Action("Index", "Education")">Education</a> </li>
+                                               <li><a href="@Url.Action("Index", "TitleInfo")">Title</a> </li>
+												</ul>
+											</li>
 											<li><a href="#">Company</a>
 												<ul>
 											   <li><a href="@Url.Action("Index", "BranchOffice")">Branch Office</a> </li>
@@ -292,16 +298,31 @@
                                                <li><a href="@Url.Action("Index", "Division")">Division</a> </li>
 												</ul>
 											</li>
+                                            <li><a href="#">Recruitment</a>
+												<ul>
+                                                <li><a href="@Url.Action("Index", "JobDesc")">Job Descripton</a> </li>
+                                                <li><a href="@Url.Action("Index", "KRA")">Key Result Area</a> </li>
+                                               @*<li><a href="@Url.Action("Index", "KPI")">Key Performance Indicator</a> </li>*@
+											   <li><a href="@Url.Action("Index", "Applicant")">Applicant</a> </li>
+                                               <li><a href="@Url.Action("Index", "JobDescMembership")">Job Desc Membership</a> </li>
+                                                <li><a href="@Url.Action("Index", "JobDescAssignment")">Job Desc Assignment</a> </li>
+												</ul>
+											</li>
 										    <li><a href="#">Employee</a>
 												<ul>
-													<li><a href="@Url.Action("Index", "TitleInfo")">Title</a> </li>
-                                                    <li><a href="@Url.Action("Index", "Employee")">Personal Info</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeePersonal")">Personal Info</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeFamilyInfo")">Family Info</a></li>
+                                                    @*<li><a href="@Url.Action("Index", "EmployeeStatusInfo")">Status Info</a></li>*@
+                                                    <li><a href="@Url.Action("Index", "EmployeeEducationMini")">Education Info</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeProfessionLicense")">Profession License Info</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeProfessionMembership")">Profession Membership Info</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeExperience")">Experience Info</a></li>
 												</ul>
 											</li>
 											<li><a href="#">Attendance</a>
 												<ul>
-													<li><a href="@Url.Action("Index", "WorkingTime")">Working Time</a></li>
-                                                    <li><a href="@Url.Action("Index", "WorkingDay")">Working Day</a></li>
+													<li><a href="@Url.Action("Index", "WorkingTime")">Shift</a></li>
+                                                    <li><a href="@Url.Action("Index", "WorkingDay")">Shift Day</a></li>
 										        </ul>
 											</li>
                                             <li><a href="#">Salary</a>
@@ -324,7 +345,7 @@
 													<li><a href="@Url.Action("Index", "GeneralLeave")">General Leave</a></li>
                                                     <li><a href="@Url.Action("Index", "EmployeeLeave")">Employee Leave</a></li>
                                                     <li><a href="@Url.Action("Index", "SPKL")">SPKL</a></li>
-                                                    <li><a href="@Url.Action("Index", "EmployeeWorkingTime")">Employee Working Time</a></li>
+                                                    <li><a href="@Url.Action("Index", "EmployeeWorkingTime")">Shift Membership</a></li>
                                                     <li><a href="@Url.Action("Index", "EmployeeAttendance")">Manual Attendance</a></li>
 												</ul>
 											 </li>
@@ -332,7 +353,7 @@
 												<ul>
 													<li><a href="@Url.Action("Index", "SalaryEmployee")">Employee Salary</a></li>
                                                     @*<li><a href="@Url.Action("Index", "EmployeeLoan")">Employee Loan</a></li>*@
-													<li><a href="@Url.Action("Index", "OtherIncome")">Other Income</a></li>
+													<li><a href="@Url.Action("Index", "EmployeeOtherIncome")">Other Income</a></li>
                                                     <li><a href="@Url.Action("Index", "OtherExpense")">Other Expense</a></li>
                                                     <li><a href="@Url.Action("Index", "THR")">THR</a></li>
                                                     @*<li><a href="@Url.Action("Index", "PensionCompensation")">Pension Compensation</a></li>*@

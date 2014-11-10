@@ -15,7 +15,7 @@ namespace Validation.Validation
             Department department = _departmentService.GetObjectById(division.DepartmentId);
             if (department == null)
             {
-                division.Errors.Add("Department", "Tidak valid");
+                division.Errors.Add("Generic", "Department Tidak valid");
             }
             return division;
         }

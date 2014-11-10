@@ -15,7 +15,7 @@ namespace Validation.Validation
             BranchOffice branchOffice = _branchOfficeService.GetObjectById(department.BranchOfficeId);
             if (branchOffice == null)
             {
-                department.Errors.Add("BranchOffice", "Tidak valid");
+                department.Errors.Add("Generic", "BranchOffice Tidak valid");
             }
             return department;
         }

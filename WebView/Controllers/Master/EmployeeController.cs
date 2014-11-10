@@ -29,7 +29,6 @@ namespace WebView.Controllers
             _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
             _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
             _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
-            _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
             _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
         }
 

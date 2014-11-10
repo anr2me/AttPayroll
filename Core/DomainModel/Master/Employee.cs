@@ -41,7 +41,7 @@ namespace Core.DomainModel
         public Nullable<int> EmployeeEducationId { get; set; }
         public Nullable<int> LastEmploymentId { get; set; }
         public int ActiveStatus { get; set; } // NonAktif/Aktif/MedicalCheck?
-        public Nullable<DateTime> NonActiveDate { get; set; } 
+        public Nullable<DateTime> NonActiveDate { get; set; }
         public int DivisionId { get; set; }
         public int TitleInfoId { get; set; }
         //public Nullable<int> EmployeeWorkingTimeId { get; set; }

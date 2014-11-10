@@ -453,16 +453,16 @@ namespace Service.Service
                     }
 
                     // Cari OtherIncome yg berlaku sesuai hari
-                    var oids2 = oids.Where(x => x.EffectiveDate <= endDate && x.EndDate >= startDate && x.Recurring > 0);
+                    var oids2 = oids.Where(x => x.EffectiveDate.Value <= endDate && x.EndDate >= startDate && x.Recurring > 0);
                     foreach (var oid in oids2)
                     {
-                        for (DateTime curDay = oid.EffectiveDate; curDay <= oid.EndDate; curDay = curDay.AddDays(1))
+                        for (DateTime curDay = oid.EffectiveDate.GetValueOrDefault(); curDay <= oid.EndDate; curDay = curDay.AddDays(1))
                         {
                             if (oid.Recurring > 0)
                             {
                                 if (curDay >= startDate && curDay <= endDate)
                                 {
-                                    salaryItemsValue[oid.EffectiveDate][oid.OtherIncome.SalaryItem.Code] += oid.Amount;
+                                    salaryItemsValue[oid.EffectiveDate.GetValueOrDefault()][oid.OtherIncome.SalaryItem.Code] += oid.Amount;
                                     salaryItemsValue[startDate][Constant.LegacyMonthlyItem.TOTTJ.ToString()] += oid.Amount;
                                 }
                                 oid.Recurring--;

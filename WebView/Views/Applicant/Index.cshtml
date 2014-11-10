@@ -1,0 +1,271 @@
+﻿@model WebView.Controllers.ApplicantController
+@{
+    ViewBag.Title = "Applicant";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/applicant.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="grid_toolbar">
+       <div style="float: left">
+           <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+           <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_edittest" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Hasil Test</a>
+           <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+           @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+       </div>
+        
+   </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; overflow:auto;  top:120px; padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                <div id="mainform">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="226">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Status</label></td>
+                            <td>
+                                <select id="Status" name="Status">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.ApplicantStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.ApplicantStatus), item)</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Name</label></td>
+                            <td>
+                                <input id="Name" name="Name" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Birth Date
+                            </td>
+                            <td>
+                                <input id="BirthDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="BirthDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Address</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="Address" id="Address" cols="60" rows="3"></textarea>
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Phone Number</label></td>
+                            <td>
+                                <input id="PhoneNumber" name="PhoneNumber" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label>Sex </label></td>
+                            <td>
+                                <select id="Sex" name="Sex">
+                                    @*<option value="0">Male</option>
+                                    <option value="1">Female</option>*@
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.Sex)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Sex), item)</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Education</label></td>
+                            <td colspan="3">
+                               <input id="EducationId" name="EducationId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnEducation" name="btnEducation" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="EducationName" name="Education" type="text" size="30" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Email</label></td>
+                            <td>
+                                <input id="Email" name="Email" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label>Position</label></td>
+                            <td colspan="3">
+                               <input id="PositionId" name="PositionId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnPosition" name="btnPosition" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="PositionName" name="Position" type="text" size="30" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Position</label></td>
+                            <td>
+                                <input id="Position" name="Position" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Experience
+                            </td>
+                            <td>
+                                <input id="Experience" name="Experience" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" /> Months
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Last Position</label></td>
+                            <td>
+                                <input id="LastPosition" name="LastPosition" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Source</label></td>
+                            <td>
+                                <input id="Source" name="Source" type="text" size="30" maxlength="60" align="left" /></td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+                </div>
+                <fieldset id="hasiltest">
+                    <legend><label>Hasil Psikotes</label></legend>
+                    <fieldset>
+                    <legend><label>CFIT</label></legend>
+                    <table>
+                        <tr>
+                            <td>
+                                Total Score
+                            </td>
+                            <td>
+                                <input id="TotalScore" name="TotalScore" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                IQ
+                            </td>
+                            <td>
+                                <input id="IQ" name="IQ" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <legend><label>KRAEPLIN</label></legend>
+                    <table>
+                        <tr>
+                            <td>
+                                Kecepatan Kerja
+                            </td>
+                            <td>
+                                <input id="KecepatanKerja" name="KecepatanKerja" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Ketelitian Kerja
+                            </td>
+                            <td>
+                                <input id="KetelitianKerja" name="KetelitianKerja" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Stabilitas Kerja
+                            </td>
+                            <td>
+                                <input id="StabilitasKerja" name="StabilitasKerja" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Ketahanan Kerja
+                            </td>
+                            <td>
+                                <input id="KetahananKerja" name="KetahananKerja" type="text" size="15" maxlength="20" class="textright easyui-numberbox" data-options="groupSeparator:','" value="0" />
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                </fieldset>
+                
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Look Up education -->
+    <div id="lookup_div_education" class="easyui-dialog" title="List Division" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_education" class="grid_toolbar">
+            <a id="lookup_btn_add_education" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_education" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_education" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_education" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up education -->
+
+<!-- Look Up position -->
+    <div hidden id="lookup_div_position" class="easyui-dialog" title="List Title Info" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_position" class="grid_toolbar">
+            <a id="lookup_btn_add_position" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_position" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_position" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_position" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up position -->
+
+  </div>
+

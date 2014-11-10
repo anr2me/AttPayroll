@@ -13,9 +13,11 @@ namespace Core.DomainModel
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int LeaveInterval { get; set; } // used internally
-        //public int LeaveType { get; set; } // cuti, izin, sakit dgn surat
+        public int LeaveType { get; set; } // cuti, izin, sakit dgn surat, dinas, pengganti tugas
         public string Remark { get; set; }
         public int EmployeeId { get; set; }
+        public bool IsApproved { get; set; }
+        public bool IsRealized { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

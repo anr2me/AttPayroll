@@ -111,7 +111,7 @@ namespace Validation.Validation
             OtherIncome otherIncome = _otherIncomeService.GetObjectById(otherIncomeDetail.OtherIncomeId);
             if (otherIncome != null)
             {
-                DateTime curDay = otherIncomeDetail.EffectiveDate;
+                DateTime curDay = otherIncomeDetail.EffectiveDate.GetValueOrDefault();
                 int cnt = otherIncomeDetail.Recurring;
                 while (cnt > 1)
                 {
@@ -122,7 +122,7 @@ namespace Validation.Validation
                         case Constant.SalaryItemStatus.Monthly: otherIncomeDetail.EndDate = curDay.AddMonths(1); break;
                         case Constant.SalaryItemStatus.Yearly: otherIncomeDetail.EndDate = curDay.AddYears(1); break;
                     }
-                    curDay = otherIncomeDetail.EndDate;
+                    curDay = otherIncomeDetail.EndDate.GetValueOrDefault();
                     cnt--;
                 }
             }

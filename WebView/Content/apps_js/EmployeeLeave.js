@@ -32,6 +32,8 @@
     });
 
     $("#form_div").dialog('close');
+    $("#approve_confirm_div").dialog('close');
+    $("#unapprove_confirm_div").dialog('close');
     $("#delete_confirm_div").dialog('close');
     $("#lookup_div_employee").dialog('close');
     $("#detail_div").dialog('close');
@@ -41,7 +43,7 @@
         url: base_url + 'EmployeeLeave/GetList',
         postData: { 'ParentId': function () { return $("#parenttype").val(); } },
         datatype: "json",
-        colNames: ['ID', 'Employee ID', 'Employee NIK', 'Employee Name', 'Title', 'Division', 'Start Date', 'End Date', 'Remark', 'Created At', 'Updated At'],
+        colNames: ['ID', 'Employee ID', 'Employee NIK', 'Employee Name', 'Title', 'Division', 'Start Date', 'End Date', 'Interval', 'Leave Type', 'Remark', 'Is Approved', 'Is Realized', 'Created At', 'Updated At'],
         colModel: [
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'employeeid', index: 'employeeid', width: 100, hidden: true },
@@ -51,7 +53,11 @@
                   { name: 'division', index: 'division', width: 100 },
                   { name: 'startdate', index: 'startdate', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
                   { name: 'enddate', index: 'enddate', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
+                  { name: 'interval', index: 'interval', width: 50 },
+                  { name: 'leavetype', index: 'leavetype', width: 100, stype: 'select', editoptions: { value: getSelectOption("#LeaveType") } },
                   { name: 'remark', index: 'remark', width: 200 },
+                  { name: 'isapproved', index: 'isapproved', width: 100 },
+                  { name: 'isrealized', index: 'isrealized', width: 100 },
 				  { name: 'createdat', index: 'createdat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
 				  { name: 'updatedat', index: 'updatedat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
         ],
@@ -71,18 +77,13 @@
         },
         gridComplete:
 		  function () {
-		      //var ids = $(this).jqGrid('getDataIDs');
-		      //for (var i = 0; i < ids.length; i++) {
-		      //    var cl = ids[i];
-		      //    rowDel = $(this).getRowData(cl).deletedimg;
-		      //    if (rowDel == 'true') {
-		      //        img = "<img src ='" + base_url + "content/assets/images/remove.png' title='Data has been deleted !' width='16px' height='16px'>";
+		      var ids = $(this).jqGrid('getDataIDs');
+		      for (var i = 0; i < ids.length; i++) {
+		          var cl = ids[i];
 
-		      //    } else {
-		      //        img = "";
-		      //    }
-		      //    $(this).jqGrid('setRowData', ids[i], { deletedimg: img });
-		      //}
+		          rowLeaveType = document.getElementById("LeaveType").options[$(this).getRowData(cl).leavetype].text;
+		          $(this).jqGrid('setRowData', ids[i], { leavetype: rowLeaveType });
+		      }
 		  }
 
     });//END GRID
@@ -144,7 +145,12 @@
                             $('#EmployeeId').val(result.EmployeeId);
                             $('#EmployeeNIK').val(result.EmployeeNIK);
                             $('#EmployeeName').val(result.EmployeeName);
+                            $('#EmployeeTitleInfo').val(result.EmployeeTitleInfo);
+                            $('#EmployeeDivision').val(result.EmployeeDivision);
+                            $('#EmployeeBranchOffice').val(result.EmployeeBranchOffice);
                             $('#Remark').val(result.Remark);
+                            $('#LeaveInterval').val(result.LeaveInterval);
+                            $('#LeaveType').val(result.LeaveType);
                             $('#StartDate').datebox('setValue', dateEnt(result.StartDate));
                             $('#EndDate').datebox('setValue', dateEnt(result.EndDate));
                             //$('#Description').val(result.Description);
@@ -156,7 +162,7 @@
                             //$('#tabledetail_div').hide();
                             //$('#form_btn_save').show();
                             //$('#tabledetail_div').show();
-                            ReloadGridDetail();
+                            ReloadGrid();
                             $("#form_div").dialog("open");
                         }
                     }
@@ -165,6 +171,100 @@
         } else {
             $.messager.alert('Information', 'Please Select Data...!!', 'info');
         }
+    });
+
+    $('#btn_app').click(function () {
+        clearForm("#frm");
+
+        var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
+        if (id) {
+            var ret = jQuery("#list").jqGrid('getRowData', id);
+            $('#approve_confirm_btn_submit').data('Id', ret.id);
+            $("#approve_confirm_div").dialog("open");
+        } else {
+            $.messager.alert('Information', 'Please Select Data...!!', 'info');
+        }
+    });
+
+    $('#approve_confirm_btn_cancel').click(function () {
+        $('#approve_confirm_btn_submit').val('');
+        $("#approve_confirm_div").dialog('close');
+    });
+
+    $('#approve_confirm_btn_submit').click(function () {
+        $.ajax({
+            url: base_url + "EmployeeLeave/Approve",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                Id: $('#approve_confirm_btn_submit').data('Id'), IsApproved: true,
+            }),
+            success: function (result) {
+                if (JSON.stringify(result.Errors) != '{}') {
+                    for (var key in result.Errors) {
+                        if (key != null && key != undefined && key != 'Generic') {
+                            $('input[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+                            $('textarea[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+                        }
+                        else {
+                            $.messager.alert('Warning', result.Errors[key], 'warning');
+                        }
+                    }
+                    $("#approve_confirm_div").dialog('close');
+                }
+                else {
+                    ReloadGrid();
+                    $("#approve_confirm_div").dialog('close');
+                }
+            }
+        });
+    });
+
+    $('#btn_unapp').click(function () {
+        clearForm("#frm");
+
+        var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
+        if (id) {
+            var ret = jQuery("#list").jqGrid('getRowData', id);
+            $('#unapprove_confirm_btn_submit').data('Id', ret.id);
+            $("#unapprove_confirm_div").dialog("open");
+        } else {
+            $.messager.alert('Information', 'Please Select Data...!!', 'info');
+        }
+    });
+
+    $('#unapprove_confirm_btn_cancel').click(function () {
+        $('#unapprove_confirm_btn_submit').val('');
+        $("#unapprove_confirm_div").dialog('close');
+    });
+
+    $('#unapprove_confirm_btn_submit').click(function () {
+        $.ajax({
+            url: base_url + "EmployeeLeave/Approve",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                Id: $('#unapprove_confirm_btn_submit').data('Id'), IsApproved: false,
+            }),
+            success: function (result) {
+                if (JSON.stringify(result.Errors) != '{}') {
+                    for (var key in result.Errors) {
+                        if (key != null && key != undefined && key != 'Generic') {
+                            $('input[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+                            $('textarea[name=' + key + ']').addClass('errormessage').after('<span class="errormessage">**' + result.Errors[key] + '</span>');
+                        }
+                        else {
+                            $.messager.alert('Warning', result.Errors[key], 'warning');
+                        }
+                    }
+                    $("#unapprove_confirm_div").dialog('close');
+                }
+                else {
+                    ReloadGrid();
+                    $("#unapprove_confirm_div").dialog('close');
+                }
+            }
+        });
     });
 
     $('#btn_del').click(function () {
@@ -242,6 +342,7 @@
             data: JSON.stringify({
                 Id: id, Remark: $("#Remark").val(), EmployeeId: $("#EmployeeId").val(),
                 StartDate: $("#StartDate").datebox('getValue'), EndDate: $("#EndDate").datebox('getValue'),
+                LeaveType: $("#LeaveType").val(),
             }),
             async: false,
             cache: false,

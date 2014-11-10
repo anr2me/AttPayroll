@@ -40,6 +40,25 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
+        public OtherIncome GetObjectByName(string Name)
+        {
+            return GetQueryable().Where(x => x.Name == Name).FirstOrDefault();
+        }
+
+        public OtherIncome CreateObject(string Code, string Name, string Description, int SalaryStatus, ISalaryItemService _salaryItemService)
+        {
+            OtherIncome otherIncome = new OtherIncome()
+            {
+                Code = Code,
+                Name = Name,
+                Description = Description,
+                SalaryStatus = SalaryStatus,
+                IsDetailSalary = true,
+            };
+            CreateObject(otherIncome, _salaryItemService);
+            return otherIncome;
+        }
+
         public OtherIncome CreateObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService)
         {
             otherIncome.Errors = new Dictionary<String, String>();

@@ -13,6 +13,8 @@ namespace Core.Interface.Service
         IQueryable<OtherIncome> GetQueryable();
         IList<OtherIncome> GetAll();
         OtherIncome GetObjectById(int Id);
+        OtherIncome GetObjectByName(string Name);
+        OtherIncome CreateObject(string Code, string Name, string Description, int SalaryStatus, ISalaryItemService _salaryItemService);
         OtherIncome CreateObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService);
         OtherIncome UpdateObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService);
         OtherIncome SoftDeleteObject(OtherIncome otherIncome, ISalaryItemService _salaryItemService);

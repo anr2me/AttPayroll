@@ -35,8 +35,17 @@ namespace Core.Constants
             public static string Department = "Department";
             public static string Division = "Division";
 
+            public static string Applicant = "Applicant";
+            public static string Education = "Education";
+            public static string JobDesc = "Job Description";
+
             public static string TitleInfo = "Title";
             public static string PersonalInfo = "Personal Info";
+            public static string EmployeeFamilyInfo = "Family Info";
+            public static string EmployeeStatusInfo = "Status Info";
+            public static string EmployeeEducationInfo = "Education Info";
+            public static string EmployeeProfessionInfo = "Profession Info";
+            public static string EmployeeExperienceInfo = "Experience Info";
 
             public static string WorkingTime = "Working Time";
             public static string WorkingDay = "Working Day";
@@ -98,6 +107,33 @@ namespace Core.Constants
             public const string User = "User";
         }
 
+        public enum CurrencyType
+        {
+            IDR,
+            USD,
+            AUD,
+            SGD,
+            EUR,
+            GBP,
+            JPY,
+        }
+
+        public enum GradeType
+        {
+            TidakBisa,
+            Kurang,
+            Cukup,
+            Baik,
+            SangatBaik,
+        }
+
+        public enum IDType
+        {
+            KTP,
+            SIM,
+            Passport,
+        }
+
         public enum Sex
         {
             Male,
@@ -106,9 +142,23 @@ namespace Core.Constants
 
         public enum MaritalStatus
         {
-            SingleWidowed, // or Divorced
+            Single, //Widowed, // or Divorced
             Married,
+            Divorced,
             //Widowed // Widow or Widower
+        }
+
+        public enum Relationship
+        {
+            Istri,
+            Suami,
+            Anak,
+            Ayah,
+            Ibu,
+            Adik,
+            Kakak,
+            Sepupu,
+            Lainnya,
         }
 
         public enum Religion
@@ -121,12 +171,59 @@ namespace Core.Constants
             Budha,
         }
 
+        public enum BloodType
+        {
+            A,
+            AB,
+            B,
+            O,
+        }
+
+        public enum PolarType
+        {
+            Negative,
+            Positive,
+        }
+
+        public enum JobType
+        {
+            PartTime,
+            FullTime,
+        }
+
         public enum WorkingStatus
         {
-            MagangPartTime,
+            Magang,
             Kontrak,
             Percobaan,
             Tetap,
+        }
+
+        public enum ApplicantStatus
+        {
+            Unprocessed,
+            Stock,
+            Hired,
+            Rejected,
+        }
+
+        public enum JenjangType
+        {
+            SD,
+            SLTP,
+            SLTA,
+            D1,
+            D3,
+            S1,
+            S2,
+            S3,
+        }
+
+        public enum ApplicantSourceType
+        {
+            Internal,
+            Kurir,
+            Jobstreet,
         }
 
         public enum WorkingShift
@@ -145,6 +242,13 @@ namespace Core.Constants
             //MedicalCheck,
         }
 
+        public enum LeaveType
+        {
+            Biasa,
+            PenggantiTugas,
+            DinasPerusahaan,
+        }
+
         public enum AttendanceStatus
         {
             Present,
@@ -158,8 +262,22 @@ namespace Core.Constants
 
         public enum SalarySign
         {
-            Expense = -1,
-            Income = 1,
+            Expense = -1, // Credit
+            Income = 1, // Debit
+        }
+
+        public enum OtherIncomeType
+        {
+            DanaLainnya,
+            Materai,
+            Parkir,
+            JagaGedung,
+            KostKaryawan,
+            Pulsa,
+            UangMakan,
+            Transport,
+            Kerajinan,
+            Magang,
         }
 
         public enum SalaryItemType

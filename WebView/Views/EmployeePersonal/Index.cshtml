@@ -1,0 +1,682 @@
+﻿@model WebView.Controllers.EmployeePersonalController
+@{
+    ViewBag.Title = "Employee Personal Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/employeepersonal.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="grid_toolbar">
+       <div style="float: left">
+           <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+           <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_edit_fin" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Finance Data</a>
+           <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+           @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+       </div>
+       @*<div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Division : </label>
+           <select id="parenttype" >
+               
+           </select>
+       </div>
+        <div id="department" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Department : </label>
+           <select id="departmenttype" >
+              
+           </select>
+       </div>
+        <div id="branchoffice" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Branch Office : </label>
+           <select id="branchofficetype" >
+               <option value="0">-- Select Branch Office --</option>
+               @foreach (var item in Model._branchOfficeService.GetAll())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+       </div>*@
+   </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dummy Select -->
+    <div id="dummy" hidden>
+        <table hidden width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        
+                        <tr>
+                            <td>
+                                <label>Working Status </label></td>
+                            <td>
+                                <select id="WorkingStatus" name="WorkingStatus">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.WorkingStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.WorkingStatus), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        
+                        
+                    </table>
+    </div>
+<!-- End Dummy Select -->
+
+<!-- Dialog Box Main -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; width:1200px; height:560px; overflow:auto; padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto; height:500px">
+            <form id="frm">
+            <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                <tr>
+                <td>
+                <fieldset class="ui-widget-content ui-corner-all input_form_div">
+                <legend><label> Base Data </label></legend>
+                    <table width="100%" height="110" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="80px" nowrap style="width: 80px">
+                                <label>ID</label></td>
+                            <td>
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>First Name</label></td>
+                            <td>
+                                <input id="FirstName" name="FirstName" type="text" size="20" maxlength="60" align="left" /></td>
+                            
+                            <td>
+                                <label>Last Name</label></td>
+                            <td>
+                                <input id="LastName" name="LastName" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>NickName </label></td>
+                            <td>
+                                <input id="NickName" name="NickName" type="text" size="20" maxlength="60" align="left" /></td>
+                            
+                            <td>
+                                Start Working Date
+                            </td>
+                            <td>
+                                <input id="StartWorkingDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="StartWorkingDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        @*<tr><td><label>&nbsp;</label></td></tr>*@
+                    </table>
+                </fieldset>
+                </td>
+                <td>        
+                    <fieldset class="ui-widget-content ui-corner-all input_form_div">
+                <legend><label> Optional Data </label></legend>
+                    <table width="100%" height="100" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr>
+                            <td>
+                                <label>Email</label></td>
+                            <td>
+                                <input id="Email" name="Email" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Mobile Phone</label></td>
+                            <td>
+                                <input id="MobilePhone" name="MobilePhone" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Extension </label></td>
+                            <td>
+                                <input id="ExtensionNumber" name="ExtensionNumber" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Secretary </label></td>
+                            <td>
+                                <input id="Secretary" name="Secretary" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        @*<tr><td><label>&nbsp;</label></td></tr>*@
+                    </table>
+                </fieldset>
+                </td>
+                
+                </tr>
+                <tr>
+                    <td >
+                        <fieldset class="ui-widget-content ui-corner-all">
+                    <legend><label> Status Karyawan </label></legend>
+                    <table width="100%" border="0" height="100" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr>
+                            <td>
+                                <label>NIK</label></td>
+                            <td>
+                                <input id="NIK" name="NIK" type="text" size="24" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Job Type </label></td>
+                            <td>
+                                <select id="JobType" name="JobType">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.JobType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.JobType), item)</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                Joined Date
+                            </td>
+                            <td>
+                                <input id="JoinedDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="JoinedDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Title</label></td>
+                            <td>
+                               <input id="TitleInfoId" name="TitleInfoId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnTitleInfo" name="btnTitleInfo" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="TitleInfoName" name="TitleInfo" type="text" size="20" maxlength="60" class="editable upper" disabled="disabled" />
+                            </td>
+                            <td>
+                                <label>Supervisor</label></td>
+                            <td>
+                               <input id="SupervisorId" name="SupervisorId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnSupervisor" name="btnSupervisor" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="SupervisorName" name="Supervisor" type="text" size="20" maxlength="60" class="editable upper" disabled="disabled" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Division</label></td>
+                            <td>
+                               <input id="DivisionId" name="DivisionId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnDivision" name="btnDivision" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="DivisionName" name="Division" type="text" size="20" maxlength="60" class="editable upper" disabled="disabled" />
+                            </td>
+                            <td>
+                                <label>Superior</label></td>
+                            <td>
+                               <input id="SuperiorId" name="SuperiorId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnSuperior" name="btnSuperior" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="SuperiorName" name="Superior" type="text" size="20" maxlength="60" class="editable upper" disabled="disabled" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Starting Date
+                            </td>
+                            <td>
+                                <input id="StartingDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="StartingDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                            <td>
+                                Ending Date
+                            </td>
+                            <td>
+                                <input id="EndingDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="EndingDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Remark</label></td>
+                            <td colspan="3">
+                                <input id="Remark" name="Remark" type="text" size="60" maxlength="60" align="left" /></td>
+                        </tr>
+                    </table>
+                </fieldset>
+                
+                </td>
+                <td>        
+                    <fieldset class="ui-widget-content ui-corner-all input_form_div">
+                <legend><label> Pengetahuan Bahasa </label></legend>
+                    <table width="100%" height="150" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr>
+                            <td>
+                                <label>English </label></td>
+                            <td>
+                                <select id="Inggris" name="Inggris">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.GradeType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.GradeType), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Mandarin </label></td>
+                            <td>
+                                <select id="Mandarin" name="Mandarin">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.GradeType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.GradeType), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Indonesia </label></td>
+                            <td>
+                                <select id="Indonesia" name="Indonesia">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.GradeType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.GradeType), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Other </label></td>
+                            <td><input id="OtherLang" name="OtherLang" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <select id="OtherGrade" name="OtherGrade">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.GradeType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.GradeType), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        @*<tr><td><label>&nbsp;</label></td></tr>*@
+                    </table>
+                </fieldset>
+                </td>
+                </tr>
+                <tr>
+                <td colspan="3">
+                    <fieldset class="ui-widget-content ui-corner-all">
+                    <legend><label> Data Pribadi </label></legend>
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr>
+                            <td>
+                                <label>ID Type </label></td>
+                            <td>
+                                <select id="IDType" name="IDType">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.IDType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.IDType), item)</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <label>ID Number</label></td>
+                            <td>
+                                <input id="IDNumber" name="IDNumber" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td width="80px">
+                                Expiration Date
+                            </td>
+                            <td>
+                                <input id="ExpirationDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="ExpirationDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Name</label></td>
+                            <td>
+                                <input id="IDName" name="IDName" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Place of Birth</label></td>
+                            <td >
+                                <input id="PlaceOfBirth" name="PlaceOfBirth" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                Birth Date
+                            </td>
+                            <td>
+                                <input id="BirthDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="BirthDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                            <td rowspan="6" colspan="3">
+                                <fieldset class="ui-widget-content ui-corner-all">
+                    <legend><label> Keadaan Darurat </label></legend>
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr>
+                            <td width="80px">
+                                <label>Contact Name</label></td>
+                            <td>
+                                <input id="EmergencyContactName" name="EmergencyContactName" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Contact Phone</label></td>
+                            <td>
+                                <input id="EmergencyPhoneNumber" name="EmergencyPhoneNumber" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Contact Relationship</label></td>
+                            <td>
+                                <input id="EmergencyContactRemark" name="EmergencyContactRemark" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Sex </label></td>
+                            <td>
+                                <select id="Sex" name="Sex">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.Sex)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Sex), item)</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Golongan Darah</label></td>
+                            <td>
+                                <input id="GolDarah" name="GolDarah" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <label>Jenis</label></td>
+                            <td>
+                                <input id="JenisGolDarah" name="JenisGolDarah" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Marital Status </label></td>
+                            <td>
+                                <select id="MaritalStatus" name="MaritalStatus">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.MaritalStatus)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.MaritalStatus), item)</option>
+                                    }
+                                </select></td>
+                            <td>
+                                Married Date
+                            </td>
+                            <td>
+                                <input id="MarriedDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="MarriedDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Last Education</label></td>
+                            <td>
+                                <input id="LastEducation" name="LastEducation" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Religion </label></td>
+                            <td>
+                                <select id="Religion" name="Religion">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.Religion)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.Religion), item)</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <label>Nationality</label></td>
+                            <td>
+                                <input id="Nationality" name="Nationality" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                    </table>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                    <fieldset class="ui-widget-content ui-corner-all">
+                        <legend><label> Alamat Terdaftar </label></legend>
+                        <table border="0" height="150" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                            <tr>
+                                <td valign="top">
+                                    <label>Address</label></td>
+                                <td colspan="3"><label>
+                                    <textarea name="IDAddress" id="IDAddress" cols="40" rows="2"></textarea></label></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>City</label></td>
+                                <td width="80px">
+                                    <input id="IDCity" name="IDCity" type="text" size="15" maxlength="60" align="left" /></td>
+                                <td width="80px">
+                                    <label>Postal Code</label></td>
+                                <td>
+                                    <input id="IDPostalCode" name="IDPostalCode" type="text" size="15" maxlength="60" align="left" /></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                            </td>
+                            <td>
+                    <fieldset class="ui-widget-content ui-corner-all">
+                        <legend><label> Alamat Sebenarnya </label></legend>
+                        <table border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                            <tr>
+                                <td valign="top">
+                                    <label>Address</label></td>
+                                <td colspan="3"><label>
+                                    <textarea name="Address" id="Address" cols="40" rows="2"></textarea></label></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>City</label></td>
+                                <td width="80px">
+                                    <input id="City" name="City" type="text" size="15" maxlength="60" align="left" /></td>
+                                <td width="80px">
+                                    <label>Postal Code</label></td>
+                                <td>
+                                    <input id="PostalCode" name="PostalCode" type="text" size="15" maxlength="60" align="left" /></td>
+                                
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Phone Number</label></td>
+                                <td >
+                                    <input id="PhoneNumber" name="PhoneNumber" type="text" size="15" maxlength="60" align="left" /></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                </td>
+                </tr>
+            </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box Main -->
+
+<!-- Dialog Box Finance -->
+    <div id="fin_form_div" class="easyui-dialog" style="text-align: left; overflow: auto; top:20px; padding:0px 0px 10px" data-options="modal:true" 
+        title=".: Finance Data :.">
+
+        <div id="fin_form_toolbar" class="form_toolbar">
+            <a id="fin_form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="fin_form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="height:510px; overflow: auto">
+            <form id="fin_frm">
+                <table>
+                    <tr>
+                        <td>
+                            <fieldset class="ui-widget-content ui-corner-all input_form_div">
+                    <legend><label>Data Pajak</label></legend>
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl" >
+                        <tr nowrap>
+                            <td nowrap style="width: 80px">
+                                <label>ID</label></td>
+                            <td>
+                                <input id="finId" type="text" size="20" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>NPWP</label></td>
+                            <td>
+                                <input id="NPWP" name="NPWP" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                NPWP Date
+                            </td>
+                            <td>
+                                <input id="NPWPDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="NPWPDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <label>Nama</label></td>
+                            <td colspan="3">
+                                <input id="NPWP_Name" name="NPWP_Name" type="text" size="40" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                                <td valign="top">
+                                    <label>Alamat</label></td>
+                                <td colspan="3"><label>
+                                    <textarea name="NPWP_Address" id="NPWP_Address" cols="40" rows="2"></textarea></label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>RT</label></td>
+                            <td>
+                                <input id="NPWP_RT" name="NPWP_RT" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <label>RW</label></td>
+                            <td>
+                                <input id="NPWP_RW" name="NPWP_RW" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Kelurahan</label></td>
+                            <td>
+                                <input id="NPWP_Kelurahan" name="NPWP_Kelurahan" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Kecamatan</label></td>
+                            <td>
+                                <input id="NPWP_Kecamatan" name="NPWP_Kecamatan" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Kota</label></td>
+                            <td>
+                                <input id="NPWP_Kota" name="NPWP_Kota" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <label>Kode Pos</label></td>
+                            <td>
+                                <input id="NPWP_KodePos" name="NPWP_KodePos" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                    </table>
+                </fieldset>
+                        </td>
+                        </tr><tr>
+                        <td>
+                            <fieldset class="ui-widget-content ui-corner-all input_form_div">
+                    <legend><label>Rekening Bank</label></legend>
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl" >
+                        <tr>
+                            <td width="80" style="width: 80px">
+                                <label>Nama</label></td>
+                            <td>
+                                <input id="BankAccountName" name="BankAccountName" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <label>Bank</label></td>
+                            <td >
+                                <input id="BankName" name="BankName" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <label>Cabang</label></td>
+                            <td>
+                                <input id="BankBranch" name="BankBranch" type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>No. Rekening</label></td>
+                            <td>
+                                <input id="BankAccountNumber" name="BankAccountNumber" type="text" size="20" maxlength="60" align="left" /></td>
+                            <td>
+                                <label>Mata Uang</label></td>
+                            <td>
+                                <select id="BankAccountCurrency" name="BankAccountCurrency">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.CurrencyType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.CurrencyType), item)</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box Finance -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Look Up TitleInfo -->
+    <div id="lookup_div_titleinfo" class="easyui-dialog" title="List Title Info" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_titleinfo" class="grid_toolbar">
+            <a id="lookup_btn_add_titleinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_titleinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_titleinfo" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_titleinfo" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up TitleInfo -->
+
+<!-- Look Up Division -->
+    <div id="lookup_div_division" class="easyui-dialog" title="List Division" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_division" class="grid_toolbar">
+            <a id="lookup_btn_add_division" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_division" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_division" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_division" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up Division -->
+
+  </div>
+

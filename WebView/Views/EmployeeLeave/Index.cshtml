@@ -20,7 +20,9 @@
            <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
            <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
            @*<a id="btn_add_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add/Edit Detail</a>*@
-           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+           <a id="btn_app" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-approval'">Approve</a>
+           <a id="btn_unapp" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">UnApprove</a>
            <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
            @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
        </div>
@@ -70,6 +72,24 @@
                         </tr>
                         <tr>
                             <td>
+                                <label>Title</label></td>
+                            <td colspan="3">
+                                <input id="EmployeeTitleInfo" name="EmployeeTitleInfo" disabled type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Division</label></td>
+                            <td colspan="3">
+                                <input id="EmployeeDivision" name="EmployeeDivision" disabled type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Branch Office</label></td>
+                            <td colspan="3">
+                                <input id="EmployeeBranchOffice" name="EmployeeBranchOffice" disabled type="text" size="20" maxlength="60" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <label>Start Date</label></td>
                              <td>
                              <div id="StartDateDiv"><input id="StartDate" class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
@@ -92,7 +112,19 @@
                             <td>
                                 <label>Leave Interval </label></td>
                             <td>
-                                <input id="LeaveInterval" name="LeaveInterval" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" disabled />Hours</td>
+                                <input id="LeaveInterval" name="LeaveInterval" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" disabled />Days</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Leave Type</label></td>
+                            <td>
+                                <select id="LeaveType" name="LeaveType">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.LeaveType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.LeaveType), item)</option>
+                                    }
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td valign="top">
@@ -116,6 +148,36 @@
         </div>
     </div>
 <!-- End Dialog Box -->
+
+<!-- Dialog Box  Approve-->
+    <div id="approve_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="approve_confirm_toolbar" class="form_toolbar">
+            <a id="approve_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="approve_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="approve_confirm_info">
+            <span>Are you sure to approve the selected record?</span>
+            <input id="approve_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Approve-->
+
+<!-- Dialog Box  UnApprove-->
+    <div id="unapprove_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="unapprove_confirm_toolbar" class="form_toolbar">
+            <a id="unapprove_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="unapprove_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="unapprove_confirm_info">
+            <span>Are you sure to unapprove the selected record?</span>
+            <input id="unapprove_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box UnApprove-->
 
 <!-- Dialog Box  Delete-->
     <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"

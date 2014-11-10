@@ -1,0 +1,154 @@
+﻿@model WebView.Controllers.JobDescController
+@{
+    ViewBag.Title = "Job Description";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/jobdesc.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="grid_toolbar">
+       <div style="float: left">
+           <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+           <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+           <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+           <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+           @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+       </div>
+        
+   </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left; overflow:auto; padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>ID</label></td>
+                            <td width="226">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Title</label></td>
+                            <td colspan="3">
+                               <input id="TitleInfoId" name="TitleInfoId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnTitleInfo" name="btnTitleInfo" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="TitleInfoName" name="TitleInfo" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Fungsi Jabatan</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="FungsiJabatan" id="FungsiJabatan" cols="60" rows="2"></textarea>
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Tugas dan Tambahan</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="TugasTambahan" id="TugasTambahan" cols="60" rows="2"></textarea>
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Kewenangan</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="Kewenangan" id="Kewenangan" cols="60" rows="2"></textarea>
+                            </label></td>
+                        </tr>
+                       
+                    </table>
+                <fieldset>
+                    <legend><label> Persyaratan Minimum </label></legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Pendidikan</label></td>
+                            <td>
+                               <input id="MinEducationId" name="MinEducationId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnMinEducation" name="btnMinEducation" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="MinEducationName" name="MinEducation" type="text" size="30" maxlength="50" class="editable upper" disabled="disabled" />
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <label>Technical Competency</label></td>
+                            <td colspan="3"><label>
+                              <textarea name="TechnicalCompetency" id="TechnicalCompetency" cols="60" rows="2"></textarea>
+                            </label></td>
+                        </tr>
+                    </table>
+                </fieldset>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Submit</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Look Up education -->
+    <div id="lookup_div_education" class="easyui-dialog" title="List Division" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_education" class="grid_toolbar">
+            <a id="lookup_btn_add_education" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_education" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_education" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_education" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up education -->
+
+<!-- Look Up position -->
+    <div hidden id="lookup_div_position" class="easyui-dialog" title="List Title Info" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_position" class="grid_toolbar">
+            <a id="lookup_btn_add_position" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_position" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_position" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_position" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up position -->
+
+  </div>
+

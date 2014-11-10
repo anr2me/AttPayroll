@@ -200,7 +200,20 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Master\BranchOfficeController.cs" />
     <Compile Include="Controllers\Master\CompanyInfoController.cs" />
+    <Compile Include="Controllers\Master\ApplicantController.cs" />
+    <Compile Include="Controllers\Master\KRAController.cs" />
+    <Compile Include="Controllers\Master\JobDescAssignmentController.cs" />
+    <Compile Include="Controllers\Master\JobDescMembershipController.cs" />
+    <Compile Include="Controllers\Master\JobDescController.cs" />
+    <Compile Include="Controllers\Master\EmployeeProfessionMembershipController.cs" />
+    <Compile Include="Controllers\Master\EmployeeProfessionLicenseController.cs" />
+    <Compile Include="Controllers\Master\EmployeeExperienceController.cs" />
+    <Compile Include="Controllers\Master\EmployeeEducationMiniController.cs" />
+    <Compile Include="Controllers\Master\EducationController.cs" />
+    <Compile Include="Controllers\Master\EmployeePersonalController.cs" />
+    <Compile Include="Controllers\Master\EmployeeFamiliyInfoController.cs" />
     <Compile Include="Controllers\Master\SalarySlipController.cs" />
+    <Compile Include="Controllers\Utility\EmployeeOtherIncomeController.cs" />
     <Compile Include="Controllers\Utility\THRController.cs" />
     <Compile Include="Controllers\Utility\OtherExpenseController.cs" />
     <Compile Include="Controllers\Utility\OtherIncomeController.cs" />
@@ -230,10 +243,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MockService.cs" />
     <Compile Include="Models\AuthenticationModel.cs" />
     <Compile Include="Models\ConfigurationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\apps_js\CompanyInfo.js" />
+    <Content Include="Content\apps_js\Applicant.js" />
+    <Content Include="Content\apps_js\KRA.js" />
+    <Content Include="Content\apps_js\JobDescAssignment.js" />
+    <Content Include="Content\apps_js\JobDescMembership.js" />
+    <Content Include="Content\apps_js\JobDesc.js" />
+    <Content Include="Content\apps_js\EmployeeProfessionMembership.js" />
+    <Content Include="Content\apps_js\EmployeeProfessionLicense.js" />
+    <Content Include="Content\apps_js\EmployeeExperience.js" />
+    <Content Include="Content\apps_js\EmployeeEducationMini.js" />
+    <Content Include="Content\apps_js\Education.js" />
+    <Content Include="Content\apps_js\EmployeeOtherIncome.js" />
+    <Content Include="Content\apps_js\EmployeeFamilyInfo.js" />
+    <Content Include="Content\apps_js\EmployeePersonal.js" />
     <Content Include="Content\apps_js\SalarySlip.js" />
     <Content Include="Content\apps_js\ReportPPH21.js" />
     <Content Include="Content\apps_js\ReportSlipGajiMini.js" />
@@ -305,6 +332,19 @@
     <Content Include="Views\Report\SlipGajiMini.cshtml" />
     <Content Include="Views\Report\PPH21.cshtml" />
     <Content Include="Views\SalarySlip\Index.cshtml" />
+    <Content Include="Views\EmployeePersonal\Index.cshtml" />
+    <Content Include="Views\EmployeeFamilyInfo\Index.cshtml" />
+    <Content Include="Views\EmployeeOtherIncome\Index.cshtml" />
+    <Content Include="Views\Applicant\Index.cshtml" />
+    <Content Include="Views\Education\Index.cshtml" />
+    <Content Include="Views\EmployeeEducationMini\Index.cshtml" />
+    <Content Include="Views\EmployeeExperience\Index.cshtml" />
+    <Content Include="Views\EmployeeProfessionLicense\Index.cshtml" />
+    <Content Include="Views\EmployeeProfessionMembership\Index.cshtml" />
+    <Content Include="Views\JobDesc\Index.cshtml" />
+    <Content Include="Views\JobDescMembership\Index.cshtml" />
+    <Content Include="Views\JobDescAssignment\Index.cshtml" />
+    <Content Include="Views\KRA\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\apps_js\BranchOffice.js" />
