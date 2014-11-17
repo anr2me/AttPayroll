@@ -1249,3 +1249,5 @@ Validation/bin/Debug/Service.dll
 Validation/bin/Debug/Validation.dll
 Validation/obj/Debug/Validation.dll
 WebView/obj/Debug/WebView.dll
+*/obj/*
+*/bin/Release/*
