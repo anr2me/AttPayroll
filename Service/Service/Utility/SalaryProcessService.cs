@@ -186,6 +186,10 @@ namespace Service.Service
                         {
                             salaryItemsValue[curDay][Constant.LegacyAttendanceItem.PMAGE.ToString()] = (decimal)(curDay - employee.AppointmentDate.GetValueOrDefault()).TotalDays;
                         }
+                        else
+                        {
+                            salaryItemsValue[curDay][Constant.LegacyAttendanceItem.PMAGE.ToString()] = 0;
+                        }
                         
                         // Cari gaji aktif yang sesuai hari
                         var gajiaktif = sallist.FirstOrDefault();
