@@ -44,6 +44,178 @@
         ClearErrorMessage();
     }
 
+    //$("#fileName").pluploadQueue({
+    //    // General settings
+    //    runtimes: 'html5,flash,silverlight,html4',
+    //    url: '/examples/upload',
+    //    chunk_size: '1mb',
+    //    unique_names: true,
+
+    //    // Resize images on client-side if we can
+    //    resize: { width: 320, height: 240, quality: 90 },
+
+    //    filters: {
+    //        max_file_size: '10mb',
+
+    //        // Specify what files to browse for
+    //        mime_types: [
+    //            { title: "Image files", extensions: "jpg,gif,png" },
+    //            { title: "Zip files", extensions: "zip" }
+    //        ]
+    //    },
+
+    //    // Flash settings
+    //    flash_swf_url: '/plupload/js/Moxie.swf',
+
+    //    // Silverlight settings
+    //    silverlight_xap_url: '/plupload/js/Moxie.xap',
+
+    //    // PreInit events, bound before any internal events
+    //    preinit: {
+    //        Init: function (up, info) {
+    //            log('[Init]', 'Info:', info, 'Features:', up.features);
+    //        },
+
+    //        UploadFile: function (up, file) {
+    //            log('[UploadFile]', file);
+
+    //            // You can override settings before the file is uploaded
+    //            // up.setOption('url', 'upload.php?id=' + file.id);
+    //            // up.setOption('multipart_params', {param1 : 'value1', param2 : 'value2'});
+    //        }
+    //    },
+
+    //    // Post init events, bound after the internal events
+    //    init: {
+    //        PostInit: function () {
+    //            // Called after initialization is finished and internal event handlers bound
+    //            log('[PostInit]');
+
+    //            document.getElementById('uploadfiles').onclick = function () {
+    //                uploader.start();
+    //                return false;
+    //            };
+    //        },
+
+    //        Browse: function (up) {
+    //            // Called when file picker is clicked
+    //            log('[Browse]');
+    //        },
+
+    //        Refresh: function (up) {
+    //            // Called when the position or dimensions of the picker change
+    //            log('[Refresh]');
+    //        },
+
+    //        StateChanged: function (up) {
+    //            // Called when the state of the queue is changed
+    //            log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
+    //        },
+
+    //        QueueChanged: function (up) {
+    //            // Called when queue is changed by adding or removing files
+    //            log('[QueueChanged]');
+    //        },
+
+    //        OptionChanged: function (up, name, value, oldValue) {
+    //            // Called when one of the configuration options is changed
+    //            log('[OptionChanged]', 'Option Name: ', name, 'Value: ', value, 'Old Value: ', oldValue);
+    //        },
+
+    //        BeforeUpload: function (up, file) {
+    //            // Called right before the upload for a given file starts, can be used to cancel it if required
+    //            log('[BeforeUpload]', 'File: ', file);
+    //        },
+
+    //        UploadProgress: function (up, file) {
+    //            // Called while file is being uploaded
+    //            log('[UploadProgress]', 'File:', file, "Total:", up.total);
+    //        },
+
+    //        FileFiltered: function (up, file) {
+    //            // Called when file successfully files all the filters
+    //            log('[FileFiltered]', 'File:', file);
+    //        },
+
+    //        FilesAdded: function (up, files) {
+    //            // Called when files are added to queue
+    //            log('[FilesAdded]');
+
+    //            plupload.each(files, function (file) {
+    //                log('  File:', file);
+    //            });
+    //        },
+
+    //        FilesRemoved: function (up, files) {
+    //            // Called when files are removed from queue
+    //            log('[FilesRemoved]');
+
+    //            plupload.each(files, function (file) {
+    //                log('  File:', file);
+    //            });
+    //        },
+
+    //        FileUploaded: function (up, file, info) {
+    //            // Called when file has finished uploading
+    //            log('[FileUploaded] File:', file, "Info:", info);
+    //        },
+
+    //        ChunkUploaded: function (up, file, info) {
+    //            // Called when file chunk has finished uploading
+    //            log('[ChunkUploaded] File:', file, "Info:", info);
+    //        },
+
+    //        UploadComplete: function (up, files) {
+    //            // Called when all files are either uploaded or failed
+    //            log('[UploadComplete]');
+    //        },
+
+    //        Destroy: function (up) {
+    //            // Called when uploader is destroyed
+    //            log('[Destroy] ');
+    //        },
+
+    //        Error: function (up, args) {
+    //            // Called when error occurs
+    //            log('[Error] ', args);
+    //        }
+    //    }
+    //});
+
+    //$("#fileName").uploadify({
+    //    height: 30,
+    //    swf: 'Content/uploadify/uploadify.swf',
+    //    uploader: 'Uploadify',
+    //    width: 120,
+    //    'buttonText': 'Browse Files',
+    //    'fileDesc': 'Excel Files',
+    //    'fileExt': '*.xls;*.xlsx',
+    //});
+
+    $('#fileName').uploadify({
+        'height': 20,
+        'fileTypeDesc': 'Excel Files',
+        'fileTypeExts': '*.xls; *.xlsx',
+        'swf': '../Content/uploadify/uploadify.swf',
+        'uploader': '../Content/uploadify/Upload.ashx', //uploader.php // '<%= Url.Action("Upload", "Uploadify") %>'
+        //'cancelImage': '../Content/uploadify/uploadify-cancel.png', //'Content/uploadify/uploadify-cancel.png', // cancelImg
+        'buttonText': 'Browse Files',
+        //'script': '../Content/uploadify/Upload.ashx?prefix=BBB', // not used in v3 ?
+        //'scriptData': { 'prefix': 'Employee' }, // query params
+        //'folder': '/uploads', // not used in v3 ?
+        //'fileSizeLimit' : '20MB',
+        'queueSizeLimit': 1,
+        'uploadLimit': 1,
+        //'displayData': 'percentage',
+        'multi': false,
+        'auto': false,
+    });
+
+    $('#btn_upload').click(function () {
+        //$('#fileName').uploadifySettings("scriptData", { 'prefix': 'Employee' });
+        $('#fileName').uploadify('upload'); //('upload', '*')
+    });
+
     $("#parenttype").live("change", function () {
         ReloadGrid();
     });
@@ -102,6 +274,7 @@
 
     $("#form_div").dialog('close');
     $("#delete_confirm_div").dialog('close');
+    $("#upload_form_div").dialog('close');
     $('#lookup_div_titleinfo').dialog('close');
     $('#lookup_div_division').dialog('close');
 
@@ -206,6 +379,19 @@
 
     $('#btn_print').click(function () {
         window.open(base_url + 'Print_Forms/Printmstbank.aspx');
+    });
+
+    $('#btn_imp').click(function () {
+        ClearData();
+        clearForm('#upload_frm');
+        vStatusSaving = 0; //add data mode
+        $('#upload_form_div').dialog('open');
+    });
+
+    $('#upload_form_btn_cancel').click(function () {
+        vStatusSaving = 0;
+        clearForm('#upload_frm');
+        $("#upload_form_div").dialog('close');
     });
 
     $('#btn_add_new').click(function () {

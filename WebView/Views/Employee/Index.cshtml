@@ -22,6 +22,7 @@
            <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
            <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
            @*<a id="btn_find" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">Find</a>*@
+           <a id="btn_imp" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-excel'">Import from Excel</a>
        </div>
        <div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
            <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Division : </label>
@@ -274,6 +275,48 @@
         </div>
     </div>
 <!-- End Dialog Box -->
+
+<!-- Dialog Box Upload -->
+    <div id="upload_form_div" class="easyui-dialog" style="text-align: left; top:120px; padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="upload_form_toolbar" class="form_toolbar">
+            <a id="upload_form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Import</a>
+            <a id="upload_form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="upload_frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_upload_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_upload_form_tbl" >
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 100px">
+                                <label>File to Upload</label></td>
+                            <td width="226">
+                                <input id="fileName" type="file" name="fileName" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" /></td>
+                            <td>
+                                <a id="btn_upload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'">Upload</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="tabledetail_div">
+                        <div id="toolbardetail" class="grid_toolbar">
+                            <a id="btn_edit_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit</a>
+                            <a id="btn_del_detail" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+                        </div>
+                            <table id="listdetail" class="scroll" cellpadding="0" cellspacing="0"></table>
+                        <div id="pagerdetail" class="scroll" style="text-align: center;"></div>
+                    </div>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box Upload -->
 
 <!-- Dialog Box  Delete-->
     <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"

@@ -201,6 +201,7 @@
     <Compile Include="Controllers\Master\BranchOfficeController.cs" />
     <Compile Include="Controllers\Master\CompanyInfoController.cs" />
     <Compile Include="Controllers\Master\SalarySlipController.cs" />
+    <Compile Include="Controllers\Upload\UploadifyController.cs" />
     <Compile Include="Controllers\Utility\THRController.cs" />
     <Compile Include="Controllers\Utility\OtherExpenseController.cs" />
     <Compile Include="Controllers\Utility\OtherIncomeController.cs" />
@@ -221,6 +222,10 @@
     <Compile Include="Controllers\UserRole\AuthenticationController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Content Include="Content\uploadify\check-exists.php" />
+    <Content Include="Content\uploadify\index.php" />
+    <Content Include="Content\uploadify\Upload.ashx" />
+    <Content Include="Content\uploadify\UploadVB.ashx" />
     <None Include="Controllers\UserRole\UserAccessController.cs_" />
     <None Include="Controllers\UserRole\UserController.cs_" />
     <Compile Include="Controllers\Master\WorkingDayController.cs" />
@@ -264,6 +269,12 @@
     <Content Include="Content\spinnerTextBig.png" />
     <Content Include="Content\spinnerUpDown.png" />
     <Content Include="Content\spinnerUpDownBig.png" />
+    <Content Include="Content\uploadify\Change Log.txt" />
+    <Content Include="Content\uploadify\jquery.uploadify.js" />
+    <Content Include="Content\uploadify\jquery.uploadify.min.js" />
+    <Content Include="Content\uploadify\license.txt" />
+    <Content Include="Content\uploadify\uploadify-cancel.png" />
+    <Content Include="Content\uploadify\uploadify.css" />
     <Content Include="Scripts\jquery-ui-sliderAccess.js" />
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
@@ -991,6 +1002,7 @@
     <None Include="Properties\PublishProfiles\cashsales.pubxml" />
     <None Include="Properties\PublishProfiles\ftp_laptop.pubxml" />
     <None Include="Properties\PublishProfiles\package.pubxml" />
+    <None Include="Properties\PublishProfiles\attpayroll.playssd.com.pubxml" />
     <None Include="Properties\PublishProfiles\sampleapp.pubxml" />
     <Content Include="Reports\General\Logo.png" />
     <Content Include="Reports\Finance\DailyGL.rpt" />
