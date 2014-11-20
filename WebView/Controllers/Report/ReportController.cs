@@ -15,6 +15,8 @@ using Core.DomainModel;
 using System.Collections;
 using System.Globalization;
 using Core.Constants;
+using System.Data.Objects.SqlClient;
+using System.Data.Objects;
 
 namespace WebView.Controllers
 {
@@ -28,6 +30,7 @@ namespace WebView.Controllers
         public ISlipGajiDetail1Service _slipGajiDetail1Service;
         public ISlipGajiDetail2AService _slipGajiDetail2AService;
         public ISlipGajiMiniService _slipGajiMiniService;
+        public IEmployeeAttendanceService _employeeAttendanceService;
 
         public ReportController()
         {
@@ -36,6 +39,7 @@ namespace WebView.Controllers
             _slipGajiDetail1Service = new SlipGajiDetail1Service(new SlipGajiDetail1Repository(), new SlipGajiDetail1Validator());
             _slipGajiDetail2AService = new SlipGajiDetail2AService(new SlipGajiDetail2ARepository(), new SlipGajiDetail2AValidator());
             _slipGajiMiniService = new SlipGajiMiniService(new SlipGajiMiniRepository(), new SlipGajiMiniValidator());
+            _employeeAttendanceService = new EmployeeAttendanceService(new EmployeeAttendanceRepository(), new EmployeeAttendanceValidator());
 
         }
 
@@ -382,7 +386,76 @@ namespace WebView.Controllers
             return File(stream, "application/pdf");
         }
 
+        public ActionResult AbsensiKaryawan()
+        {
+            return View();
+        }
 
+        public ActionResult ReportAbsensiKaryawan(DateTime startDate, DateTime endDate, int Id, int ChartType = 0)
+        {
+            DateTime endDay = endDate.Date.AddDays(1);
+            var company = _companyInfoService.GetQueryable().FirstOrDefault();
+            var q = _employeeAttendanceService.GetQueryable().Include("Employee").Where(x => x.EmployeeId == Id && EntityFunctions.TruncateTime(x.AttendanceDate) >= startDate.Date && EntityFunctions.TruncateTime(x.AttendanceDate) < endDay);
+
+            string user = AuthenticationModel.GetUserName();
+
+            CultureInfo ci = new CultureInfo("id-ID");
+
+            var query = (from model in q
+                         select new
+                         {
+                             StartDate = EntityFunctions.TruncateTime(startDate),
+                             EndDate = EntityFunctions.TruncateTime(endDate),
+                             AttDate = model.AttendanceDate,
+                             model.Employee.NIK,
+                             model.Employee.Name,
+                             title = model.Employee.TitleInfo.Name,
+                             division = model.Employee.Division.Name,
+                             department = model.Employee.Division.Department.Name,
+                             branch = model.Employee.Division.Department.BranchOffice.Name,
+                             companyname = company.Name,
+                             mode = ChartType,
+                             work = (model.CheckOut == null) ? 0 : EntityFunctions.DiffMinutes(model.CheckIn, model.CheckOut.Value) - model.BreakMinutes,
+                             early = model.CheckEarlyMinutes,
+                             late = model.CheckLateMinutes,
+                             //User = user,
+                         }).ToList();
+
+            if (!query.Any()) return Content(Core.Constants.Constant.ErrorPage.RecordNotFound);
+
+            var rd = new ReportDocument();
+
+            //Loading Report
+            rd.Load(Server.MapPath("~/") + "Reports/General/rpt_absensi_karyawan.rpt");
+
+            // Setting report data source
+            rd.SetDataSource(query);
+
+            // Set parameters, need to be done after all data sources are set (to prevent reseting parameters)
+            //rd.SetParameterValue(0, "Periode " + monthYear.ToString("MMMM yyyy", ci).ToUpper());
+
+            // Set printer paper size
+            //System.Drawing.Printing.PrintDocument doctoprint = new System.Drawing.Printing.PrintDocument();
+            //doctoprint.PrinterSettings.PrinterName = "Microsoft XPS Document Writer";
+            //int i = 0;
+            //for (i = 0; i < doctoprint.PrinterSettings.PaperSizes.Count; i++)
+            //{
+            //    int rawKind = 0;
+            //    if (doctoprint.PrinterSettings.PaperSizes[i].PaperName.ToLower() == "Letter")
+            //    {
+            //        rawKind = Convert.ToInt32(doctoprint.PrinterSettings.PaperSizes[i].GetType().GetField("kind", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(doctoprint.PrinterSettings.PaperSizes[i]));
+            //        if (Enum.IsDefined(typeof(CrystalDecisions.Shared.PaperSize), rawKind))
+            //        {
+            //            rd.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
+            //            //rd.PrintOptions.PaperOrientation = PaperOrientation.Landscape;
+            //        }
+            //        break;
+            //    }
+            //}
+
+            var stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            return File(stream, "application/pdf");
+        }
 
     }
 }

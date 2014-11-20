@@ -98,6 +98,14 @@ namespace Core.Constants
             public const string User = "User";
         }
 
+        public enum ReportAttendanceChartType
+        {
+            WorkTime,
+            EarlyAndLateTime,
+            LateTime,
+            EarlyTime
+        }
+
         public enum Sex
         {
             Male,

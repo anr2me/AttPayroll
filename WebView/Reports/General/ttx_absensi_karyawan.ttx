@@ -1,0 +1,14 @@
+StartDate	Date
+EndDate	Date
+AttDate	Date
+NIK	String	30	
+Name	String	255	
+title	String	150	
+division	String	150	
+department	String	150	
+branch	String	150	
+companyname	String	150
+mode	Number	
+work	Number		
+early	Number		
+late	Number		

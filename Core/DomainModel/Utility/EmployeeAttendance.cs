@@ -26,12 +26,12 @@ namespace Core.DomainModel
         public Nullable<DateTime> BreakIn { get; set; } // BreakIn Date+Time on a day
         public string Remark { get; set; }
 
-        //public int BreakMinutes { get; set; }
-        //public int BreakEarlyMinutes { get; set; } // breakout early
-        //public int BreakLateMinutes { get; set; } // breakin late
-        //public int CheckEarlyMinutes { get; set; } // checkout early
-        //public int CheckLateMinutes { get; set; } // checkin late
-        //public int OverTimeMinutes { get; set; }
+        public int BreakMinutes { get; set; }
+        public int BreakEarlyMinutes { get; set; } // breakout early
+        public int BreakLateMinutes { get; set; } // breakin late
+        public int CheckEarlyMinutes { get; set; } // checkout early
+        public int CheckLateMinutes { get; set; } // checkin late
+        public int OverTimeMinutes { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

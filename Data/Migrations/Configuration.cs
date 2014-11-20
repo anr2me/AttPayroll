@@ -4,6 +4,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Core.DomainModel;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Data.Context.AttPayrollEntities>
     {
@@ -27,6 +28,15 @@
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            int? compId = null;
+            CompanyInfo comp = context.CompanyInfos.FirstOrDefault();
+            if (comp != null) compId = comp.Id;
+            foreach (var x in context.BranchOffices)
+            {
+                x.CompanyInfoId = compId;
+            }
+            //context.SaveChanges();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Core.DomainModel
         public string Website { get; set; }
         public string NPWP { get; set; }
         public Nullable<DateTime> NPWPDate { get; set; }
-        //public int CompanyInfoId { get; set; }
+        public Nullable<int> CompanyInfoId { get; set; }
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -30,7 +30,7 @@ namespace Core.DomainModel
 
         public Dictionary<string, string> Errors { get; set; }
 
-        //public virtual CompanyInfo CompanyInfo { get; set; }
+        public virtual CompanyInfo CompanyInfo { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
     }
 }

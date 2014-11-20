@@ -293,6 +293,7 @@
 										<ul>
 											<li><a href="#">Company</a>
 												<ul>
+                                               <li><a href="@Url.Action("Index", "CompanyInfo")">Company Info</a></li>
 											   <li><a href="@Url.Action("Index", "BranchOffice")">Branch Office</a> </li>
 											   <li><a href="@Url.Action("Index", "Department")">Department</a> </li>
                                                <li><a href="@Url.Action("Index", "Division")">Division</a> </li>
@@ -362,14 +363,15 @@
                                                     <li><a href="@Url.Action("PPH21", "Report")">PPH21</a> </li>
 												</ul>
 											</li>
-                                            @*<li><a href="#">Employee</a>
+                                            <li><a href="#">Attendance</a>
 												<ul>
-													<li><a href="@Url.Action("EmployeeAttendance", "Report")">Employee Attendance</a> </li>
-                                                    <li><a href="@Url.Action("EmployeeInstallment", "Report")">Employee Installment</a> </li>
+													<li><a href="@Url.Action("AbsensiKaryawan", "Report")">Absensi Karyawan</a> </li>
+                                                    
 												</ul>
-											</li>*@
+											</li>
                                             @*<li><a href="#">Finance Report</a>
                                                 <ul>
+                                                    <li><a href="@Url.Action("EmployeeInstallment", "Report")">Employee Installment</a> </li>
 												    <li><a href="@Url.Action("Index", "ChartOfAccount")">Chart Of Account</a></li>
 													<li><a href="@Url.Action("Index", "GeneralLedger")">General Ledger</a></li>
                                                     <li><a href="@Url.Action("Index", "Closing")">Closing</a></li>
@@ -382,7 +384,6 @@
 									</li>
 									<li id="menu-item-51"><a href="#">Setting</a>
 										<ul>
-                                            <li><a href="@Url.Action("Index", "CompanyInfo")">Company Info</a></li>
                                             @*<li><a href="@Url.Action("Index", "User")">User</a></li>*@
 											@*<li><a href="@Url.Action("Index", "UserAccess")">User Access Right</a></li>*@
 											<li><a href="#" id="menu_change_pass">Change Password</a></li>

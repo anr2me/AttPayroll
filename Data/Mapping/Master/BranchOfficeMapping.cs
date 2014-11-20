@@ -12,9 +12,10 @@ namespace Data.Mapping
         public BranchOfficeMapping()
         {
             HasKey(bo => bo.Id);
-            //HasRequired(bo => bo.CompanyInfo)
-            //    .WithMany(ci => ci.BranchOffices)
-            //    .HasForeignKey(bo => bo.CompanyInfoId);
+            HasOptional(bo => bo.CompanyInfo)
+                .WithMany() //ci => ci.BranchOffices)
+                .HasForeignKey(bo => bo.CompanyInfoId);
+                //.WillCascadeOnDelete(true);
             Ignore(bo => bo.Errors);
         }
     }

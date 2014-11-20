@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Data.Migrations;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Context
 {
@@ -100,6 +101,7 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new SlipGajiDetail2AMapping());
 
             modelBuilder.Entity<Formula>().Property(x => x.SecondValue).HasPrecision(19, 4);
+            //modelBuilder.Entity<BranchOffice>().Property(x => x.CompanyInfoId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
             base.OnModelCreating(modelBuilder);
         }

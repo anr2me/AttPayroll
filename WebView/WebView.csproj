@@ -222,6 +222,7 @@
     <Compile Include="Controllers\UserRole\AuthenticationController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Content Include="Content\apps_js\ReportAbsensiKaryawan.js" />
     <Content Include="Content\uploadify\check-exists.php" />
     <Content Include="Content\uploadify\index.php" />
     <Content Include="Content\uploadify\Upload.ashx" />
@@ -316,6 +317,7 @@
     <Content Include="Views\Report\SlipGajiMini.cshtml" />
     <Content Include="Views\Report\PPH21.cshtml" />
     <Content Include="Views\SalarySlip\Index.cshtml" />
+    <Content Include="Views\Report\AbsensiKaryawan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\apps_js\BranchOffice.js" />

@@ -12,6 +12,7 @@ namespace Data.Mapping
         public CompanyInfoMapping()
         {
             HasKey(ci => ci.Id);
+            //HasMany(ci => ci.BranchOffices);
             Ignore(ci => ci.Errors);
         }
     }

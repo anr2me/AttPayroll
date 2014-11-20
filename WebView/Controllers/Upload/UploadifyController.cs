@@ -15,6 +15,7 @@ using Core.DomainModel;
 using System.Collections;
 using System.Globalization;
 using Core.Constants;
+using System.IO;
 
 namespace WebView.Controllers
 {
@@ -25,12 +26,40 @@ namespace WebView.Controllers
             return View();
         }
 
-        public string Upload(HttpPostedFileBase file)
+        [HttpPost]
+        public dynamic Upload(/*HttpPostedFileBase file*/)
         {
-            // Process the file here.
-            //
+            try
+            {
+                HttpPostedFileBase file = Request.Files["Filedata"];
+                string tempPath = System.Configuration.ConfigurationManager.AppSettings["FolderPath"];
+                string savepath = Server.MapPath(tempPath);
+                // Process the file here.
+                //
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    if (!Directory.Exists(savepath)) Directory.CreateDirectory(savepath);
+                    file.SaveAs(Path.Combine(savepath, fileName));
 
-            return "Upload processed. filename=" + file.FileName;
+                    // Process start
+
+                    // Process End
+
+                    string ret = tempPath + "/" + fileName;
+                    //Response.Write(ret);
+                    Response.StatusCode = 200;
+                    return ret;
+                }
+                //return "Upload processed. filename=" + file.FileName;
+            }
+            catch (Exception ex)
+            {
+                string ret = "Error: " + ex.Message;
+                //Response.Write(ret);
+                return ret;
+            }
+            return Response;
         }
     }
 }
