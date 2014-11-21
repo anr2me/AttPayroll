@@ -34,7 +34,10 @@
             if (comp != null) compId = comp.Id;
             foreach (var x in context.BranchOffices)
             {
-                x.CompanyInfoId = compId;
+                if (x.CompanyInfoId == null)
+                {
+                    x.CompanyInfoId = compId;
+                }
             }
             //context.SaveChanges();
         }

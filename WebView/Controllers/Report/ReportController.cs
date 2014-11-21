@@ -404,8 +404,8 @@ namespace WebView.Controllers
             var query = (from model in q
                          select new
                          {
-                             StartDate = EntityFunctions.TruncateTime(startDate),
-                             EndDate = EntityFunctions.TruncateTime(endDate),
+                             StartDate = EntityFunctions.TruncateTime(startDate).Value,
+                             EndDate = EntityFunctions.TruncateTime(endDate).Value,
                              AttDate = model.AttendanceDate,
                              model.Employee.NIK,
                              model.Employee.Name,
@@ -415,7 +415,7 @@ namespace WebView.Controllers
                              branch = model.Employee.Division.Department.BranchOffice.Name,
                              companyname = company.Name,
                              mode = ChartType,
-                             work = (model.CheckOut == null) ? 0 : EntityFunctions.DiffMinutes(model.CheckIn, model.CheckOut.Value) - model.BreakMinutes,
+                             work = (model.CheckOut == null) ? 0 : EntityFunctions.DiffMinutes(model.CheckIn, model.CheckOut.Value).Value - model.BreakMinutes,
                              early = model.CheckEarlyMinutes,
                              late = model.CheckLateMinutes,
                              //User = user,

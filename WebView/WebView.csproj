@@ -222,6 +222,12 @@
     <Compile Include="Controllers\UserRole\AuthenticationController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Reports\General\rpt_absensi_karyawan.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rpt_absensi_karyawan.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Content Include="Content\apps_js\ReportAbsensiKaryawan.js" />
     <Content Include="Content\uploadify\check-exists.php" />
     <Content Include="Content\uploadify\index.php" />
@@ -1024,6 +1030,7 @@
     <Content Include="Reports\General\ttx_slip_mini.ttx" />
     <Content Include="Reports\General\ttx_spt_pph21_ebiz.ttx" />
     <Content Include="Reports\General\ttx_summary_payroll2.ttx" />
+    <Content Include="Reports\General\ttx_absensi_karyawan.ttx" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\collapsiblePanel.js" />
     <Content Include="Scripts\jquery-1.1.3.1.pack.js" />
@@ -1172,6 +1179,15 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\General\rpt_absensi_karyawan.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rpt_absensi_karyawan.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
