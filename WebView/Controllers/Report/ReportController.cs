@@ -391,11 +391,11 @@ namespace WebView.Controllers
             return View();
         }
 
-        public ActionResult ReportAbsensiKaryawan(DateTime startDate, DateTime endDate, int Id, int ChartType = 0)
+        public ActionResult ReportAbsensiKaryawan(DateTime startDate, DateTime endDate, int? Id = null, int ChartType = 0)
         {
             DateTime endDay = endDate.Date.AddDays(1);
             var company = _companyInfoService.GetQueryable().FirstOrDefault();
-            var q = _employeeAttendanceService.GetQueryable().Include("Employee").Where(x => x.EmployeeId == Id && EntityFunctions.TruncateTime(x.AttendanceDate) >= startDate.Date && EntityFunctions.TruncateTime(x.AttendanceDate) < endDay);
+            var q = _employeeAttendanceService.GetQueryable().Include("Employee").Where(x => (Id == null || Id.Value == 0 || x.EmployeeId == Id.Value) && EntityFunctions.TruncateTime(x.AttendanceDate) >= startDate.Date && EntityFunctions.TruncateTime(x.AttendanceDate) < endDay);
 
             string user = AuthenticationModel.GetUserName();
 
@@ -415,11 +415,11 @@ namespace WebView.Controllers
                              branch = model.Employee.Division.Department.BranchOffice.Name,
                              companyname = company.Name,
                              mode = ChartType,
-                             work = (model.CheckOut == null) ? 0 : EntityFunctions.DiffMinutes(model.CheckIn, model.CheckOut.Value).Value - model.BreakMinutes,
+                             work = (model.CheckOut == null) ? 0 : EntityFunctions.DiffMinutes(model.CheckIn, model.CheckOut.Value).Value - model.BreakMinutes, // model.WorkTimeMinutes
                              early = model.CheckEarlyMinutes,
                              late = model.CheckLateMinutes,
                              //User = user,
-                         }).ToList();
+                         }).OrderBy(x => x.NIK).ThenByDescending(x => x.AttDate).ToList();
 
             if (!query.Any()) return Content(Core.Constants.Constant.ErrorPage.RecordNotFound);
 

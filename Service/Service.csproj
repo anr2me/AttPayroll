@@ -33,10 +33,6 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\References\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -51,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertionFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Master\BranchOfficeService.cs" />
     <Compile Include="Service\Master\CompanyInfoService.cs" />
@@ -95,7 +90,9 @@
     <Compile Include="Service\ViewModel\SlipGajiDetail1Service.cs" />
     <Compile Include="Service\ViewModel\SlipGajiDetailService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{94721595-1c93-45c5-bdd8-890b60ad9339}</Project>

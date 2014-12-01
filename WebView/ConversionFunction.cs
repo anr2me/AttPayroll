@@ -12,18 +12,31 @@ using Data.Context;
 using Core.Constants;
 using Core.DomainModel;
 using Core.Interface.Service;
+using Service.Service;
+using Data.Repository;
+using Validation.Validation;
 
-namespace Service
+namespace WebView
 {
     // connectionString info at http://connectionstrings.com/excel-2007
-    class ConvertionFunction
+    public static class ConversionFunction
     {
-        public IBranchOfficeService _branchOfficeService;
-        public IDepartmentService _departmentService;
-        public IDivisionService _divisionService;
-        public IEmployeeService _employeeService;
+        public static IBranchOfficeService _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
+        public static IDepartmentService _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
+        public static IDivisionService _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
+        public static IEmployeeService _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+        public static ITitleInfoService _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
 
-        public int DoBranchOffice(OleDbDataReader dr, DbContext db)
+        //public ConversionFunction()
+        //{
+        //    _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
+        //    _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
+        //    _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
+        //    _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+        //    _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
+        //}
+
+        public static int DoBranchOffice(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
@@ -41,12 +54,12 @@ namespace Service
             return count;
         }
 
-        public int DoDepartment(OleDbDataReader dr, DbContext db)
+        public static int DoDepartment(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
             {
-                BranchOffice b = _branchOfficeService.GetObjectByName(dr.GetString(2));
+                BranchOffice b = _branchOfficeService.GetObjectByName(dr.GetString(2)); // column 2 = branch name
                 Department obj = new Department
                 {
                     Code = dr.GetString(0),
@@ -68,7 +81,7 @@ namespace Service
             return count;
         }
 
-        public int DoEmployee(OleDbDataReader dr, DbContext db)
+        public static int DoEmployee(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
@@ -78,7 +91,8 @@ namespace Service
             return count;
         }
 
-        public int ImporttoSQL(string sPath)
+        // Example 1
+        public static int ImporttoSQL(string sPath)
         {
             // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
             // Connect to Excel 2007 earlier version
@@ -163,7 +177,8 @@ namespace Service
             return count;
         }
 
-        public int ImportFromExcel(string fileName)
+        // Example 2
+        public static int ImportFromExcel(string fileName)
         {
             // Buat satu Service menggunakan nama ExcelEntryService
             // yang memiliki Repository, dimana GetContext dapat digunakan
@@ -189,6 +204,67 @@ namespace Service
                         try
                         {
                             count += conLinq.Database.ExecuteSqlCommand("insert into [Sheet1$] values(" + dtExcel.Rows[i][0] + "," + dtExcel.Rows[i][1] + ",'" + dtExcel.Rows[i][2] + "'," + dtExcel.Rows[i][3] + ")");
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+                    }
+                    if (count == dtExcel.Rows.Count)
+                    {
+                        //<--Success Message-->
+                    }
+                    else
+                    {
+                        //<--Failure Message-->
+                    }
+                    dtExcel.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conLinq.Dispose();
+                }
+            }
+            return count;
+        }
+
+        public static int ImportEmployeeFromExcel(string fileName)
+        {
+            // Buat satu Service menggunakan nama ExcelEntryService
+            // yang memiliki Repository, dimana GetContext dapat digunakan
+
+            // membaca setiap nama sheet dan link dengan nama table di database / domain model
+            // setiap table mengarah ke service terkait, menggunakan fungsi CreateObject
+            // 
+            int count = 0;
+            //DbContext conLinq = new DbContext("Data Source=server name;Initial Catalog=Database Name;Integrated Security=true");
+            using (var conLinq = new AttPayrollEntities())
+            {
+                try
+                {
+                    DataTable dtExcel = new DataTable();
+                    // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
+                    string SourceConstr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties= 'Excel 12.0;HDR=Yes;IMEX=1'";
+                    OleDbConnection con = new OleDbConnection(SourceConstr);
+                    string query = "Select * from [Sheet1$]";
+                    OleDbDataAdapter data = new OleDbDataAdapter(query, con);
+                    data.Fill(dtExcel);
+                    for (int i = 0; i < dtExcel.Rows.Count; i++)
+                    {
+                        try
+                        {
+                            //count += conLinq.Database.ExecuteSqlCommand("insert into [Sheet1$] values(" + dtExcel.Rows[i][0] + "," + dtExcel.Rows[i][1] + ",'" + dtExcel.Rows[i][2] + "'," + dtExcel.Rows[i][3] + ")");
+                            Employee employee = new Employee()
+                            {
+                                NIK = dtExcel.Rows[i][0].ToString(),
+                                StartWorkingDate = DateTime.Parse(dtExcel.Rows[i][1].ToString()),
+                                Name = dtExcel.Rows[i][2].ToString(),
+                            };
+                            _employeeService.CreateObject(employee, _divisionService, _titleInfoService);
                         }
                         catch (Exception ex)
                         {
