@@ -13,9 +13,12 @@ namespace Core.Interface.Service
         IQueryable<BranchOffice> GetQueryable();
         IList<BranchOffice> GetAll();
         BranchOffice GetObjectById(int Id);
+        BranchOffice GetObjectByCode(string Code);
         BranchOffice GetObjectByName(string Name);
         //BranchOffice FindOrCreateBaseBranchOffice();
+        BranchOffice FindOrCreateObject(BranchOffice branchOffice);
         BranchOffice CreateObject(BranchOffice branchOffice);
+        BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email);
         BranchOffice CreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email);
         BranchOffice UpdateObject(BranchOffice branchOffice);
         BranchOffice SoftDeleteObject(BranchOffice branchOffice, IDepartmentService _departmentService);

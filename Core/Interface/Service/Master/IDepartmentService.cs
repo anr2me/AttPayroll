@@ -16,6 +16,7 @@ namespace Core.Interface.Service
         Department GetObjectById(int Id);
         Department GetObjectByCode(string Code);
         Department GetObjectByName(string Name);
+        Department FindOrCreateObject(int branchOfficeId, string Code, string Name, string Description, IBranchOfficeService _branchOfficeService);
         Department CreateObject(Department department, IBranchOfficeService _branchOfficeService);
         Department CreateObject(int branchOfficeId, string Code, string Name, string Description, IBranchOfficeService _branchOfficeService);
         Department UpdateObject(Department department, IBranchOfficeService _branchOfficeService);

@@ -106,6 +106,13 @@ namespace Core.Constants
             EarlyTime
         }
 
+        public enum IDType
+        {
+            KTP,
+            SIM,
+            Passport
+        }
+
         public enum Sex
         {
             Male,

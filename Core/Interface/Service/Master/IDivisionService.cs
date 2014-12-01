@@ -14,7 +14,9 @@ namespace Core.Interface.Service
         IList<Division> GetAll();
         IList<Division> GetObjectsByDepartmentId(int DepartmentId);
         Division GetObjectById(int Id);
+        Division GetObjectByCode(string Code);
         Division GetObjectByName(string Name);
+        Division FindOrCreateObject(int departmentId, string Code, string Name, string Description, IDepartmentService _departmentService);
         Division CreateObject(Division division, IDepartmentService _departmentService);
         Division CreateObject(int departmentId, string Code, string Name, string Description, IDepartmentService _departmentService);
         Division UpdateObject(Division division, IDepartmentService _departmentService);

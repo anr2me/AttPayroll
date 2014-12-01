@@ -44,6 +44,11 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
+        public Division GetObjectByCode(string Code)
+        {
+            return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
+        }
+
         public Division GetObjectByName(string name)
         {
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
@@ -52,6 +57,24 @@ namespace Service.Service
         public Division CreateObject(int departmentId, string Code, string Name, string Description, IDepartmentService _departmentService)
         {
             Division division = new Division
+            {
+                DepartmentId = departmentId,
+                Code = Code,
+                Name = Name,
+                Description = Description,
+            };
+            return this.CreateObject(division, _departmentService);
+        }
+
+        public Division FindOrCreateObject(int departmentId, string Code, string Name, string Description, IDepartmentService _departmentService)
+        {
+            Division division = GetObjectByCode(Code);
+            if (division != null)
+            {
+                division.Errors = new Dictionary<String, String>();
+                return division;
+            }
+            division = new Division
             {
                 DepartmentId = departmentId,
                 Code = Code,

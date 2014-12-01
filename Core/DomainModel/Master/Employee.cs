@@ -27,6 +27,8 @@ namespace Core.DomainModel
         public string Mother { get; set; }
         public int ChildNo { get; set; }
         public int NumberOfSiblings { get; set; }
+        public int IDType { get; set; } // jenis ID (KTP/SIM/Passport)
+        public string IDNumber { get; set; } // nomer KTP/SIM/Passport
         public string NPWP { get; set; }
         public Nullable<DateTime> NPWPDate { get; set; }
         //public string NPWPAddress { get; set; }

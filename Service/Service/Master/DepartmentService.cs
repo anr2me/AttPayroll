@@ -68,6 +68,25 @@ namespace Service.Service
             return this.CreateObject(department, _branchOfficeService);
         }
 
+        public Department FindOrCreateObject(int branchOfficeId, string Code, string Name, string Description, IBranchOfficeService _branchOfficeService)
+        {
+
+            Department department = GetObjectByCode(Code);
+            if (department != null)
+            {
+                department.Errors = new Dictionary<String, String>();
+                return department;
+            };
+            department = new Department
+            {
+                BranchOfficeId = branchOfficeId,
+                Code = Code,
+                Name = Name,
+                Description = Description,
+            };
+            return this.CreateObject(department, _branchOfficeService);
+        }
+
         public Department CreateObject(Department department, IBranchOfficeService _branchOfficeService)
         {
             department.Errors = new Dictionary<String, String>();

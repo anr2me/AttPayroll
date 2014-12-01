@@ -14,6 +14,7 @@ namespace Core.Interface.Service
         IList<TitleInfo> GetAll();
         TitleInfo GetObjectById(int Id);
         TitleInfo GetObjectByCode(string Code);
+        TitleInfo FindOrCreateObject(string Code, string Name, string Description, bool IsShiftable);
         TitleInfo CreateObject(string Code, string Name, string Description, bool IsShiftable);
         TitleInfo CreateObject(TitleInfo titleInfo);
         TitleInfo UpdateObject(TitleInfo titleInfo);

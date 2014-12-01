@@ -56,6 +56,24 @@ namespace Service.Service
             return this.CreateObject(titleInfo);
         }
 
+        public TitleInfo FindOrCreateObject(string Code, string Name, string Description, bool IsShiftable)
+        {
+            TitleInfo titleInfo = GetObjectByCode(Code);
+            if (titleInfo != null)
+            {
+                titleInfo.Errors = new Dictionary<String, String>();
+                return titleInfo;
+            }
+            titleInfo = new TitleInfo
+            {
+                Code = Code,
+                Name = Name,
+                Description = Description,
+                IsShiftable = IsShiftable,
+            };
+            return this.CreateObject(titleInfo);
+        }
+
         public TitleInfo CreateObject(TitleInfo titleInfo)
         {
             titleInfo.Errors = new Dictionary<String, String>();

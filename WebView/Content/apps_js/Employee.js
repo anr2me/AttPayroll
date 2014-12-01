@@ -197,7 +197,7 @@
         'fileTypeDesc': 'Excel Files',
         'fileTypeExts': '*.xls; *.xlsx',
         'swf': '../Content/uploadify/uploadify.swf',
-        'uploader': '../Uploadify/Upload', //'../Content/uploadify/Upload.ashx', //uploader.php // '<%= Url.Action("Upload", "Uploadify") %>'
+        'uploader': '../Uploadify/UploadEmployee', //'../Content/uploadify/Upload.ashx', //uploader.php // '<%= Url.Action("Upload", "Uploadify") %>'
         //'cancelImage': '../Content/uploadify/uploadify-cancel.png', //'Content/uploadify/uploadify-cancel.png', // cancelImg
         'buttonText': 'Browse Files',
         //'script': '../Content/uploadify/Upload.ashx?prefix=BBB', // not used in v3 ?

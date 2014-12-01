@@ -39,6 +39,11 @@ namespace Service.Service
             return _repository.GetObjectById(Id);
         }
 
+        public BranchOffice GetObjectByCode(string Code)
+        {
+            return _repository.FindAll(x => x.Code == Code && !x.IsDeleted).FirstOrDefault();
+        }
+
         public BranchOffice GetObjectByName(string name)
         {
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
@@ -59,10 +64,47 @@ namespace Service.Service
             return this.CreateObject(branchOffice);
         }
 
+        public BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email)
+        {
+            BranchOffice branchOffice = GetObjectByCode(Code);
+            if (branchOffice != null)
+            {
+                branchOffice.Errors = new Dictionary<String, String>();
+                return branchOffice;
+            }
+            branchOffice = new BranchOffice
+            {
+                Code = Code,
+                Name = Name,
+                Address = Address,
+                PostalCode = PostalCode,
+                PhoneNumber = PhoneNumber,
+                FaxNumber = FaxNumber,
+                Email = Email,
+            };
+            return this.CreateObject(branchOffice);
+        }
+
         public BranchOffice CreateObject(BranchOffice branchOffice)
         {
             branchOffice.Errors = new Dictionary<String, String>();
             return (_validator.ValidCreateObject(branchOffice, this) ? _repository.CreateObject(branchOffice) : branchOffice);
+        }
+
+        public BranchOffice FindOrCreateObject(BranchOffice branchOffice)
+        {
+            branchOffice.Errors = new Dictionary<String, String>();
+            BranchOffice obj = GetObjectByCode(branchOffice.Code);
+            if (obj != null)
+            {
+                obj.Errors = new Dictionary<String, String>();
+                return obj;
+            }
+            if (_validator.ValidCreateObject(branchOffice, this))
+            {
+                _repository.CreateObject(branchOffice);
+            }
+            return branchOffice;
         }
 
         public BranchOffice UpdateObject(BranchOffice branchOffice)

@@ -77,7 +77,9 @@ namespace WebView.Controllers
                     file.SaveAs(fullpathname);
 
                     // Process start
-                    ConversionFunction.ImportEmployeeFromExcel(fullpathname);
+                    var convert = new ConversionFunction();
+                    convert.ImportEmployeeFromExcel(fullpathname);
+                    //ConversionFunction.ImporttoSQL(fullpathname);
 
                     // Process End
 

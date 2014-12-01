@@ -85,6 +85,54 @@ namespace Service.Service
             return this.CreateObject(employee, _divisionService, _titleInfoService);
         }
 
+        public Employee FindOrCreateObject(int divisionId, int titleInfoId, int employeeEducationId, string NIK, string Name, string Address, string PhoneNumber, string Email, string NPWP,
+                                     string PlaceOfBirth, DateTime BirthDate, int Sex, int MaritalStatus, int Children, int Religion,
+                                     IDivisionService _divisionService, ITitleInfoService _titleInfoService)
+        {
+            Employee employee = GetObjectByNIK(NIK);
+            if (employee != null)
+            {
+                employee.Errors = new Dictionary<String, String>();
+                return employee;
+            }
+            employee = new Employee
+            {
+                DivisionId = divisionId,
+                TitleInfoId = titleInfoId,
+                EmployeeEducationId = employeeEducationId,
+                NIK = NIK,
+                Name = Name,
+                Address = Address,
+                PhoneNumber = PhoneNumber,
+                Email = Email,
+                NPWP = NPWP,
+                PlaceOfBirth = PlaceOfBirth,
+                BirthDate = BirthDate,
+                Sex = Sex,
+                MaritalStatus = MaritalStatus,
+                Children = Children,
+                Religion = Religion,
+            };
+            return this.CreateObject(employee, _divisionService, _titleInfoService);
+        }
+
+        public Employee FindOrCreateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
+        {
+            employee.Errors = new Dictionary<String, String>();
+            Employee obj = GetObjectByNIK(employee.NIK);
+            if (obj != null)
+            {
+                obj.Errors = new Dictionary<String, String>();
+                return obj;
+            }
+            if (_validator.ValidCreateObject(employee, this, _divisionService, _titleInfoService))
+            {
+                employee.PTKPCode = GetPTKPCode(employee.MaritalStatus != (int)Constant.MaritalStatus.Married, employee.Children);
+                _repository.CreateObject(employee);
+            }
+            return employee;
+        }
+
         public Employee CreateObject(Employee employee, IDivisionService _divisionService, ITitleInfoService _titleInfoService)
         {
             employee.Errors = new Dictionary<String, String>();

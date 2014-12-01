@@ -189,6 +189,7 @@
     <Compile Include="Controllers\Master\WorkingDayController.cs" />
     <Compile Include="Controllers\Utility\SPKLController.cs" />
     <Compile Include="Controllers\Utility\EmployeeWorkingTimeController.cs" />
+    <Compile Include="ConversionFunction.cs" />
     <Compile Include="GeneralFunction.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -19,24 +19,28 @@ using Validation.Validation;
 namespace WebView
 {
     // connectionString info at http://connectionstrings.com/excel-2007
-    public static class ConversionFunction
+    public class ConversionFunction
     {
-        public static IBranchOfficeService _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
-        public static IDepartmentService _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
-        public static IDivisionService _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
-        public static IEmployeeService _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
-        public static ITitleInfoService _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
+        public IBranchOfficeService _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
+        public IDepartmentService _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
+        public IDivisionService _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
+        public IEmployeeService _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+        public ITitleInfoService _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
+        public ISalaryStandardService _salaryStandardService = new SalaryStandardService(new SalaryStandardRepository(), new SalaryStandardValidator());
+        public ISalaryStandardDetailService _salaryStandardDetailService = new SalaryStandardDetailService(new SalaryStandardDetailRepository(), new SalaryStandardDetailValidator());
+        public ISalaryEmployeeService _salaryEmployeeService = new SalaryEmployeeService(new SalaryEmployeeRepository(), new SalaryEmployeeValidator());
+        public ISalaryEmployeeDetailService _salaryEmployeeDetailService = new SalaryEmployeeDetailService(new SalaryEmployeeDetailRepository(), new SalaryEmployeeDetailValidator());
 
-        //public ConversionFunction()
-        //{
-        //    _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
-        //    _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
-        //    _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
-        //    _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
-        //    _titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
-        //}
+        public ConversionFunction()
+        {
+            //_branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
+            //_departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
+            //_divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
+            //_employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+            //_titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
+        }
 
-        public static int DoBranchOffice(OleDbDataReader dr, DbContext db)
+        public int DoBranchOffice(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
@@ -54,7 +58,7 @@ namespace WebView
             return count;
         }
 
-        public static int DoDepartment(OleDbDataReader dr, DbContext db)
+        public int DoDepartment(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
@@ -81,7 +85,7 @@ namespace WebView
             return count;
         }
 
-        public static int DoEmployee(OleDbDataReader dr, DbContext db)
+        public int DoEmployee(OleDbDataReader dr, DbContext db)
         {
             int count = 0;
             while (dr.Read()) // read per record/row from a table/sheet
@@ -92,7 +96,7 @@ namespace WebView
         }
 
         // Example 1
-        public static int ImporttoSQL(string sPath)
+        public int ImporttoSQL(string sPath)
         {
             // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
             // Connect to Excel 2007 earlier version
@@ -108,6 +112,7 @@ namespace WebView
             {
                 using (sSourceConnection)
                 {
+                    sSourceConnection.Open();
                     // Get Sheets list
                     DataTable dt = sSourceConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
                     //String[] strExcelSheets = new String[dt.Rows.Count];
@@ -178,7 +183,7 @@ namespace WebView
         }
 
         // Example 2
-        public static int ImportFromExcel(string fileName)
+        public int ImportFromExcel(string fileName)
         {
             // Buat satu Service menggunakan nama ExcelEntryService
             // yang memiliki Repository, dimana GetContext dapat digunakan
@@ -195,9 +200,10 @@ namespace WebView
                     DataTable dtExcel = new DataTable();
                     // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
                     string SourceConstr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties= 'Excel 12.0;HDR=Yes;IMEX=1'";
-                    OleDbConnection con = new OleDbConnection(SourceConstr);
+                    OleDbConnection conn = new OleDbConnection(SourceConstr);
                     string query = "Select * from [Sheet1$]";
-                    OleDbDataAdapter data = new OleDbDataAdapter(query, con);
+                    OleDbDataAdapter data = new OleDbDataAdapter(query, conn);
+                    conn.Open();
                     data.Fill(dtExcel);
                     for (int i = 0; i < dtExcel.Rows.Count; i++)
                     {
@@ -232,7 +238,7 @@ namespace WebView
             return count;
         }
 
-        public static int ImportEmployeeFromExcel(string fileName)
+        public int ImportEmployeeFromExcel(string fileName)
         {
             // Buat satu Service menggunakan nama ExcelEntryService
             // yang memiliki Repository, dimana GetContext dapat digunakan
@@ -249,22 +255,61 @@ namespace WebView
                     DataTable dtExcel = new DataTable();
                     // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
                     string SourceConstr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties= 'Excel 12.0;HDR=Yes;IMEX=1'";
-                    OleDbConnection con = new OleDbConnection(SourceConstr);
-                    string query = "Select * from [Sheet1$]";
-                    OleDbDataAdapter data = new OleDbDataAdapter(query, con);
+                    OleDbConnection conn = new OleDbConnection(SourceConstr);
+                    conn.Open();
+                    // Get Sheets list
+                    DataTable dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                    string sheetname = dt.Rows[0]["TABLE_NAME"].ToString(); // string.Format("{0}", "Sheet1$");
+                    string query = string.Format("Select * from [{0}]", sheetname);
+                    OleDbDataAdapter data = new OleDbDataAdapter(query, conn);
+                    
                     data.Fill(dtExcel);
                     for (int i = 0; i < dtExcel.Rows.Count; i++)
                     {
                         try
                         {
                             //count += conLinq.Database.ExecuteSqlCommand("insert into [Sheet1$] values(" + dtExcel.Rows[i][0] + "," + dtExcel.Rows[i][1] + ",'" + dtExcel.Rows[i][2] + "'," + dtExcel.Rows[i][3] + ")");
+                            // Find Or Create Branch
+                            var branchcode = dtExcel.Rows[i][4].ToString();
+                            BranchOffice branchOffice = _branchOfficeService.FindOrCreateObject(branchcode.Replace(" ", String.Empty), branchcode, "-", "-", "-", "-", "-", "-");
+
+                            // Find Or Create Department & Division
+                            var deptcode = dtExcel.Rows[i][5].ToString();
+                            Department department = _departmentService.FindOrCreateObject(branchOffice.Id, deptcode.Replace(" ", String.Empty), deptcode, "", _branchOfficeService);
+                            Division division = _divisionService.FindOrCreateObject(department.Id, deptcode.Replace(" ", String.Empty), deptcode, "", _departmentService);
+
+                            // Find Or Create Title
+                            var titlename = dtExcel.Rows[i][3].ToString();
+                            TitleInfo titleInfo = _titleInfoService.FindOrCreateObject(titlename.Replace(" ", String.Empty), titlename, "", false);
+
+                            // Find Or Create Employee
                             Employee employee = new Employee()
                             {
+                                DivisionId = division.Id,
+                                TitleInfoId = titleInfo.Id,
                                 NIK = dtExcel.Rows[i][0].ToString(),
                                 StartWorkingDate = DateTime.Parse(dtExcel.Rows[i][1].ToString()),
                                 Name = dtExcel.Rows[i][2].ToString(),
+                                BankAccount = dtExcel.Rows[i][6].ToString(),
+                                Bank = dtExcel.Rows[i][7].ToString(),
+                                BirthDate = DateTime.Parse(dtExcel.Rows[i][20].ToString()),
+                                PlaceOfBirth = "-",
+                                PTKPCode = dtExcel.Rows[i][22].ToString(),
+                                NPWP = dtExcel.Rows[i][23].ToString(),
+                                Religion = (int)Enum.Parse(typeof(Constant.Religion), dtExcel.Rows[i][26].ToString(), true),
+                                Address = dtExcel.Rows[i][28].ToString(),
+                                IDNumber = dtExcel.Rows[i][29].ToString(),
+                                Sex = dtExcel.Rows[i][27].ToString().Substring(0,1) == "F" ? 1 : 0,
+                                MaritalStatus = dtExcel.Rows[i][22].ToString().Substring(0,1) == "K" ? 1 : 0,
+                                Children = int.Parse(dtExcel.Rows[i][22].ToString().Substring(dtExcel.Rows[i][22].ToString().IndexOf("/"))),
+                                PhoneNumber = "-",
                             };
-                            _employeeService.CreateObject(employee, _divisionService, _titleInfoService);
+                            _employeeService.FindOrCreateObject(employee, _divisionService, _titleInfoService);
+
+                            // Find Or Create SalaryStandard
+
+                            // Find Or Create SalaryEmployee
+
                         }
                         catch (Exception ex)
                         {
