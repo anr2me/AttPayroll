@@ -32,12 +32,9 @@
             int? compId = null;
             CompanyInfo comp = context.CompanyInfos.FirstOrDefault();
             if (comp != null) compId = comp.Id;
-            foreach (var x in context.BranchOffices)
+            foreach (var x in context.BranchOffices.Where(a => a.CompanyInfoId == null))
             {
-                if (x.CompanyInfoId == null)
-                {
-                    x.CompanyInfoId = compId;
-                }
+                x.CompanyInfoId = compId;
             }
             //context.SaveChanges();
         }

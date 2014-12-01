@@ -31,6 +31,7 @@ namespace Core.DomainModel
         public int BreakLateMinutes { get; set; } // breakin late
         public int CheckEarlyMinutes { get; set; } // checkout early
         public int CheckLateMinutes { get; set; } // checkin late
+        public int WorkTimeMinutes { get; set; } // working time on a present/duty working day (based on status)
         public int OverTimeMinutes { get; set; }
 
         public bool IsDeleted { get; set; }
