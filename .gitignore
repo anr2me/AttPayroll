@@ -1278,3 +1278,5 @@ WebView/obj/Release/
 WebView/bin/Debug/
 WebView/bin/Release/
 WebView/uploads/
+*TemporaryGeneratedFile*
+*/obj/*/Debug/*

@@ -1,0 +1,171 @@
+﻿<dxr:DXRibbonWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:DXWPFApplication"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxd="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+    xmlns:dxnb="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
+    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:DomainModel="clr-namespace:Core.DomainModel;assembly=Core"
+    x:Class="DXWPFApplication.MainWindow"
+    Title="DXApplication" Height="700" Width="1100"
+    SnapsToDevicePixels="True" UseLayoutRounding="True"
+    dx:ThemeManager.ThemeName="DXStyle" WindowStartupLocation="CenterScreen" Activated="DXRibbonWindow_Activated"
+    >
+    <dxr:DXRibbonWindow.Resources>
+
+        <dx:IEnumerableDataSource x:Key="IEnumerableDataSource" dx:DesignDataManager.DesignData="{dx:DesignDataSettings DataObjectType={x:Type DomainModel:SalaryStandard}, RowCount=3, UseDistinctValues=True}"/>
+
+    </dxr:DXRibbonWindow.Resources>
+
+    <dxb:BarManager x:Name="barManager" CreateStandardLayout="True">
+        <dxb:BarManager.Categories>
+            <dxb:BarManagerCategory Name="File" />
+            <dxb:BarManagerCategory Name="Edit" />
+            <dxb:BarManagerCategory Name="Help" />
+            <dxb:BarManagerCategory Name="BuiltIn" />
+        </dxb:BarManager.Categories>
+        <dxb:BarManager.Items>
+            <dxb:BarButtonItem x:Name="bNew" CategoryName="File" Content="New" Glyph="Images/Icons/new-16x16.png" KeyGesture="Ctrl+N" Hint="New Blank Document"/>
+            <dxb:BarButtonItem x:Name="bOpen" CategoryName="File" Content="Open" Glyph="Images/Icons/open-16x16.png" KeyGesture="Ctrl+O" Hint="Open"/>
+            <dxb:BarButtonItem x:Name="bClose" CategoryName="File" Content="Close" Glyph="Images/Icons/close-16x16.png" Hint="Close"/>
+            <dxb:BarButtonItem x:Name="bSave" CategoryName="File" Content="Save" Glyph="Images/Icons/save-16x16.png" KeyGesture="Ctrl+S" Hint="Save Document"/>
+            <dxb:BarButtonItem x:Name="bSaveAs" CategoryName="File" Content="Save As..." Glyph="Images/Icons/save-as-16x16.png" Hint="Save Document As..."/>
+            <dxb:BarButtonItem x:Name="bPrint" CategoryName="File" Content="Print" Glyph="Images/Icons/print-16x16.png" KeyGesture="Ctrl+P"/>
+            <dxb:BarButtonItem x:Name="bExit" CategoryName="File" Content="Exit" KeyGesture="Ctrl+X"/>
+
+            <dxb:BarButtonItem x:Name="bUndo" CategoryName="Edit" Content="Undo" Glyph="Images/Icons/undo-16x16.png" KeyGesture="Ctrl+Z"/>
+            <dxb:BarButtonItem x:Name="bRedo" CategoryName="Edit" Content="Redo" Glyph="Images/Icons/redo-16x16.png" KeyGesture="Ctrl+Y"/>
+            <dxb:BarButtonItem x:Name="bCut" CategoryName="Edit" Content="Cut" Glyph="Images/Icons/cut-16x16.png" KeyGesture="Ctrl+X"/>
+            <dxb:BarButtonItem x:Name="bCopy" CategoryName="Edit" Content="Copy" Glyph="Images/Icons/copy-16x16.png" KeyGesture="Ctrl+C"/>
+            <dxb:BarButtonItem x:Name="bPaste" CategoryName="Edit" Content="Paste" Glyph="Images/Icons/paste-16x16.png" KeyGesture="Ctrl+V"/>
+            <dxb:BarButtonItem x:Name="bClear" CategoryName="Edit" Content="Clear"/>
+            <dxb:BarButtonItem x:Name="bSelectAll" CategoryName="Edit" Content="Select All" KeyGesture="Ctrl+A"/>
+
+            <dxb:BarButtonItem x:Name="bHome" CategoryName="Help" Content="Developer Express on the Web"/>
+            <dxb:BarButtonItem x:Name="bAbout" CategoryName="Help" Content="About"/>
+
+            <dxb:BarSubItem x:Name="smFile" CategoryName="BuiltIn" Content="File">
+                <dxb:BarButtonItemLink BarItemName="bNew"/>
+                <dxb:BarButtonItemLink BarItemName="bOpen"/>
+                <dxb:BarButtonItemLink BarItemName="bClose"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bSave"/>
+                <dxb:BarButtonItemLink BarItemName="bSaveAs"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bPrint"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bExit"/>
+            </dxb:BarSubItem>
+            <dxb:BarSubItem x:Name="smEdit" CategoryName="BuiltIn" Content="Edit">
+                <dxb:BarButtonItemLink BarItemName="bUndo"/>
+                <dxb:BarButtonItemLink BarItemName="bRedo"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bCut"/>
+                <dxb:BarButtonItemLink BarItemName="bCopy"/>
+                <dxb:BarButtonItemLink BarItemName="bPaste"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bClear"/>
+                <dxb:BarButtonItemLink BarItemName="bSelectAll"/>
+            </dxb:BarSubItem>
+            <dxb:BarSubItem x:Name="smHelp" CategoryName="BuiltIn" Content="Help">
+                <dxb:BarButtonItemLink BarItemName="bHome"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bAbout"/>
+            </dxb:BarSubItem>
+        </dxb:BarManager.Items>
+        <dxb:BarManager.Bars>
+            <dxb:Bar Caption="MainMenu" x:Name="MainMenu" IsMainMenu="True" UseWholeRow="True">
+                <dxb:Bar.DockInfo>
+                    <dxb:BarDockInfo ContainerType="Top"/>
+                </dxb:Bar.DockInfo>
+                <dxb:BarSubItemLink BarItemName="smFile"/>
+                <dxb:BarSubItemLink BarItemName="smEdit"/>
+                <dxb:BarSubItemLink BarItemName="smHelp"/>
+            </dxb:Bar>
+            <dxb:Bar Caption="Standard">
+                <dxb:Bar.DockInfo>
+                    <dxb:BarDockInfo ContainerType="Top" Row="1" Column="0"/>
+                </dxb:Bar.DockInfo>
+                <dxb:BarButtonItemLink BarItemName="bNew"/>
+                <dxb:BarButtonItemLink BarItemName="bOpen"/>
+                <dxb:BarButtonItemLink BarItemName="bSave"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bPrint"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bCut"/>
+                <dxb:BarButtonItemLink BarItemName="bCopy"/>
+                <dxb:BarButtonItemLink BarItemName="bPaste"/>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItemLink BarItemName="bUndo"/>
+                <dxb:BarButtonItemLink BarItemName="bRedo"/>
+            </dxb:Bar>
+            <dxb:Bar Caption="Status Bar" IsStatusBar="True" UseWholeRow="True">
+                <dxb:Bar.DockInfo>
+                    <dxb:BarDockInfo ContainerType="Bottom"/>
+                </dxb:Bar.DockInfo>
+            </dxb:Bar>
+        </dxb:BarManager.Bars>
+        <dxd:DockLayoutManager x:Name="dockLayoutManager">
+            <dxd:DockLayoutManager.AutoHideGroups>
+                <dxd:AutoHideGroup >
+                    <dxd:LayoutPanel Caption="Navigation" ItemWidth="200" Padding="1">
+                        <dxnb:NavBarControl x:Name="navBarControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1">
+                            <dxnb:NavBarControl.Groups>
+                                <dxnb:NavBarGroup Header="Group1" ImageSource="Images/Icons/Group.png">
+                                    <dxnb:NavBarItem Content="Item1" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item2" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item3" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item4" ImageSource="Images/Icons/Item.png"/>
+                                </dxnb:NavBarGroup>
+                                <dxnb:NavBarGroup Header="Group2" ImageSource="Images/Icons/Group.png">
+                                    <dxnb:NavBarItem Content="Item1" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item2" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item3" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item4" ImageSource="Images/Icons/Item.png"/>
+                                    <dxnb:NavBarItem Content="Item5" ImageSource="Images/Icons/Item.png"/>
+                                </dxnb:NavBarGroup>
+                            </dxnb:NavBarControl.Groups>
+                            <dxnb:NavBarControl.View>
+                                <dxnb:NavigationPaneView IsExpandButtonVisible="False"/>
+                            </dxnb:NavBarControl.View>
+                        </dxnb:NavBarControl>
+                    </dxd:LayoutPanel>
+                    <dxd:LayoutPanel Caption="Tools"/>
+                </dxd:AutoHideGroup>
+            </dxd:DockLayoutManager.AutoHideGroups>
+            <dxd:LayoutGroup>
+                <dxd:LayoutGroup Orientation="Vertical"  ItemWidth="3*">
+                    <dxd:DocumentGroup ItemHeight="3*" SelectedTabIndex="0">
+                        <dxd:DocumentPanel Caption="Salary Standard" ItemHeight="3*">
+                            <dxg:GridControl x:Name="gridControl1" AutoPopulateColumns="True" HorizontalAlignment="Left" Height="324" VerticalAlignment="Top" Width="1062" ItemsSource="{Binding Data}">
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding Id, Mode=TwoWay}" FieldName="Id" Header="ID" ReadOnly="True"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding TitleInfoId, Mode=TwoWay}" FieldName="TitleInfoId" Header="Title ID" Visible="False"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding TitleInfoName, Mode=TwoWay}" FieldName="TitleInfoName" Header="Title"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding Description, Mode=TwoWay}" FieldName="Description" Header="Description"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding EffectiveDate, Mode=TwoWay}" FieldName="EffectiveDate" Header="Effective Date"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding CreatedAt, Mode=TwoWay}" FieldName="CreatedAt" Header="Created Date"/>
+                                    <dxg:GridColumn DisplayMemberBinding="{Binding UpdatedAt, Mode=TwoWay}" FieldName="UpdatedAt" Header="Updated Date"/>
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowTotalSummary="True" FocusedRowChanged="TableView_FocusedRowChanged" MouseDoubleClick="TableView_MouseDoubleClick"/>
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>
+                        </dxd:DocumentPanel>
+                    </dxd:DocumentGroup>
+                    <dxd:LayoutPanel Caption="DetailView" ItemHeight="2*">
+                        <DataGrid HorizontalAlignment="Left" Height="209" VerticalAlignment="Top" Width="1062"/>
+                    </dxd:LayoutPanel>
+                </dxd:LayoutGroup>
+            </dxd:LayoutGroup>
+        </dxd:DockLayoutManager>
+    </dxb:BarManager>
+
+</dxr:DXRibbonWindow>

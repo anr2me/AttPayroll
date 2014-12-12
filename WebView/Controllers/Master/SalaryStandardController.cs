@@ -104,6 +104,56 @@ namespace WebView.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public dynamic GetListDynamic(string _search, long nd, int rows, int? page, string sidx, string sord, string filters = "", int ParentId = 0)
+        {
+            // Construct where statement
+            string strWhere = GeneralFunction.ConstructWhere(filters);
+            string filter = null;
+            GeneralFunction.ConstructWhereInLinq(strWhere, out filter);
+            if (filter == "") filter = "true";
+
+            // Get Data
+            var q = _salaryStandardService.GetQueryable().Include("TitleInfo").Include("SalaryStandardDetails");
+
+            var query = (from model in q
+                         select new
+                         {
+                             model.Id,
+                             model.TitleInfoId,
+                             TitleInfoName = model.TitleInfo.Name,
+                             model.EffectiveDate,
+                             model.Description,
+                             model.CreatedAt,
+                             model.UpdatedAt,
+                         }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
+
+            var list = query.AsEnumerable();
+
+            var pageIndex = Convert.ToInt32(page) - 1;
+            var pageSize = rows;
+            var totalRecords = query.Count();
+            var totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+            // default last page
+            if (totalPages > 0)
+            {
+                if (!page.HasValue)
+                {
+                    pageIndex = totalPages - 1;
+                    page = totalPages;
+                }
+            }
+
+            list = list.Skip(pageIndex * pageSize).Take(pageSize);
+
+            return Json(new
+            {
+                total = totalPages,
+                page = page,
+                records = totalRecords,
+                rows = list
+            }, JsonRequestBehavior.AllowGet);
+        }
+
 
         public dynamic GetInfo(int Id)
         {
@@ -338,6 +388,55 @@ namespace WebView.Controllers
                              model.Amount,
                       }
                     }).ToArray()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public dynamic GetListDetailDynamic(string _search, long nd, int rows, int? page, string sidx, string sord, int id, string filters = "")
+        {
+            // Construct where statement
+            string strWhere = GeneralFunction.ConstructWhere(filters);
+            string filter = null;
+            GeneralFunction.ConstructWhereInLinq(strWhere, out filter);
+            if (filter == "") filter = "true";
+
+            // Get Data
+            var q = _salaryStandardDetailService.GetQueryable().Include("SalaryStandard").Include("SalaryItem").Where(x => x.SalaryStandardId == id);
+
+            var query = (from model in q
+                         select new
+                         {
+                             model.Id,
+                             model.SalaryStandardId,
+                             model.SalaryItemId,
+                             SalaryItemCode = model.SalaryItem.Code,
+                             SalaryItemName = model.SalaryItem.Name,
+                             model.Amount,
+                         }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
+
+            var list = query.AsEnumerable();
+
+            var pageIndex = Convert.ToInt32(page) - 1;
+            var pageSize = rows;
+            var totalRecords = query.Count();
+            var totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+            // default last page
+            if (totalPages > 0)
+            {
+                if (!page.HasValue)
+                {
+                    pageIndex = totalPages - 1;
+                    page = totalPages;
+                }
+            }
+
+            list = list.Skip(pageIndex * pageSize).Take(pageSize);
+
+            return Json(new
+            {
+                total = totalPages,
+                page = page,
+                records = totalRecords,
+                rows = list
             }, JsonRequestBehavior.AllowGet);
         }
 
