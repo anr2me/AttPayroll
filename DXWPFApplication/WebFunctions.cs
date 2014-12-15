@@ -93,35 +93,35 @@ namespace DXWPFApplication
                 return responseFromServer;
             }
 
-            public HttpWebResponse SendPOSTRequest(string uri, string content, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            public HttpWebResponse SendPOSTRequest(string uri, string content, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
-                HttpWebRequest request = GeneratePOSTRequest(uri, content, login, password, allowAutoRedirect, proxy);
+                HttpWebRequest request = GeneratePOSTRequest(uri, content, login, password, allowAutoRedirect, proxy, contenttype);
                 return GetResponse(request);
             }
 
-            public HttpWebResponse SendGETRequest(string uri, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            public HttpWebResponse SendGETRequest(string uri, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
-                HttpWebRequest request = GenerateGETRequest(uri, login, password, allowAutoRedirect, proxy);
+                HttpWebRequest request = GenerateGETRequest(uri, login, password, allowAutoRedirect, proxy, contenttype);
                 return GetResponse(request);
             }
 
-            public HttpWebResponse SendRequest(string uri, string content, string method, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            public HttpWebResponse SendRequest(string uri, string content, string method, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
-                HttpWebRequest request = GenerateRequest(uri, content, method, login, password, allowAutoRedirect, proxy);
+                HttpWebRequest request = GenerateRequest(uri, content, method, login, password, allowAutoRedirect, proxy, contenttype);
                 return GetResponse(request);
             }
 
-            public HttpWebRequest GenerateGETRequest(string uri, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            public HttpWebRequest GenerateGETRequest(string uri, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
-                return GenerateRequest(uri, null, "GET", null, null, allowAutoRedirect, proxy);
+                return GenerateRequest(uri, null, "GET", null, null, allowAutoRedirect, proxy, contenttype);
             }
 
-            public HttpWebRequest GeneratePOSTRequest(string uri, string content, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            public HttpWebRequest GeneratePOSTRequest(string uri, string content, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
-                return GenerateRequest(uri, content, "POST", null, null, allowAutoRedirect, proxy);
+                return GenerateRequest(uri, content, "POST", null, null, allowAutoRedirect, proxy, contenttype);
             }
 
-            internal HttpWebRequest GenerateRequest(string uri, string content, string method, string login, string password, bool allowAutoRedirect, IWebProxy proxy)
+            internal HttpWebRequest GenerateRequest(string uri, string content, string method, string login, string password, bool allowAutoRedirect, IWebProxy proxy, string contenttype)
             {
                 if (uri == null)
                 {
@@ -153,9 +153,9 @@ namespace DXWPFApplication
                 {
                     request.SendChunked = true;
                     // Convert POST data to a byte array.
-                    byte[] byteArray = Encoding.UTF8.GetBytes(content??"");
+                    byte[] byteArray = Encoding.UTF8.GetBytes(content ?? "");
                     // Set the ContentType property of the WebRequest.
-                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentType = contenttype ?? "application/x-www-form-urlencoded";
                     // Set the ContentLength property of the WebRequest.
                     request.ContentLength = byteArray.Length;
                     // Get the request stream.

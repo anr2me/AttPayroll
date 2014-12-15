@@ -27,15 +27,28 @@ namespace DXWPFApplication
             InitializeComponent();
         }
 
+        public class LoginModel
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+            //public bool RememberMe { get; set; }
+        }
+
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Application.Current.MainWindow as MainWindow;
 
+            //LoginModel model = new LoginModel()
+            //{
+            //    UserName = this.UserName.Text,
+            //    Password = this.Password.Password,
+            //};
+            //string content = JsonConvert.SerializeObject(model);
             string content = String.Format(@"UserName={0}&Password={1}", this.UserName.Text, this.Password.Password);
-            string uri = String.Format("http://{0}/payroll/Authentication/Login", mw.Host);
-            HttpWebRequest req = mw.ReqMan.GenerateGETRequest(uri, null, null, false, mw.proxy); // need to GET first before POST to get sessionid required for login
+            string uri = String.Format("http://{0}/Authentication/Login", mw.Host);
+            HttpWebRequest req = mw.ReqMan.GenerateGETRequest(uri, null, null, false, mw.proxy, null); // need to GET first before POST to get sessionid required for login
             HttpWebResponse resp = mw.ReqMan.GetResponse(req);
-            req = mw.ReqMan.GeneratePOSTRequest(uri, content, null, null, false, mw.proxy);
+            req = mw.ReqMan.GeneratePOSTRequest(uri, content, null, null, false, mw.proxy, null);
             resp = mw.ReqMan.GetResponse(req);
             string respcont = mw.ReqMan.GetResponseContent(resp);
             if (resp != null)

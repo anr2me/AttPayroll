@@ -30,12 +30,17 @@ namespace DXWPFApplication
 {
     public partial class MainWindow : DXRibbonWindow
     {
-        public string Host = "localhost:44350"; // use localhost instead of 127.0.0.1 to prevent error
+        public string Host = "localhost:44350"; //"localhost/payroll" // use localhost instead of 127.0.0.1 to prevent error
         public WebProxy proxy = null; //new WebProxy("127.0.0.1", 8888);
         public WebFunctions.RequestManager ReqMan = new WebFunctions.RequestManager();
         //public DXWinLogin WinLogin = new DXWinLogin();
         //public DXWinSalaryStandard WinSalaryStandard = new DXWinSalaryStandard();
         //public DXWinLookUpTitleInfo WinLookUpTitleInfo = new DXWinLookUpTitleInfo();
+        public JsonSerializerSettings JSONsettings = new JsonSerializerSettings()
+        {
+            DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+            DateTimeZoneHandling = DateTimeZoneHandling.Local,
+        };
 
         public bool? Login()
         {
@@ -52,8 +57,8 @@ namespace DXWPFApplication
         public bool ReloadGrid()
         {
             //string content = String.Format(@"UserName={0}&Password={1}", WindowLogin.UserName.Text, WindowLogin.Password.Password);
-            string uri = String.Format("http://{0}/payroll/SalaryStandard/GetListDynamic?ParentId={1}&_search={2}&nd={3}&rows={4}&page={5}&sidx={6}&sord={7}&filters={8}", Host, 0, false, DateTime.Now.ToBinary(), 20, 1, "id", "desc", "");
-            HttpWebRequest req = ReqMan.GenerateGETRequest(uri, null, null, false, proxy);
+            string uri = String.Format("http://{0}/SalaryStandard/GetListDynamic?ParentId={1}&_search={2}&nd={3}&rows={4}&page={5}&sidx={6}&sord={7}&filters={8}", Host, 0, false, DateTime.Now.ToBinary(), 20, 1, "id", "desc", "");
+            HttpWebRequest req = ReqMan.GenerateGETRequest(uri, null, null, false, proxy, null);
            
             HttpWebResponse resp = ReqMan.GetResponse(req);
             //string respcont = ReqMan.GetResponseContent(resp);
@@ -62,7 +67,7 @@ namespace DXWPFApplication
                 if (resp.StatusCode == HttpStatusCode.OK && resp.ContentType.ToLower().Contains("json"))
                 {
                     string respcont = ReqMan.GetResponseContent(resp);
-                    dynamic model = JsonConvert.DeserializeObject(respcont);
+                    dynamic model = JsonConvert.DeserializeObject(respcont, JSONsettings);
                     gridControl1.ItemsSource = null;
                     gridControl1.ItemsSource = model.rows; //jtoken.Last.Last.ToList();
                 }
@@ -98,8 +103,8 @@ namespace DXWPFApplication
         {
             DXWinSalaryStandard WinSalaryStandard = new DXWinSalaryStandard();
 
-            string uri = String.Format("http://{0}/payroll/SalaryStandard/GetInfo?Id={1}", Host, gridControl1.View.FocusedRowData.CellData[0].Value);
-            HttpWebRequest req = ReqMan.GenerateGETRequest(uri, null, null, false, proxy);
+            string uri = String.Format("http://{0}/SalaryStandard/GetInfo?Id={1}", Host, gridControl1.View.FocusedRowData.CellData[0].Value);
+            HttpWebRequest req = ReqMan.GenerateGETRequest(uri, null, null, false, proxy, null);
             HttpWebResponse resp = ReqMan.GetResponse(req);
             if (resp != null)
             {
@@ -108,7 +113,7 @@ namespace DXWPFApplication
                     string respcont = ReqMan.GetResponseContent(resp);
                     //var jtoken = Newtonsoft.Json.Linq.JContainer.FromObject(JsonConvert.DeserializeObject(respcont));
                     //dynamic model = Newtonsoft.Json.Linq.JObject.Parse(respcont); //.FromObject(JsonConvert.DeserializeObject(respcont));
-                    var model = JsonConvert.DeserializeObject<GetInfoData>(respcont);
+                    var model = JsonConvert.DeserializeObject<GetInfoData>(respcont, JSONsettings);
                     WinSalaryStandard.ID.Text = model.Id.ToString();
                     WinSalaryStandard.Title.Text = model.TitleInfoName;
                     WinSalaryStandard.Title.Tag = model.TitleInfoId;
@@ -155,9 +160,9 @@ namespace DXWPFApplication
     public class InsertUpdateData
     {
         public string Id { get; set; }
-        public string TitleInfoId { get; set; }
-        public string EffectiveDate { get; set; }
+        public int TitleInfoId { get; set; }
         public string Description { get; set; }
+        public DateTime EffectiveDate { get; set; }
     }
 
     public class GetInfoData
