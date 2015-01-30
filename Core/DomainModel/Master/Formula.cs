@@ -16,6 +16,7 @@ namespace Core.DomainModel
         public Nullable<int> FirstSalaryItemId { get; set; } // 1st Operand
         [StringLength(3)]
         public string FormulaOp { get; set; } // "+", "-", "/", "*"
+        
         public bool IsSecondValue { get; set; } // 2nd operand is a value (not an item)
         public Nullable<int> SecondSalaryItemId { get; set; } // 2nd Operand
         public decimal SecondValue { get; set; }

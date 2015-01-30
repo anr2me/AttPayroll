@@ -25,6 +25,9 @@ namespace Data.Context
         {
             IList<String> tableNames = new List<String>();
 
+            IList<String> fingerPrintNames = new List<String>() 
+                                        { "FPAttLog", "FPTemplate", "FPUser", "FPMachine" };
+
             IList<String> viewModelNames = new List<String>() 
                                         { "SlipGajiDetail2A", "SlipGajiDetail1", "SlipGajiDetail", "SlipGajiMini"};
 
@@ -43,6 +46,7 @@ namespace Data.Context
             IList<String> userRoleNames = new List<String>()
                                         { "UserAccount" };
 
+            fingerPrintNames.ToList().ForEach(x => tableNames.Add(x));
             viewModelNames.ToList().ForEach(x => tableNames.Add(x));
             utilityNames.ToList().ForEach(x => tableNames.Add(x));
             masterNames.ToList().ForEach(x => tableNames.Add(x));
@@ -100,6 +104,11 @@ namespace Data.Context
             modelBuilder.Configurations.Add(new SlipGajiDetail1Mapping());
             modelBuilder.Configurations.Add(new SlipGajiDetail2AMapping());
 
+            modelBuilder.Configurations.Add(new FPMachineMapping());
+            modelBuilder.Configurations.Add(new FPUserMapping());
+            modelBuilder.Configurations.Add(new FPTemplateMapping());
+            modelBuilder.Configurations.Add(new FPAttLogMapping());
+
             modelBuilder.Entity<Formula>().Property(x => x.SecondValue).HasPrecision(19, 4);
             //modelBuilder.Entity<BranchOffice>().Property(x => x.CompanyInfoId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
@@ -141,5 +150,15 @@ namespace Data.Context
         public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public DbSet<PensionCompensation> PensionCompensations { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
+
+        public DbSet<SlipGajiMini> SlipGajiMinis { get; set; }
+        public DbSet<SlipGajiDetail> SlipGajiDetails { get; set; }
+        public DbSet<SlipGajiDetail1> SlipGajiDetail1s { get; set; }
+        public DbSet<SlipGajiDetail2A> SlipGajiDetail2As { get; set; }
+
+        public DbSet<FPMachine> FPMachines { get; set; }
+        public DbSet<FPUser> FPUsers { get; set; }
+        public DbSet<FPTemplate> FPTemplates { get; set; }
+        public DbSet<FPAttLog> FPAttLogs { get; set; }
     }
 }

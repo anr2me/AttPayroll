@@ -8,7 +8,10 @@
     }
 
     function ReloadGrid() {
-        $("#list").setGridParam({ url: base_url + 'BranchOffice/GetList', postData: { filters: null }, page: 'first' }).trigger("reloadGrid");
+        var id = $('#parenttype option:selected').text();
+        var value = $('#parenttype').val();
+
+        $("#list").setGridParam({ url: base_url + 'BranchOffice/GetList', postData: { filters: null, ParentId: value }, page: 'first' }).trigger("reloadGrid");
     }
 
     function ClearData() {
@@ -19,6 +22,10 @@
         ClearErrorMessage();
     }
 
+    $("#parenttype").live("change", function () {
+        ReloadGrid();
+    });
+
     $("#form_div").dialog('close');
     $("#delete_confirm_div").dialog('close');
     $("#lookup_div_companygroup").dialog('close');
@@ -26,6 +33,7 @@
     //GRID +++++++++++++++
     $("#list").jqGrid({
         url: base_url + 'BranchOffice/GetList',
+        postData: { 'ParentId': function () { return $("#parenttype").val(); } },
         datatype: "json",
         colNames: ['ID', 'Code', 'Name', 'Address', 'City', 'Postal Code', 'Phone No.', 'Fax No.', 'Email', 'Website', 'Created At', 'Updated At'],
         colModel: [
@@ -215,6 +223,7 @@
                 Id: id, Code: $("#Code").val(), Name: $("#Name").val(), Address: $("#Address").val(), City: $("#City").val(), PostalCode: $("#PostalCode").val(),
                 PhoneNumber: $("#PhoneNumber").val(), FaxNumber: $("#FaxNumber").val(), 
                 Email: $("#Email").val(), //Website: $("#Website").val()
+                CompanyInfoId: $("#parenttype").val()
             }),
             async: false,
             cache: false,

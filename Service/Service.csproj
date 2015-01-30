@@ -48,6 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\FingerPrint\FPMachineService.cs" />
+    <Compile Include="Service\FingerPrint\FPAttLogService.cs" />
+    <Compile Include="Service\FingerPrint\FPTemplateService.cs" />
+    <Compile Include="Service\FingerPrint\FPUserService.cs" />
     <Compile Include="Service\Master\BranchOfficeService.cs" />
     <Compile Include="Service\Master\CompanyInfoService.cs" />
     <Compile Include="Service\Utility\THRDetailService.cs" />
@@ -102,6 +106,17 @@
       <Project>{14f5dc8f-6aae-4971-b71f-b08f2b638c17}</Project>
       <Name>Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="zkemkeeper">
+      <Guid>{FE9DED34-E159-408E-8490-B720A5E632C7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

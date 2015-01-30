@@ -40,6 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\FingerPrint\FPMachineValidator.cs" />
+    <Compile Include="Validation\FingerPrint\FPAttLogValidator.cs" />
+    <Compile Include="Validation\FingerPrint\FPTemplateValidator.cs" />
+    <Compile Include="Validation\FingerPrint\FPUserValidator.cs" />
     <Compile Include="Validation\Master\BranchOfficeValidator.cs" />
     <Compile Include="Validation\Master\CompanyInfoValidator.cs" />
     <Compile Include="Validation\Utility\THRDetailValidator.cs" />

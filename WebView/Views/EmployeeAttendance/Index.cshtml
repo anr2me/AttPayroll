@@ -92,7 +92,7 @@
                         <tr nowrap>
                             <td width="139" nowrap style="width: 100px">
                                 <label>ID</label></td>
-                            <td width="226">
+                            <td width="150">
                                 <input id="id" type="text" size="10" disabled="disabled"/></td>
                         </tr>
                         <tr>
@@ -127,6 +127,16 @@
                             <td>
                                 <input id="AttendanceDate"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
                                 <input name="AttendanceDate" type="text" size="1" hidden="hidden" />
+                            </td>
+                            <td>
+                                <select id="DateRange">
+                                    <option value="false">Only</option>
+                                    <option value="true">To</option>
+                                </select>
+                            </td>
+                            <td hidden id="ToDate">
+                                <input id="AttendanceDateEnd"class="easyui-datebox" title="mm/dd/yyyy" type="text" size="10" value="@DateTime.Today.ToShortDateString()"/>
+                                <input name="AttendanceDateEnd" type="text" size="1" hidden="hidden" />
                             </td>
                         </tr>
                         <tr>

@@ -41,6 +41,14 @@
         ClearErrorMessage();
     }
 
+    $("#DateRange").live("change", function () {
+        if (this.value == 'true') {
+            $('#ToDate').show();
+        } else {
+            $('#ToDate').hide();
+        }
+    });
+
     $("#parenttype").live("change", function () {
         ReloadGridByDate();
     });
@@ -195,6 +203,8 @@
     $('#btn_add_new').click(function () {
         ClearData();
         clearForm('#frm');
+        $('#DateRange').show();
+        $('#DateRange').trigger('change');
         var e = $('#parenttype option:selected');
         $('#DivisionId').val(e.val());
         $('#DivisionName').val(e.text());
@@ -203,6 +213,7 @@
         $('#BreakIn').val('00:00');
         $('#BreakOut').val('00:00');
         $('#AttendanceDate').datebox('setValue', $.datepicker.formatDate('mm/dd/yy', new Date()));
+        $('#AttendanceDateEnd').datebox('setValue', $.datepicker.formatDate('mm/dd/yy', new Date()));
         vStatusSaving = 0; //add data mode	
         $('#form_div').dialog('open');
     });
@@ -210,6 +221,8 @@
     $('#btn_edit').click(function () {
         ClearData();
         clearForm("#frm");
+        $('#DateRange').trigger('change');
+        $('#DateRange').hide();
         var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
         if (id) {
             vStatusSaving = 1;//edit data mode
@@ -242,6 +255,7 @@
                             $('#BreakIn').val(timeEnt(result.BreakIn));
                             $('#CheckOut').val(timeEnt(result.CheckOut));
                             $('#AttendanceDate').datebox('setValue', dateEnt(result.AttendanceDate));
+                            $('#AttendanceDateEnd').datebox('setValue', dateEnt(result.AttendanceDate));
                             document.getElementById("Shift").selectedIndex = result.Shift;
                             document.getElementById("Status").selectedIndex = result.Status;
                             $("#form_div").dialog("open");
@@ -328,7 +342,7 @@
             type: 'POST',
             url: submitURL,
             data: JSON.stringify({
-                Id: id, EmployeeId: $("#EmployeeId").val(), AttendanceDate: $('#AttendanceDate').datebox('getValue'),
+                Id: id, EmployeeId: $("#EmployeeId").val(), AttendanceDate: $('#AttendanceDate').datebox('getValue'), AttendanceDateEnd: $('#AttendanceDateEnd').datebox('getValue'), IsDateRange: $("#DateRange").val(),
                 Shift: document.getElementById("Shift").selectedIndex, Status: document.getElementById("Status").selectedIndex,
                 CheckIn: $("#CheckIn").val(), CheckOut: $("#CheckOut").val(),
                 BreakIn: $("#BreakIn").val(), BreakOut: $("#BreakOut").val(),

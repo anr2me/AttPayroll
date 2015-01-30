@@ -15,12 +15,14 @@ using Core.Interface.Service;
 using Service.Service;
 using Data.Repository;
 using Validation.Validation;
+using System.Text.RegularExpressions;
 
 namespace WebView
 {
     // connectionString info at http://connectionstrings.com/excel-2007
     public class ConversionFunction
     {
+        public ICompanyInfoService _companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
         public IBranchOfficeService _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
         public IDepartmentService _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
         public IDivisionService _divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
@@ -33,11 +35,29 @@ namespace WebView
 
         public ConversionFunction()
         {
+            //_companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
             //_branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
             //_departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
             //_divisionService = new DivisionService(new DivisionRepository(), new DivisionValidator());
             //_employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
             //_titleInfoService = new TitleInfoService(new TitleInfoRepository(), new TitleInfoValidator());
+        }
+
+        public void Log(dynamic model, string sheet, int row)
+        {
+            foreach (var error in model.Errors)
+            {
+                Console.WriteLine(model.GetType().Name + "[ID:" + model.Id + ", SHEET:" + sheet + ", ROW:" + row + "] : " + error.Key + " " + error.Value);
+            }
+        }
+
+        public string GetValidNumber(string str)
+        {
+            Regex re = new Regex(@"([\d|\.]+)");
+            Match result = re.Match(str);
+            string ret = result.Groups[1].Value;
+            if (ret == null || ret.Trim() == "") ret = "0";
+            return ret;
         }
 
         public int DoBranchOffice(OleDbDataReader dr, DbContext db)
@@ -50,7 +70,7 @@ namespace WebView
                     Code = dr.GetString(0),
                     Name = dr.GetString(1),
                 };
-                if (!_branchOfficeService.CreateObject(obj).Errors.Any())
+                if (!_branchOfficeService.CreateObject(obj, _companyInfoService).Errors.Any())
                 {
                     count++;
                 };
@@ -93,6 +113,48 @@ namespace WebView
 
             }
             return count;
+        }
+
+        public void DoCustomer(DataRow row, int rowidx, string sheetname)
+        {
+            //var desc = row[0].ToString();
+            //var name = row[1].ToString();
+            //var addr = row[2].ToString();
+            //var defaddr = row[3].ToString();
+            //var defterm = Convert.ToInt32(GetValidNumber(row[4].ToString())); //int.Parse(row[4].ToString());
+            //var phone = row[5].ToString();
+            //var npwp = row[7].ToString();
+            //var tax = row[8].ToString();
+            //var email = row[10].ToString();
+            //var status = row[15].ToString();
+            //var obj = _contactService.GetQueryable().Where(x => x.Name == name /*&& x.Description == desc && x.NPWP == npwp*/ && !x.IsDeleted).FirstOrDefault();
+            //if (obj == null)
+            //{
+            //    obj = new Contact()
+            //    {
+            //        Name = name, //(desc.Length > name.Length) ? desc : name,
+            //        Description = desc, //(desc.Length > name.Length) ? name : desc,
+            //        Address = (addr == null || addr.Trim() == "") ? "-" : addr,
+            //        DeliveryAddress = defaddr,
+            //        DefaultPaymentTerm = defterm,
+            //        ContactNo = (phone == null || phone.Trim() == "") ? "-" : phone,
+            //        NPWP = npwp,
+            //        TaxCode = (tax == null || tax.Trim() == "") ? "01" : tax,
+            //        IsTaxable = (tax != null && tax.Trim() != ""),
+            //        Email = email,
+            //        ContactType = "CUSTOMER", //status,
+
+            //    };
+            //    obj = _contactService.CreateObject(obj);
+            //    Log(obj, sheetname + "Create", rowidx + 2);
+            //}
+            //else
+            //{
+            //    obj.ContactType = "CUSTOMER";
+            //    obj.Errors = new Dictionary<string, string>();
+            //    obj = _contactService.UpdateObject(obj);
+            //    Log(obj, sheetname + "Update", rowidx + 2);
+            //}
         }
 
         // Example 1
@@ -238,6 +300,80 @@ namespace WebView
             return count;
         }
 
+        public int ImportDataFromExcel(string fileName)
+        {
+            // Buat satu Service menggunakan nama ExcelEntryService
+            // yang memiliki Repository, dimana GetContext dapat digunakan
+
+            // membaca setiap nama sheet dan link dengan nama table di database / domain model
+            // setiap table mengarah ke service terkait, menggunakan fungsi CreateObject
+            // 
+            int count = 0;
+            //DbContext conLinq = new DbContext("Data Source=server name;Initial Catalog=Database Name;Integrated Security=true");
+            using (var conLinq = new AttPayrollEntities())
+            {
+                //try
+                {
+                    DataSet dtExcel = new DataSet();
+                    // Note : HDR=Yes indicates that the first row contains column names, not data. HDR=No indicates the opposite.
+                    string SourceConstr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + fileName + "';Extended Properties= 'Excel 12.0;HDR=Yes;IMEX=1'";
+                    OleDbConnection conn = new OleDbConnection(SourceConstr);
+                    conn.Open();
+                    // Get Sheets list
+                    DataTable dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+
+                    string sheetname = "";
+                    foreach (DataRow dtrow in dt.Rows)
+                    {
+                        sheetname = dtrow["TABLE_NAME"].ToString(); //.Trim(new[] { '$' }); // string.Format("{0}", "Sheet1$");
+                        string query = string.Format("Select * from [{0}]", sheetname);
+                        // Create OleDbCommand object and select data from worksheet Sheet1
+                        OleDbCommand cmd = new OleDbCommand(query, conn);
+                        // Create new OleDbDataAdapter
+                        OleDbDataAdapter oleda = new OleDbDataAdapter();
+                        oleda.SelectCommand = cmd;
+                        // Fill the DataSet from the data extracted from the worksheet.
+                        oleda.Fill(dtExcel, sheetname);
+                        oleda.Dispose();
+                        cmd.Dispose();
+                    }
+
+                    //sheetname = "Customer$";
+                    //for (int i = 0; i < dtExcel.Tables[sheetname].Rows.Count; i++)
+                    //{
+                    //    //try
+                    //    {
+                    //        //count += conLinq.Database.ExecuteSqlCommand("insert into [Sheet1$] values(" + dtExcel.Rows[i][0] + "," + dtExcel.Rows[i][1] + ",'" + dtExcel.Rows[i][2] + "'," + dtExcel.Rows[i][3] + ")");
+                    //        // Find Or Create Object
+                    //        var row = dtExcel.Tables[sheetname].Rows[i];
+                    //        var tmp = row[0].ToString() + row[1].ToString();
+                    //        if (tmp == null || tmp.Trim() == "") continue; // skip if the 1st 2 column is empty
+                    //        DoCustomer(row, i, sheetname);
+                    //    }
+                    //    //catch (Exception ex)
+                    //    //{
+                    //    //    Console.WriteLine(sheetname + " Row:" + (i + 2) + " Exception:" + ex.Message);
+                    //    //    continue;
+                    //    //}
+                    //}
+
+                    //oleda.Dispose();
+                    //foreach (var x in data) x.Dispose();
+                    //data.Clear();
+                    dtExcel.Dispose();
+                }
+                //catch (Exception ex)
+                //{
+                //    throw ex;
+                //}
+                //finally
+                {
+                    conLinq.Dispose();
+                }
+            }
+            return count;
+        }
+
         public int ImportEmployeeFromExcel(string fileName)
         {
             // Buat satu Service menggunakan nama ExcelEntryService
@@ -271,7 +407,7 @@ namespace WebView
                             //count += conLinq.Database.ExecuteSqlCommand("insert into [Sheet1$] values(" + dtExcel.Rows[i][0] + "," + dtExcel.Rows[i][1] + ",'" + dtExcel.Rows[i][2] + "'," + dtExcel.Rows[i][3] + ")");
                             // Find Or Create Branch
                             var branchcode = dtExcel.Rows[i][4].ToString();
-                            BranchOffice branchOffice = _branchOfficeService.FindOrCreateObject(branchcode.Replace(" ", String.Empty), branchcode, "-", "-", "-", "-", "-", "-");
+                            BranchOffice branchOffice = _branchOfficeService.FindOrCreateObject(branchcode.Replace(" ", String.Empty), branchcode, "-", "-", "-", "-", "-", "-", _companyInfoService);
 
                             // Find Or Create Department & Division
                             var deptcode = dtExcel.Rows[i][5].ToString();

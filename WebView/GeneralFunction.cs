@@ -13,43 +13,22 @@ using System.Linq.Expressions;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using System.Globalization;
 
 namespace WebView
 {
-    /// <summary>
-    /// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx
-    /// Provides a method for performing a deep copy of an object.
-    /// Binary Serialization is used to perform the copy.
-    /// </summary>
-    public static class ObjectCopier
+    static class DateTimeExtensions
     {
-        /// <summary>
-        /// Perform a deep Copy of the object. (ie. newObj = objectBeingCloned.Clone(); )
-        /// </summary>
-        /// <typeparam name="T">The type of object being copied.</typeparam>
-        /// <param name="source">The object instance to copy.</param>
-        /// <returns>The copied object.</returns>
-        public static T Clone<T>(this T source) // public static T Clone<T>(T source)
+        static int GetWeekOfYear(this DateTime time)
         {
-            if (!typeof(T).IsSerializable)
-            {
-                throw new ArgumentException("The type must be serializable.", "source");
-            }
+            return _gc.GetWeekOfYear(time, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+        }
 
-            // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
-            {
-                return default(T);
-            }
-
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new MemoryStream();
-            using (stream)
-            {
-                formatter.Serialize(stream, source);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (T)formatter.Deserialize(stream);
-            }
+        static GregorianCalendar _gc = new GregorianCalendar();
+        public static int GetWeekOfMonth(this DateTime time)
+        {
+            DateTime first = new DateTime(time.Year, time.Month, 1);
+            return time.GetWeekOfYear() - first.GetWeekOfYear() + 1;
         }
     }
 
@@ -1055,5 +1034,41 @@ namespace WebView
 
             return (IQueryable<TResult>)selectManyResult2;
         }
+
+        // This will return the Windows zone that matches the IANA zone, if one exists.
+        public static string IanaToWindows(string ianaZoneId)
+        {
+            var utcZones = new[] { "Etc/UTC", "Etc/UCT" };
+            if (utcZones.Contains(ianaZoneId, StringComparer.OrdinalIgnoreCase))
+                return "UTC";
+
+            var tzdbSource = NodaTime.TimeZones.TzdbDateTimeZoneSource.Default;
+
+            // resolve any link, since the CLDR doesn't necessarily use canonical IDs
+            var links = tzdbSource.CanonicalIdMap
+              .Where(x => x.Value.Equals(ianaZoneId, StringComparison.OrdinalIgnoreCase))
+              .Select(x => x.Key);
+
+            var mappings = tzdbSource.WindowsMapping.MapZones;
+            var item = mappings.FirstOrDefault(x => x.TzdbIds.Any(links.Contains));
+            if (item == null) return ""; //return null;
+            return item.WindowsId;
+        }
+
+        // This will return the "primary" IANA zone that matches the given windows zone.
+        // If the primary zone is a link, it then resolves it to the canonical ID.
+        public static string WindowsToIana(string windowsZoneId)
+        {
+            if (windowsZoneId.Equals("UTC", StringComparison.OrdinalIgnoreCase))
+                return "Etc/UTC";
+
+            var tzdbSource = NodaTime.TimeZones.TzdbDateTimeZoneSource.Default;
+            var tzi = TimeZoneInfo.FindSystemTimeZoneById(windowsZoneId);
+            var tzid = tzdbSource.MapTimeZoneId(tzi);// ?? windowsZoneId;
+            // Unmappable Windows Time Zone (Mid-Atlantic Standard Time, E. Europe Standard Time)
+            if (tzid == null || tzid.Trim() == "") tzid = "Etc/GMT+2";
+            return tzdbSource.CanonicalIdMap[tzid] ?? "";
+        }
+
     }
 }

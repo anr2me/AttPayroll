@@ -29,6 +29,16 @@ namespace Validation.Validation
             return employeeAttendance;
         }
 
+        public EmployeeAttendance VHasUniqueAttendanceDate(EmployeeAttendance employeeAttendance, IEmployeeAttendanceService _employeeAttendanceService)
+        {
+            var list = _employeeAttendanceService.GetQueryable().Where(x => x.EmployeeId == employeeAttendance.EmployeeId && x.AttendanceDate == employeeAttendance.AttendanceDate && x.Id != employeeAttendance.Id && !x.IsDeleted);
+            if (list.Any())
+            {
+                employeeAttendance.Errors.Add("Generic", "AttendanceDate (" + employeeAttendance.AttendanceDate.ToShortDateString() + ") Sudah ada");
+            }
+            return employeeAttendance;
+        }
+
         public EmployeeAttendance VHasCheckInTime(EmployeeAttendance employeeAttendance)
         {
             if (employeeAttendance.CheckIn == null || employeeAttendance.CheckIn.Equals(DateTime.FromBinary(0)))
@@ -51,11 +61,13 @@ namespace Validation.Validation
             return employeeAttendance;
         }
 
-        public bool ValidCreateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
+        public bool ValidCreateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService, IEmployeeAttendanceService _employeeAttendanceService)
         {
             VHasEmployee(employeeAttendance, _employeeService);
             if (!isValid(employeeAttendance)) { return false; }
             VHasAttendanceDate(employeeAttendance);
+            if (!isValid(employeeAttendance)) { return false; }
+            VHasUniqueAttendanceDate(employeeAttendance, _employeeAttendanceService);
             if (!isValid(employeeAttendance)) { return false; }
             FixDateTime(employeeAttendance);
             VHasCheckInTime(employeeAttendance);
@@ -64,10 +76,10 @@ namespace Validation.Validation
             return isValid(employeeAttendance);
         }
 
-        public bool ValidUpdateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
+        public bool ValidUpdateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService, IEmployeeAttendanceService _employeeAttendanceService)
         {
             employeeAttendance.Errors.Clear();
-            ValidCreateObject(employeeAttendance, _employeeService);
+            ValidCreateObject(employeeAttendance, _employeeService, _employeeAttendanceService);
             return isValid(employeeAttendance);
         }
 

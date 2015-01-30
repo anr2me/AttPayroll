@@ -99,8 +99,10 @@
     <Compile Include="DXWinSalaryStandard.xaml.cs">
       <DependentUpon>DXWinSalaryStandard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZKEvents.cs" />
-    <Compile Include="SearchForUSBCom.cs" />
+    <Compile Include="FPDevice\UDiskData\Raw.cs" />
+    <Compile Include="FPDevice\UDiskData\Structs.cs" />
+    <Compile Include="FPDevice\ZKEvents.cs" />
+    <Compile Include="FPDevice\SearchForUSBCom.cs" />
     <Compile Include="WebFunctions.cs" />
   </ItemGroup>
   <ItemGroup>

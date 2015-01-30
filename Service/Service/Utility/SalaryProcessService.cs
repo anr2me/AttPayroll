@@ -39,6 +39,7 @@ namespace Service.Service
             return salaryItemsValue[code] * salaryItemsSign[code];
         }
 
+        // TODO: Split each part into separate functions
         public string ProcessEmployee(Nullable<int> EmployeeId, DateTime monthYear, int NoSlip = 1, string Disiapkan_oleh = null, string Disetujui_oleh = null, string Dikoreksi_oleh = null)
         {
             string error = null; //_validator.ValidProcessEmployee(EmployeeId, monthYear);

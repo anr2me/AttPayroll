@@ -10,6 +10,16 @@ namespace Validation.Validation
 {
     public class BranchOfficeValidator : IBranchOfficeValidator
     {
+        public BranchOffice VHasCompany(BranchOffice branchOffice, ICompanyInfoService _companyInfoService)
+        {
+            CompanyInfo companyInfo = _companyInfoService.GetObjectById(branchOffice.CompanyInfoId.GetValueOrDefault());
+            if (companyInfo == null)
+            {
+                branchOffice.Errors.Add("Generic", "Company Tidak valid");
+            }
+            return branchOffice;
+        }
+
         public BranchOffice VHasUniqueCode(BranchOffice branchOffice, IBranchOfficeService _branchOfficeService)
         {
             if (String.IsNullOrEmpty(branchOffice.Code) || branchOffice.Code.Trim() == "")
@@ -73,8 +83,10 @@ namespace Validation.Validation
             return branchOffice;
         }
 
-        public bool ValidCreateObject(BranchOffice branchOffice, IBranchOfficeService _branchOfficeService)
+        public bool ValidCreateObject(BranchOffice branchOffice, IBranchOfficeService _branchOfficeService, ICompanyInfoService _companyInfoService)
         {
+            VHasCompany(branchOffice, _companyInfoService);
+            if (!isValid(branchOffice)) { return false; }
             VHasUniqueCode(branchOffice, _branchOfficeService);
             if (!isValid(branchOffice)) { return false; }
             VHasUniqueName(branchOffice, _branchOfficeService);
@@ -87,10 +99,10 @@ namespace Validation.Validation
             return isValid(branchOffice);
         }
 
-        public bool ValidUpdateObject(BranchOffice branchOffice, IBranchOfficeService _branchOfficeService)
+        public bool ValidUpdateObject(BranchOffice branchOffice, IBranchOfficeService _branchOfficeService, ICompanyInfoService _companyInfoService)
         {
             branchOffice.Errors.Clear();
-            return ValidCreateObject(branchOffice, _branchOfficeService);
+            return ValidCreateObject(branchOffice, _branchOfficeService, _companyInfoService);
         }
 
         public bool ValidDeleteObject(BranchOffice branchOffice, IDepartmentService _departmentService)

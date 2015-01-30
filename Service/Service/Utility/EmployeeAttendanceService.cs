@@ -42,7 +42,7 @@ namespace Service.Service
         public EmployeeAttendance CreateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
         {
             employeeAttendance.Errors = new Dictionary<String, String>();
-            if (_validator.ValidCreateObject(employeeAttendance, _employeeService)) 
+            if (_validator.ValidCreateObject(employeeAttendance, _employeeService, this)) 
             {
 
                 _repository.CreateObject(employeeAttendance);
@@ -52,7 +52,7 @@ namespace Service.Service
 
         public EmployeeAttendance UpdateObject(EmployeeAttendance employeeAttendance, IEmployeeService _employeeService)
         {
-            if (_validator.ValidUpdateObject(employeeAttendance, _employeeService)) {
+            if (_validator.ValidUpdateObject(employeeAttendance, _employeeService, this)) {
 
                 _repository.UpdateObject(employeeAttendance);
             }

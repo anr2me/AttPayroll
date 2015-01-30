@@ -173,7 +173,7 @@ namespace TestValidation
         {
             //comp1 = _companyInfoService.CreateObject("PT. SINAR RODA UTAMA", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "admin@gmail.com", "www.sru.com", "01-345-789-1-345-789", DateTime.Now);
             comp1 = _companyInfoService.CreateObject("PT. KTC COAL MINING & ENERGY", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "admin@gmail.com", "www.ktc.com", "01-345-789-1-345-789", DateTime.Now);
-            branch1 = _branchOfficeService.CreateObject("HQ", "HEADQUARTER", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "hq@gmail.com");
+            branch1 = _branchOfficeService.CreateObject("HQ", "HEADQUARTER", "Jl. Panjang Banget No.1", "Jakarta", "11560", "021-5556666", "021-5557777", "hq@gmail.com", _companyInfoService);
             dept1 = _departmentService.CreateObject(branch1.Id, "HRD", "HRD", "Human Resource Development", _branchOfficeService);
             dept2 = _departmentService.CreateObject(branch1.Id, "IT", "IT", "Information Technology", _branchOfficeService);
             div1 = _divisionService.CreateObject(dept1.Id, "RCT", "RECRUITMENT", "Recruitment", _departmentService);

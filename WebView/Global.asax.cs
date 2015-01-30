@@ -12,6 +12,8 @@ using Data.Repository;
 using Service.Service;
 using Validation.Validation;
 using Core.Constants;
+using WebView.Hubs;
+using System.Timers;
 
 namespace WebView
 {
@@ -40,8 +42,22 @@ namespace WebView
         private ISalarySlipService _salarySlipService;
         private ISalarySlipDetailService _salarySlipDetailService;
 
+        //private ICompanyInfoService _companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
+        //private IEmployeeService _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+        //private IFPMachineService _fpMachineService = new FPMachineService(new FPMachineRepository(), new FPMachineValidator());
+        //private IFPUserService _fpUserService = new FPUserService(new FPUserRepository(), new FPUserValidator());
+        //private IFPTemplateService _fpTemplateService = new FPTemplateService(new FPTemplateRepository(), new FPTemplateValidator());
+        //private IFPAttLogService _fpAttLogService = new FPAttLogService(new FPAttLogRepository(), new FPAttLogValidator());
+        
+        private static System.Timers.Timer syncTimer = new System.Timers.Timer(10000);
+
         protected void Application_Start()
         {
+            //RouteTable.Routes.MapHubs();
+
+            // Prevent circular reference errors while serializing using JSON ??
+            //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -51,6 +67,61 @@ namespace WebView
             //AuthConfig.RegisterAuth();
 
             PopulateData();
+
+            //if (zkTimer1 == null) zkTimer1 = new System.Timers.Timer(TimerInterval);
+            syncTimer.Elapsed += new ElapsedEventHandler(syncTimer_Tick);
+            syncTimer.Interval = 10000;
+            //this.zkTimer1.Enabled = true;
+            syncTimer.Start();
+        }
+
+        public void syncTimer_Tick(object sender, ElapsedEventArgs e) // 100ms interval
+        {
+            try
+            {
+                syncTimer.Enabled = false; //(sender as System.Timers.Timer).Enabled = false;
+                var _companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
+                var _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
+                var _fpMachineService = new FPMachineService(new FPMachineRepository(), new FPMachineValidator());
+                var _fpUserService = new FPUserService(new FPUserRepository(), new FPUserValidator());
+                var _fpTemplateService = new FPTemplateService(new FPTemplateRepository(), new FPTemplateValidator());
+                var _fpAttLogService = new FPAttLogService(new FPAttLogRepository(), new FPAttLogValidator());
+                DateTime curTime = DateTime.Now;
+                foreach (var fpMachine in _fpMachineService.GetAll())
+                {
+                    fpMachine.Errors = new Dictionary<string, string>();
+                    //AutoConnect
+                    if (fpMachine.IsAutoConnect && !fpMachine.IsConnected)
+                    {
+                        _fpMachineService.ConnectObject(fpMachine);
+                    }
+
+                    // AutoSync
+                    if (fpMachine.IsConnected)
+                    {
+                        DateTime curutc = curTime.ToUniversalTime().AddMinutes((double)fpMachine.TimeZoneOffset);
+                        string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                        TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                        DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
+                        if ((fpMachine.LastSync == null || fpMachine.LastSync != curlocaltime.Date) && curlocaltime.Hour < 4)
+                        {
+                            _fpMachineService.UploadAllUserData(fpMachine, false, true, _fpUserService, _fpTemplateService, _employeeService);
+                            if (!fpMachine.Errors.Any())
+                            {
+                                _fpMachineService.DownloadAllUserData(fpMachine, _fpUserService, _fpTemplateService, _employeeService);
+                            }
+                            _fpMachineService.DownloadAttLog(fpMachine, fpMachine.IsClearLogAfterDownload, _fpUserService, _fpAttLogService);
+                            fpMachine.LastSync = curlocaltime.Date;
+                            _fpMachineService.UpdateObject(fpMachine, _companyInfoService);
+                        }
+                    }
+                }
+
+            }
+            finally
+            {
+                syncTimer.Enabled = true; //(sender as System.Timers.Timer).Enabled = true;
+            }
         }
 
         public void PopulateData()
@@ -110,6 +181,7 @@ namespace WebView
 
         public void CreateUserMenus()
         {
+            //_userMenuService.CreateObject(Constant.MenuName.CompanyInfo, Constant.MenuGroupName.Master);
             //_userMenuService.CreateObject(Constant.MenuName.Contact, Constant.MenuGroupName.Master);
             //_userMenuService.CreateObject(Constant.MenuName.ItemType, Constant.MenuGroupName.Master);
             //_userMenuService.CreateObject(Constant.MenuName.UoM, Constant.MenuGroupName.Master);
@@ -158,7 +230,12 @@ namespace WebView
             
             //_userMenuService.CreateObject(Constant.MenuName.User, Constant.MenuGroupName.Setting);
             //_userMenuService.CreateObject(Constant.MenuName.UserAccessRight, Constant.MenuGroupName.Setting);
-            //_userMenuService.CreateObject(Constant.MenuName.CompanyInfo, Constant.MenuGroupName.Setting);
+
+            //_userMenuService.CreateObject(Constant.MenuName.FPMachine, Constant.MenuGroupName.Setting);
+            //_userMenuService.CreateObject(Constant.MenuName.FPUser, Constant.MenuGroupName.Setting);
+            //_userMenuService.CreateObject(Constant.MenuName.FPTemplate, Constant.MenuGroupName.Setting);
+            //_userMenuService.CreateObject(Constant.MenuName.FPAttLog, Constant.MenuGroupName.Setting);
+            
         }
 
         public void CreateSysAdmin()

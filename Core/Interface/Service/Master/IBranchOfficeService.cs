@@ -16,11 +16,11 @@ namespace Core.Interface.Service
         BranchOffice GetObjectByCode(string Code);
         BranchOffice GetObjectByName(string Name);
         //BranchOffice FindOrCreateBaseBranchOffice();
-        BranchOffice FindOrCreateObject(BranchOffice branchOffice);
-        BranchOffice CreateObject(BranchOffice branchOffice);
-        BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email);
-        BranchOffice CreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email);
-        BranchOffice UpdateObject(BranchOffice branchOffice);
+        BranchOffice FindOrCreateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService);
+        BranchOffice CreateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService);
+        BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, ICompanyInfoService _companyInfoService);
+        BranchOffice CreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, ICompanyInfoService _companyInfoService);
+        BranchOffice UpdateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService);
         BranchOffice SoftDeleteObject(BranchOffice branchOffice, IDepartmentService _departmentService);
         bool DeleteObject(int Id);
         bool IsCodeDuplicated(BranchOffice branchOffice);

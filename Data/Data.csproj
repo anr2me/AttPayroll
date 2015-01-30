@@ -48,6 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\AttPayrollEntities.cs" />
+    <Compile Include="Mapping\FingerPrint\FPMachineMapping.cs" />
+    <Compile Include="Mapping\FingerPrint\FPTemplateMapping.cs" />
+    <Compile Include="Mapping\FingerPrint\FPAttLogMapping.cs" />
+    <Compile Include="Mapping\FingerPrint\FPUserMapping.cs" />
     <Compile Include="Mapping\Master\BranchOfficeMapping.cs" />
     <Compile Include="Mapping\Master\CompanyInfoMapping.cs" />
     <Compile Include="Mapping\Utility\THRDetailMapping.cs" />
@@ -90,6 +94,10 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\EfRepository.cs" />
+    <Compile Include="Repository\FingerPrint\FPMachineRepository.cs" />
+    <Compile Include="Repository\FingerPrint\FPAttLogRepository.cs" />
+    <Compile Include="Repository\FingerPrint\FPTemplateRepository.cs" />
+    <Compile Include="Repository\FingerPrint\FPUserRepository.cs" />
     <Compile Include="Repository\Master\BranchOfficeRepository.cs" />
     <Compile Include="Repository\Master\CompanyInfoRepository.cs" />
     <Compile Include="Repository\Utility\THRDetailRepository.cs" />

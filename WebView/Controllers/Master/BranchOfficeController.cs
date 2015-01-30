@@ -16,11 +16,13 @@ namespace WebView.Controllers
     public class BranchOfficeController : Controller
     {
         private readonly static log4net.ILog LOG = log4net.LogManager.GetLogger("BranchOfficeController");
+        public ICompanyInfoService _companyInfoService;
         public IBranchOfficeService _branchOfficeService;
         public IDepartmentService _departmentService;
 
         public BranchOfficeController()
         {
+            _companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
             _branchOfficeService = new BranchOfficeService(new BranchOfficeRepository(), new BranchOfficeValidator());
             _departmentService = new DepartmentService(new DepartmentRepository(), new DepartmentValidator());
         }
@@ -32,7 +34,7 @@ namespace WebView.Controllers
                 return Content(Core.Constants.Constant.ErrorPage.PageViewNotAllowed);
             }
 
-            return View();
+            return View(this);
         }
 
         public dynamic GetList(string _search, long nd, int rows, int? page, string sidx, string sord, string filters = "")
@@ -196,7 +198,7 @@ namespace WebView.Controllers
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                model = _branchOfficeService.CreateObject(model);
+                model = _branchOfficeService.CreateObject(model, _companyInfoService);
             }
             catch (Exception ex)
             {
@@ -242,7 +244,9 @@ namespace WebView.Controllers
                 data.FaxNumber = model.FaxNumber;
                 data.Email = model.Email;
                 //data.Website = model.Website;
-                model = _branchOfficeService.UpdateObject(data);
+                data.CompanyInfoId = model.CompanyInfoId;
+
+                model = _branchOfficeService.UpdateObject(data, _companyInfoService);
             }
             catch (Exception ex)
             {

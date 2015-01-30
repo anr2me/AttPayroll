@@ -50,7 +50,7 @@ namespace TestValidation
                     PhoneNumber = "phone",
                     Email = "email",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
@@ -64,7 +64,7 @@ namespace TestValidation
                     PhoneNumber = "phone",
                     Email = "email",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
@@ -77,7 +77,7 @@ namespace TestValidation
                     PhoneNumber = "phone",
                     Email = "email",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
@@ -90,7 +90,7 @@ namespace TestValidation
                     PhoneNumber = "phone",
                     Email = "email",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
@@ -103,7 +103,7 @@ namespace TestValidation
                     Address = "address",
                     Email = "email",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
@@ -116,14 +116,14 @@ namespace TestValidation
                     PhoneNumber = "phone",
                     Address = "address",
                 };
-                obj = d._branchOfficeService.CreateObject(obj);
+                obj = d._branchOfficeService.CreateObject(obj, d._companyInfoService);
                 obj.Errors.Count().should_not_be(0);
             };
 
             it["update_branchoffice_with_no_code"] = () =>
             {
                 d.branch1.Code = "";
-                d._branchOfficeService.UpdateObject(d.branch1);
+                d._branchOfficeService.UpdateObject(d.branch1, d._companyInfoService);
                 d.branch1.Errors.Count().should_not_be(0);
             };
 

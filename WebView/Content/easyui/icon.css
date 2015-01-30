@@ -46,6 +46,12 @@
 .icon-back{
 	background:url('icons/back.png') no-repeat center center;
 }
+.icon-up{
+	background:url('icons/up.png') no-repeat center center;
+}
+.icon-down{
+	background:url('icons/down.png') no-repeat center center;
+}
 .icon-sum{
 	background:url('icons/sum.png') no-repeat center center;
 }

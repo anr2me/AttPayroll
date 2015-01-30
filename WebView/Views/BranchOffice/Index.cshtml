@@ -1,6 +1,9 @@
-﻿@{
+﻿@model WebView.Controllers.BranchOfficeController
+@{
     ViewBag.Title = "Branch Office";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
 }
 
 @section Head {
@@ -11,13 +14,25 @@
     <script type="text/javascript" src="@Url.Content("~/Content/apps_js/branchoffice.js")"></script>
 }
 <div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
-    title=".: Branch Office :.">
+    title="@ViewBag.Caption">
 <div id="toolbar" class="form_toolbar">
-        <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
-        <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
-        <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
-        <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
-        @*<a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>*@
+        <div style="float: left">
+            <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+            <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+            <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+            <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+            @*<a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>*@
+        </div>
+        <div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Company : </label>
+           <select id="parenttype" >
+               <option value="0">-- Select Company --</option>
+               @foreach (var item in Model._companyInfoService.GetAll())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+        </div>
     </div>
 
     <div id="table_div">
@@ -27,7 +42,7 @@
 
 <!-- Dialog Box -->
     <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
-        title=".: Branch Office :.">
+        title="@ViewBag.Caption">
 
         <div id="form_toolbar" class="form_toolbar">
             <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
@@ -43,6 +58,14 @@
                                 <label>ID</label></td>
                             <td width="226">
                                 <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr hidden>
+                            <td>
+                                <label>CompanyInfo</label></td>
+                            <td colspan="3">
+                               <input id="CompanyInfoId" name="CompanyInfoId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="btnCompanyInfo" name="btnCompanyInfo" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                               <input id="CompanyInfoName" name="CompanyInfo" type="text" size="56" maxlength="50" class="editable upper" disabled="disabled" />
                         </tr>
                         <tr>
                             <td>

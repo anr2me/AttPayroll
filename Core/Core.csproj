@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,10 +29,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\packages\NodaTime.1.3.0\lib\net35-Client\NodaTime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -45,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\MasterConstant.cs" />
+    <Compile Include="DomainModel\FingerPrint\FPMachine.cs" />
+    <Compile Include="DomainModel\FingerPrint\FPAttLog.cs" />
+    <Compile Include="DomainModel\FingerPrint\FPTemplate.cs" />
+    <Compile Include="DomainModel\FingerPrint\FPUser.cs" />
     <Compile Include="DomainModel\Master\BranchOffice.cs" />
     <Compile Include="DomainModel\Master\CompanyInfo.cs" />
     <Compile Include="DomainModel\Utility\THRDetail.cs" />
@@ -85,6 +94,14 @@
     <Compile Include="DomainModel\ViewModel\SlipGajiDetail1.cs" />
     <Compile Include="DomainModel\ViewModel\SlipGajiMini.cs" />
     <Compile Include="DomainModel\ViewModel\SlipGajiDetail.cs" />
+    <Compile Include="FPDevice\SearchForUSBCom.cs" />
+    <Compile Include="FPDevice\UDiskData\Raw.cs" />
+    <Compile Include="FPDevice\UDiskData\Structs.cs" />
+    <Compile Include="FPDevice\ZKEvents.cs" />
+    <Compile Include="Interface\Repository\FingerPrint\IFPMachineRepository.cs" />
+    <Compile Include="Interface\Repository\FingerPrint\IFPAttLogRepository.cs" />
+    <Compile Include="Interface\Repository\FingerPrint\IFPTemplateRepository.cs" />
+    <Compile Include="Interface\Repository\FingerPrint\IFPUserRepository.cs" />
     <Compile Include="Interface\Repository\IRepository.cs" />
     <Compile Include="Interface\Repository\Utility\ITHRDetailRepository.cs" />
     <Compile Include="Interface\Repository\Utility\ITHRRepository.cs" />
@@ -125,6 +142,10 @@
     <Compile Include="Interface\Repository\ViewModel\ISlipGajiDetail1Repository.cs" />
     <Compile Include="Interface\Repository\ViewModel\ISlipGajiMiniRepository.cs" />
     <Compile Include="Interface\Repository\ViewModel\ISlipGajiDetailRepository.cs" />
+    <Compile Include="Interface\Service\FingerPrint\IFPMachineService.cs" />
+    <Compile Include="Interface\Service\FingerPrint\IFPAttLogService.cs" />
+    <Compile Include="Interface\Service\FingerPrint\IFPTemplateService.cs" />
+    <Compile Include="Interface\Service\FingerPrint\IFPUserService.cs" />
     <Compile Include="Interface\Service\Utility\ITHRDetailService.cs" />
     <Compile Include="Interface\Service\Utility\ITHRService.cs" />
     <Compile Include="Interface\Service\Utility\IOtherExpenseDetailService.cs" />
@@ -165,6 +186,10 @@
     <Compile Include="Interface\Service\ViewModel\ISlipGajiDetail1Service.cs" />
     <Compile Include="Interface\Service\ViewModel\ISlipGajiMiniService.cs" />
     <Compile Include="Interface\Service\ViewModel\ISlipGajiDetailService.cs" />
+    <Compile Include="Interface\Validation\FingerPrint\IFPMachineValidator.cs" />
+    <Compile Include="Interface\Validation\FingerPrint\IFPAttLogValidator.cs" />
+    <Compile Include="Interface\Validation\FingerPrint\IFPTemplateValidator.cs" />
+    <Compile Include="Interface\Validation\FingerPrint\IFPUserValidator.cs" />
     <Compile Include="Interface\Validation\Utility\ITHRDetailValidator.cs" />
     <Compile Include="Interface\Validation\Utility\ITHRValidator.cs" />
     <Compile Include="Interface\Validation\Utility\IOtherExpenseDetailValidator.cs" />
@@ -206,8 +231,19 @@
     <Compile Include="Interface\Validation\ViewModel\ISlipGajiMiniValidator.cs" />
     <Compile Include="Interface\Validation\ViewModel\ISlipGajiDetailValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="zkemkeeper">
+      <Guid>{FE9DED34-E159-408E-8490-B720A5E632C7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

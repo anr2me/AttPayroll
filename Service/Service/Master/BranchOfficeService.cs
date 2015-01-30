@@ -49,7 +49,7 @@ namespace Service.Service
             return _repository.FindAll(x => x.Name == name && !x.IsDeleted).FirstOrDefault();
         }
 
-        public BranchOffice CreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email)
+        public BranchOffice CreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, ICompanyInfoService _companyInfoService)
         {
             BranchOffice branchOffice = new BranchOffice
             {
@@ -61,10 +61,10 @@ namespace Service.Service
                 FaxNumber = FaxNumber,
                 Email = Email,
             };
-            return this.CreateObject(branchOffice);
+            return this.CreateObject(branchOffice, _companyInfoService);
         }
 
-        public BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email)
+        public BranchOffice FindOrCreateObject(string Code, string Name, string Address, string City, string PostalCode, string PhoneNumber, string FaxNumber, string Email, ICompanyInfoService _companyInfoService)
         {
             BranchOffice branchOffice = GetObjectByCode(Code);
             if (branchOffice != null)
@@ -82,16 +82,16 @@ namespace Service.Service
                 FaxNumber = FaxNumber,
                 Email = Email,
             };
-            return this.CreateObject(branchOffice);
+            return this.CreateObject(branchOffice, _companyInfoService);
         }
 
-        public BranchOffice CreateObject(BranchOffice branchOffice)
+        public BranchOffice CreateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService)
         {
             branchOffice.Errors = new Dictionary<String, String>();
-            return (_validator.ValidCreateObject(branchOffice, this) ? _repository.CreateObject(branchOffice) : branchOffice);
+            return (_validator.ValidCreateObject(branchOffice, this, _companyInfoService) ? _repository.CreateObject(branchOffice) : branchOffice);
         }
 
-        public BranchOffice FindOrCreateObject(BranchOffice branchOffice)
+        public BranchOffice FindOrCreateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService)
         {
             branchOffice.Errors = new Dictionary<String, String>();
             BranchOffice obj = GetObjectByCode(branchOffice.Code);
@@ -100,17 +100,17 @@ namespace Service.Service
                 obj.Errors = new Dictionary<String, String>();
                 return obj;
             }
-            if (_validator.ValidCreateObject(branchOffice, this))
+            if (_validator.ValidCreateObject(branchOffice, this, _companyInfoService))
             {
                 _repository.CreateObject(branchOffice);
             }
             return branchOffice;
         }
 
-        public BranchOffice UpdateObject(BranchOffice branchOffice)
+        public BranchOffice UpdateObject(BranchOffice branchOffice, ICompanyInfoService _companyInfoService)
         {
             //branchOffice.Errors.Clear();
-            return (branchOffice = _validator.ValidUpdateObject(branchOffice, this) ? _repository.UpdateObject(branchOffice) : branchOffice);
+            return (branchOffice = _validator.ValidUpdateObject(branchOffice, this, _companyInfoService) ? _repository.UpdateObject(branchOffice) : branchOffice);
         }
 
         public BranchOffice SoftDeleteObject(BranchOffice branchOffice, IDepartmentService _departmentService)

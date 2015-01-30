@@ -1,0 +1,227 @@
+﻿@model WebView.Controllers.FPMachineController
+@{
+    ViewBag.Title = "FingerPrint Machine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //string Caption = ".: " + ViewBag.Title + " :.";
+    ViewBag.Caption = ".: " + ViewBag.Title + " :.";
+}
+
+@section Head {
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/tools.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/apps_js/fpmachine.js")"></script>
+}
+<div id="ua_panel" class="easyui-panel" style="text-align: left;" data-options="modal:true" 
+    title="@ViewBag.Caption">
+<div id="toolbar" class="form_toolbar">
+        <div style="float: left">
+            <a id="btn_reload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Reload Data</a>
+            <a id="btn_add_new" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Add New</a>
+            <a id="btn_edit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">Edit Data</a>
+            <a id="btn_del" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Delete</a>
+            <a id="btn_connect" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'"><span id="connect">Connect</span></a>
+            <a id="btn_disconnect" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-no'">Disconnect</a>
+            <a id="btn_sync" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">Sync</a>
+            <a id="btn_upload" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-up'">Upload All UserData</a>
+            <a id="btn_download" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-down'">Download All UserData</a>
+            <a id="btn_downloadlog" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-down'">Download AttLog</a>
+            @*<a id="btn_print" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">Print Data</a>*@
+        </div>
+        <div id="parent" style="float: right; background: #357eb4; color: #fff; height: 25px; padding: 0 10px; font-size: 12px; vertical-align:middle">
+           <label style="font-size: 14px; font-weight: bold; vertical-align:middle">Company : </label>
+           <select id="parenttype" >
+               <option value="0">-- Select Company --</option>
+               @foreach (var item in Model._companyInfoService.GetAll())
+               {
+                   <option value="@item.Id">@item.Name</option>
+               }
+           </select>
+        </div>
+        @*<div style="float: right">
+            <input id="AutoRefresh" type="checkbox" name="AutoRefresh" />Auto-Refresh&nbsp;&nbsp;
+        </div>*@
+    </div>
+
+    <div id="table_div">
+        <table id="list"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </div>
+
+<!-- Dialog Box -->
+    <div id="form_div" class="easyui-dialog" style="text-align: left;padding:0px 0px 10px" data-options="modal:true" 
+        title="@ViewBag.Caption">
+
+        <div id="form_toolbar" class="form_toolbar">
+            <a id="form_btn_save" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">Save</a>
+            <a id="form_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close</a>
+        </div>
+
+        <div style="overflow: auto">
+            <form id="frm">
+                @*<fieldset class="ui-widget-content ui-corner-all input_form_div">*@
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" class="input_form_tbl">
+                        <tr nowrap>
+                            <td width="139" nowrap style="width: 130px">
+                                <label>ID</label></td>
+                            <td width="226">
+                                <input id="id" type="text" size="10" disabled="disabled"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Company</label></td>
+                            <td colspan="4">
+                               <input id="CompanyInfoId" name="CompanyInfoId" hidden class="textright" type="text" size="10" maxlength="7" disabled="disabled" />
+                               <input id="CompanyInfoName" name="CompanyInfo" type="text" size="30" maxlength="30" class="editable upper" disabled="disabled" />
+                               <input id="btnCompanyInfo" name="btnCompanyInfo" type="button" style="cursor: pointer;" class="ui-corner-all ui-state-default" value=".." />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Machine Number</label></td>
+                            <td>
+                                <input id="MachineNumber" name="MachineNumber" type="number" min="1" size="10" maxlength="30" align="left" value="1"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Machine Name</label></td>
+                            <td colspan="3">
+                                <input id="MachineName" name="MachineName" type="text" size="30" maxlength="50" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Communication Type </label></td>
+                            <td>
+                                <select id="CommType" name="CommType">
+                                    @foreach (int item in Enum.GetValues(typeof(Core.Constants.Constant.FPCommType)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(Core.Constants.Constant.FPCommType), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr id="Ethernet">
+                            <td>
+                                <label>IP Address</label></td>
+                            <td colspan="3">
+                                <input id="EthernetIP" name="EthernetIP" type="text" size="30" maxlength="50" align="left" value="192.168.1.201"/></td>
+                            <td>
+                                <label>Port</label></td>
+                            <td>
+                                <input id="EthernetPort" name="EthernetPort" type="number" min="0" max="65535" size="30" maxLength="50" align="left" value="4370"/></td>
+                        </tr>
+                        <tr id="Serial">
+                            <td>
+                                <label>COM Port</label></td>
+                            <td colspan="3">
+                                <input id="SerialPort" name="SerialPort" type="text" size="30" maxlength="50" align="left" /></td>
+                            <td>
+                                <label>Baud Rate</label></td>
+                            <td>
+                                <!-- input id="SerialBaudRate" name="SerialBaudRate" type="number" size="15" maxlength="20" align="left" min="1" /-->
+                                <select id="SerialBaudRate" name="SerialBaudRate">
+                                    <option value="9600">9600</option>
+                                    <option value="19200">19200</option>
+                                    <option value="38400">38400</option>
+                                    <option value="57600">57600</option>
+                                    <option value="115200">115200</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Password </label></td>
+                            <td colspan="3">
+                                <input id="Password" name="Password" type="password" size="30" maxlength="50" align="left" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Time Zone </label></td>
+                            <td colspan="5">
+                                <select id="TimeZone" name="TimeZone">
+                                    @foreach (var item in TimeZoneInfo.GetSystemTimeZones())
+                                    {
+                                        <option value="@item.Id">@item.DisplayName</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>TimeZone Offset</label></td>
+                            <td>
+                                <input id="TimeZoneOffset" name="TimeZoneOffset" type="number" size="10" maxlength="30" align="left" value="0"/>Minute(s)</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="IsClear">Clear AttLog on Machine after Downloaded </label></td>
+                            <td>
+                                <input type="checkbox" id="IsClear" name="IsClear" checked></td>
+                        </tr>
+                    </table>
+                @*</fieldset>*@
+            </form>
+        </div>
+    </div>
+<!-- End Dialog Box -->
+
+<!-- Dialog Box  Delete-->
+    <div id="delete_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 300px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="delete_confirm_toolbar" class="form_toolbar">
+            <a id="delete_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'">Yes</a>
+            <a id="delete_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'">No</a>
+        </div>
+        <div id="delete_confirm_info">
+            <span>Are you sure to delete the selected record?</span>
+            <input id="delete_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box Delete-->
+
+<!-- Dialog Box  UploadAllUser -->
+    <div id="uploaduser_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 310px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="uploaduser_confirm_toolbar" class="form_toolbar">
+            <a id="uploaduser_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'">Submit</a>
+            <a id="uploaduser_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'">Cancel</a>
+        </div>
+        <div id="uploaduser_confirm_info" style="text-align: center;">
+            <span>This will Clear existing User Data in the Machine, <br/>Are you sure?</span>
+            <input id="uploaduser_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box UploadAllUser -->
+
+<!-- Dialog Box  DownloadAllUser -->
+    <div id="dnloaduser_confirm_div" class="easyui-dialog" style="text-align: left; height: 130px; width: 310px;"
+        data-options="modal:true" title=".: Confirmation :.">
+
+        <div id="dnloaduser_confirm_toolbar" class="form_toolbar">
+            <a id="dnloaduser_confirm_btn_submit" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-ok'">Submit</a>
+            <a id="dnloaduser_confirm_btn_cancel" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'">Cancel</a>
+        </div>
+        <div id="dnloaduser_confirm_info" style="text-align: center;">
+            <span>This will Overwrites existing User Data in the Server, <br/>Are you sure?</span>
+            <input id="dnloaduser_confirm_id" type="hidden" />
+        </div>
+    </div>
+<!-- End Dialog Box DownloadAllUser -->
+
+<!-- Look Up CompanyInfo -->
+    <div id="lookup_div_companyinfo" class="easyui-dialog" title="List Company" style="padding: 0px 5px; height: 490px; width: 480px;"
+        data-options="iconCls:'icon-tip',modal:true">
+
+        <div id="lookup_toolbar_companyinfo" class="grid_toolbar">
+            <a id="lookup_btn_add_companyinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">Select Data</a>
+            <a id="lookup_btn_cancel_companyinfo" href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">Close Window</a>
+        </div>
+
+        <table id="lookup_table_companyinfo" class="scroll" cellpadding="0" cellspacing="0"></table>
+        <div id="lookup_pager_companyinfo" class="scroll" style="text-align: center;"></div>
+    </div>
+<!-- END Look Up CompanyInfo -->
+
+  </div>
+

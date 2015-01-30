@@ -217,7 +217,7 @@ namespace WebView.Controllers
         }
 
         [HttpPost]
-        public dynamic Insert(EmployeeAttendance model)
+        public dynamic Insert(EmployeeAttendance model, bool IsDateRange, Nullable<DateTime> AttendanceDateEnd)
         {
             try
             {
@@ -232,7 +232,36 @@ namespace WebView.Controllers
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                model = _employeeAttendanceService.CreateObject(model, _employeeService);
+                DateTime date = model.AttendanceDate;
+                if (IsDateRange && AttendanceDateEnd != null)
+                {
+                    if (AttendanceDateEnd.GetValueOrDefault() < date)
+                    {
+                        Dictionary<string, string> Errors = new Dictionary<string, string>();
+                        Errors.Add("AttendanceDateEnd", "Harus lebih besar atau sama dengan Attendance Date");
+
+                        return Json(new
+                        {
+                            Errors
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (AttendanceDateEnd.GetValueOrDefault().Subtract(date).TotalDays > 366)
+                    {
+                        Dictionary<string, string> Errors = new Dictionary<string, string>();
+                        Errors.Add("AttendanceDateEnd", "Tidak boleh berjarak lebih dari setahun dari Attendance Date");
+
+                        return Json(new
+                        {
+                            Errors
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                
+                do {
+                    model.AttendanceDate = date;
+                    model = _employeeAttendanceService.CreateObject(model, _employeeService);
+                    date = date.AddDays(1);
+                } while (IsDateRange && AttendanceDateEnd != null && date <= AttendanceDateEnd.GetValueOrDefault());
             }
             catch (Exception ex)
             {
@@ -253,7 +282,7 @@ namespace WebView.Controllers
         }
 
         [HttpPost]
-        public dynamic Update(EmployeeAttendance model)
+        public dynamic Update(EmployeeAttendance model, bool IsDateRange, Nullable<DateTime> AttendanceDateEnd)
         {
             try
             {

@@ -31,6 +31,7 @@ namespace Core.Constants
 
         public class MenuName
         {
+            public static string CompanyInfo = "Company Info";
             public static string BranchOffice = "Branch Office";
             public static string Department = "Department";
             public static string Division = "Division";
@@ -78,7 +79,12 @@ namespace Core.Constants
 
             public static string User = "User";
             public static string UserAccessRight = "User Access Right";
-            public static string CompanyInfo = "Company Info";
+
+            public static string FPMachine = "Machine";
+            public static string FPUser = "User";
+            public static string FPTemplate = "FP Template";
+            public static string FPAttLog = "Attendance Log";
+
         }
 
         public class SheetName
@@ -96,6 +102,22 @@ namespace Core.Constants
             public const string Admin = "Admin";
             public const string Super = "Super";
             public const string User = "User";
+        }
+
+        public enum FPCommType
+        {
+            Ethernet,
+            USB,
+            Serial,
+        }
+
+        public enum FPBaudRate
+        {
+            BR9600,
+            BR19200,
+            BR38400,
+            BR57600,
+            BR115200,
         }
 
         public enum ReportAttendanceChartType

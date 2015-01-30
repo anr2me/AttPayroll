@@ -123,7 +123,7 @@
     });
 
     function cboxFormat(cellvalue, options, rowObject) {
-        return '<input name="cbFormat_' + options.colModel.name + options.rowId + '" rel="' + /*rowObject.id*/options.rowId + '" type="checkbox"' + (cellvalue ? ' checked="checked"' : '') +
+        return '<input name="cbFormat_' + options.colModel.index + options.rowId + '" rel="' + /*rowObject.id*/options.rowId + '" type="checkbox"' + (cellvalue ? ' checked="checked"' : '') +
             '/>';
     }
 
