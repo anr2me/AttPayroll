@@ -180,6 +180,7 @@
                   { name: 'Serial Baud Rate', index: 'serialbaudrate', width: 100 },
                   { name: 'Time Zone', index: 'timezone', width: 100, formatter: 'select', stype: 'select', editoptions: { value: getSelectOption("#TimeZone") } },
                   { name: 'Platform', index: 'platform', width: 100 },
+                  { name: 'Firmware Ver', index: 'firmwarever', width: 100 },
                   { name: 'Serial Number', index: 'serialnumber', width: 100 },
                   { name: 'User Count', index: 'usercount', width: 80 },
                   { name: 'Admin Count', index: 'admincount', width: 80 },

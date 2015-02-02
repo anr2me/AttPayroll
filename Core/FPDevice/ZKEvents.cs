@@ -100,6 +100,12 @@ namespace FPDevice
         WorkCode = 9, //Work code data file
     }
 
+    public enum TemplateFlag // Valid Flag?
+    {
+        Normal = 1, //Ordinary?
+        Forced = 3, //Threatened?
+    }
+
     public enum EnrollBackupNumber
     {
         Finger0 = 0,
@@ -238,6 +244,8 @@ namespace FPDevice
     public static class Constants
     {
         public const int MAXTEMPLATESIZE = 602;
+        public const int MAX_SMS_CONTENT_SIZE = 60; // + 1 for null terminated?
+        public const int FACE_TMP_MAXSIZE = 1024 * 2 + 512;
     }
     #endregion
 
@@ -434,6 +442,7 @@ namespace FPDevice
         //Constructor
         public ZKEvents()
         {
+            //bIsDestroying = false;
             OnAlarm = axCZKEM1_OnAlarm;
             OnAttTransaction = axCZKEM1_OnAttTransaction;
             //OnAttTransactionEx = axCZKEM1_OnAttTransactionEx;
@@ -457,6 +466,7 @@ namespace FPDevice
         [STAThread]
         ~ZKEvents()
         {
+            bIsDestroying = true;
             zkTimer1.Dispose();
             zkTimer1 = null;
             _locker = null;
@@ -465,6 +475,7 @@ namespace FPDevice
         [STAThread]
         public void Dispose()
         {
+            bIsDestroying = true;
             if (axCZKEM1 != null)
             {
                 Disconnect();
@@ -485,6 +496,7 @@ namespace FPDevice
         public bool bIsConnected = false; //the boolean value identifies whether the device is connected
         public int iMachineNumber = 1; //the serial number of the device.After connecting the device ,this value will be changed.
         public bool bIsDisconnecting = false;
+        public bool bIsDestroying = false;
         public int iLastError = 1; // 1 = OK/No Error
         public int TimerInterval = 100;
         public int Tag = 0;
@@ -632,6 +644,7 @@ namespace FPDevice
                 //return false;
             }
             //int idwErrorCode = 0;
+            if (bIsDestroying) return false;
 
             lock (_locker)
             {
@@ -667,6 +680,8 @@ namespace FPDevice
             }
             //int idwErrorCode = 0;
             //accept serialport number from string like "COMi"
+            if (bIsDestroying) return false;
+
             int iPort;
             string sPort = ComPort.Trim();
             for (iPort = 1; iPort < 10; iPort++)
@@ -705,6 +720,8 @@ namespace FPDevice
         [STAThread]
         public bool ConnectUSB(bool VirtualUSB, int VirtualUSBMachineSN = 1)
         {
+            if (bIsDestroying) return false;
+
             lock (_locker)
             {
                 //int idwErrorCode = 0;
@@ -947,7 +964,7 @@ namespace FPDevice
             try
             {
                 zkTimer1.Enabled = false; //(sender as System.Timers.Timer).Enabled = false;
-                if (bIsConnected == true)
+                if (bIsConnected == true && !bIsDestroying)
                 {
                     //if (ilock > 0) break;
                     lock (_locker)
@@ -955,7 +972,7 @@ namespace FPDevice
                         //ilock++; //bIsBusy = true;
                         if (axCZKEM1.ReadRTLog(iMachineNumber))
                         {
-                            while (bIsConnected && axCZKEM1.GetRTLog(iMachineNumber))
+                            while (bIsConnected && !bIsDestroying && axCZKEM1.GetRTLog(iMachineNumber))
                             {
                                 ;
                             }

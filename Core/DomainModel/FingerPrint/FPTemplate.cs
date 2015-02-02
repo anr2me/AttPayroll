@@ -20,6 +20,7 @@ namespace Core.DomainModel
         //[MaxLength(700)] //[StringLength(700)]
         public string Template { get; set; }  //byte[] // byte[602];//the max value is 602 bytes //BYTE *Template; when using FingerID = 15
 
+        public string AlgoVer { get; set; } // null/"" or "9" or "10"
         public bool IsInSync { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

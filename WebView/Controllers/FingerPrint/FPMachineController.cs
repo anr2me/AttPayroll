@@ -97,6 +97,7 @@ namespace WebView.Controllers
                              model.TimeZone,
                              //model.ProductName,
                              model.Platform,
+                             model.FirmwareVer,
                              model.SerialNumber,
                              model.UserCount,
                              model.AdminCount,
@@ -157,6 +158,7 @@ namespace WebView.Controllers
                              model.TimeZone,
                              //model.ProductName,
                              model.Platform,
+                             model.FirmwareVer,
                              model.SerialNumber,
                              model.UserCount,
                              model.AdminCount,
@@ -848,9 +850,10 @@ namespace WebView.Controllers
                     var fpUser = _fpUserService.GetObjectByPIN(iEnrollNumber);
                     if (fpUser != null)
                     {
-                        byte[] bTmpData = new byte[700];
+                        byte[] bTmpData = new byte[2048];
                         int iTmpLength = 0;
-                        if (FPMachines.fpDevices[FPMachineID].axCZKEM1.GetUserTmp(iMachineNumber, iEnrollNumber, iFingerIndex, ref bTmpData[0], ref iTmpLength))
+                        int iFlag = 0;
+                        if (FPMachines.fpDevices[FPMachineID].axCZKEM1.GetUserTmpEx(iMachineNumber, iEnrollNumber.ToString(), iFingerIndex, out iFlag, out bTmpData[0], out iTmpLength))
                         {
                             FPTemplate fpTemplate = _fpTemplateService.GetQueryable().Where(x => x.FingerID == iFingerIndex && x.FPUserId == fpUser.Id && !x.IsDeleted).FirstOrDefault();
                             if (fpTemplate == null) fpTemplate = new FPTemplate();
@@ -861,7 +864,7 @@ namespace WebView.Controllers
                             fpTemplate.Template = Convert.ToBase64String(bTmpData, 0, iTmpLength); //Encoding.UTF8.GetString(bTmpData, 0, iTmpLength);
                             fpTemplate.Size = fpTemplate.Template.Length; //iTmpLength
                             //tmp9 = FPDevice.ConvertStruct.ByteArrayToStruct<FPDevice._Template9_>(bTmpData);
-                            fpTemplate.Valid = 1; // tmp9.Valid;
+                            fpTemplate.Valid = (byte)iFlag; //1; // tmp9.Valid;
                             fpTemplate.IsInSync = true;
                             _fpTemplateService.UpdateOrCreateObject(fpTemplate, _fpUserService);
 

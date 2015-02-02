@@ -88,8 +88,12 @@ namespace Service.Service
                 fpMachine.IsConnected = false;
                 if (FPMachines.fpDevices[fpMachine.Id] != null) // (fpMachine.fpDevice != null)
                 {
-                    if (FPMachines.fpDevices[fpMachine.Id].bIsConnected) FPMachines.fpDevices[fpMachine.Id].Disconnect();
-                    fpMachine.IsConnected = FPMachines.fpDevices[fpMachine.Id].bIsConnected;
+                    lock (FPMachines.fpDevices[fpMachine.Id]._locker)
+                    {
+                        if (FPMachines.fpDevices[fpMachine.Id].bIsConnected) FPMachines.fpDevices[fpMachine.Id].Disconnect();
+                        fpMachine.IsConnected = FPMachines.fpDevices[fpMachine.Id].bIsConnected;
+                        FPMachines.fpDevices[fpMachine.Id].bIsDestroying = true;
+                    }
                     FPMachines.fpDevices[fpMachine.Id].Dispose();
                     FPMachines.fpDevices[fpMachine.Id] = null;
                     FPMachines.fpDevices.Remove(fpMachine.Id);
@@ -168,6 +172,10 @@ namespace Service.Service
                             if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetPlatform(fpMachine.MachineNumber, ref st))
                             {
                                 fpMachine.Platform = st;
+                            }
+                            if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetFirmwareVersion(fpMachine.MachineNumber, ref st))
+                            {
+                                fpMachine.FirmwareVer = st;
                             }
                             if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetSerialNumber(fpMachine.MachineNumber, out st))
                             {
@@ -393,11 +401,12 @@ namespace Service.Service
                     string sValue = "";
                     if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetSysOption(fpMachine.MachineNumber, sOption, out sValue))
                     {
-                        if (sValue == "10")
-                        {
-                            fpMachine.Errors.Add("Generic", "Your device is not using 9.0 arithmetic!");
-                            return false;
-                        }
+                        //FPTemplate of v9 (uses 512B) and v10(uses 1.6kB) are not compatible
+                        //if (sValue == "10")
+                        //{
+                        //    fpMachine.Errors.Add("Generic", "Your device is not using 9.0 arithmetic!");
+                        //    return false;
+                        //}
                     }
                     FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
                     try
@@ -427,8 +436,9 @@ namespace Service.Service
                         string TZstr = "";
 
                         //string sTmpData = "";
-                        byte[] bTmpData = new byte[700];
+                        byte[] bTmpData = new byte[2048];
                         int iTmpLength = 0;
+                        int iFlag = 0;
                         //FPDevice._Template9_ tmp9;
                         int vs = (int)FPDevice.VerifyMethod.UnSet;
                         byte[] rsv = new byte[4];
@@ -475,8 +485,8 @@ namespace Service.Service
                                 //Create or Update existing fpTemplates
                                 for (int idwFingerIndex = 0; idwFingerIndex < 10; idwFingerIndex++)
                                 {
-                                    //if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetUserTmpStr(fpMachine.MachineNumber, idwEnrollNumber, idwFingerIndex, ref sTmpData, ref iTmpLength)) //get the corresponding templates string and length from the memory
-                                    if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetUserTmp(fpMachine.MachineNumber, idwEnrollNumber, idwFingerIndex, ref bTmpData[0], ref iTmpLength))
+                                    //if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetUserTmpExStr(fpMachine.MachineNumber, idwEnrollNumber, idwFingerIndex, ref sTmpData, ref iTmpLength)) //get the corresponding templates string and length from the memory
+                                    if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetUserTmpEx(fpMachine.MachineNumber, idwEnrollNumber.ToString(), idwFingerIndex, out iFlag, out bTmpData[0], out iTmpLength))
                                     {
                                         FPTemplate fpTemplate = _fpTemplateService.GetQueryable().Where(x => x.FingerID == idwFingerIndex && x.FPUserId == fpUser.Id && !x.IsDeleted).FirstOrDefault();
                                         if (fpTemplate == null) fpTemplate = new FPTemplate();
@@ -487,7 +497,7 @@ namespace Service.Service
                                         fpTemplate.Template = Convert.ToBase64String(bTmpData, 0, iTmpLength); //Encoding.UTF8.GetString(bTmpData, 0, iTmpLength);
                                         fpTemplate.Size = fpTemplate.Template.Length; //iTmpLength
                                         //tmp9 = FPDevice.ConvertStruct.ByteArrayToStruct<FPDevice._Template9_>(bTmpData);
-                                        fpTemplate.Valid = 1; // tmp9.Valid;
+                                        fpTemplate.Valid = (byte)iFlag; //1; // tmp9.Valid;
                                         fpTemplate.IsInSync = true;
                                         _fpTemplateService.UpdateOrCreateObject(fpTemplate, _fpUserService);
                                     }
@@ -540,11 +550,11 @@ namespace Service.Service
                     string sValue = "";
                     if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetSysOption(fpMachine.MachineNumber, sOption, out sValue))
                     {
-                        if (sValue == "10")
-                        {
-                            fpMachine.Errors.Add("Generic", "Your device is not using 9.0 arithmetic!");
-                            return false;
-                        }
+                        //if (sValue == "10")
+                        //{
+                        //    fpMachine.Errors.Add("Generic", "Your device is not using 9.0 arithmetic!");
+                        //    return false;
+                        //}
                     }
                     FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
                     try
@@ -562,7 +572,7 @@ namespace Service.Service
                         string TZstr = "";
 
                         string sTmpData = "";
-                        byte[] bTmpData = new byte[700];
+                        byte[] bTmpData = new byte[2048];
                         //int iTmpLength = 0;
                         //FPDevice._Template9_ tmp9;
                         byte[] rsv = new byte[4];
@@ -650,7 +660,7 @@ namespace Service.Service
                                         {
                                             //bTmpData = Convert.FromBase64String(tmp.Template); //Encoding.UTF8.GetBytes(tmp.Template);
                                             sTmpData = tmp.Template;
-                                            if (!FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetUserTmpStr(fpMachine.MachineNumber, idwEnrollNumber, tmp.FingerID, sTmpData)) //upload templates information to the memory
+                                            if (!FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetUserTmpExStr(fpMachine.MachineNumber, idwEnrollNumber.ToString(), tmp.FingerID, (int)FPDevice.TemplateFlag.Normal, sTmpData)) //upload templates information to the memory
                                             {
                                                 var err = FPMachines.fpDevices[fpMachine.Id].GetLastError();
                                                 if (err != (int)FPDevice.ErrorCode.TimedOut && err != (int)FPDevice.ErrorCode.NotInitialized)

@@ -159,7 +159,7 @@ namespace UDiskData
         *****************************************************************************************************************************/
         public void GetTemplateFromDat(byte[] DataBuf, out int Size, out int PIN, out int FingerID, out int Valid, out string Template)
         {
-            byte[] TemplateBuf = new byte[602];
+            byte[] TemplateBuf = new byte[2048]; //[602];
 
             Templates9 tmp = new Templates9();
             tmp = (Templates9)Raw.RawDeserialize(DataBuf, typeof(Templates9));
@@ -186,8 +186,8 @@ namespace UDiskData
         *****************************************************************************************************************************/
         public void SetTemplateToDat(out byte[] DataBuf, int Size, int PIN, int FingerID, int Valid, string Template)
         {
-            DataBuf = new byte[608];
-            byte[] TemplateBuf = new byte[602];
+            DataBuf = new byte[2048]; //[608];
+            byte[] TemplateBuf = new byte[2048]; //[602];
 
             Templates9 tmp = new Templates9();
 

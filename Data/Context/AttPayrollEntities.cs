@@ -14,7 +14,7 @@ namespace Data.Context
 {
     public class AttPayrollEntities : DbContext
     {
-        public AttPayrollEntities() : base("AttPayrollTest")
+        public AttPayrollEntities() : base("AttPayrollSSD")
         {
             //Database.SetInitializer<AttPayrollEntities>(new DropCreateDatabaseIfModelChanges<AttPayrollEntities>());
             Database.SetInitializer<AttPayrollEntities>(new MigrateDatabaseToLatestVersion<AttPayrollEntities, Configuration>()); // Is this suppose to be inside OnModelCreating ?
