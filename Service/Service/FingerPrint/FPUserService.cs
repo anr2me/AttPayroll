@@ -56,6 +56,7 @@ namespace Service.Service
         public FPUser CreateObject(FPUser fpUser, IEmployeeService _employeeService)
         {
             fpUser.Errors = new Dictionary<String, String>();
+            if (fpUser.PIN == 0) fpUser.PIN = GeneratePIN();
             if (_validator.ValidCreateObject(fpUser, this, _employeeService))
             {
                 //fpUser.IsInSync = false;
@@ -108,11 +109,28 @@ namespace Service.Service
 
         public bool IsPINDuplicated(FPUser fpUser)
         {
+            if (fpUser.PIN == 0) return false;
             IQueryable<FPUser> objs = _repository.FindAll(x => x.PIN == fpUser.PIN && !x.IsDeleted && x.Id != fpUser.Id);
             return (objs.Count() > 0 ? true : false);
         }
 
-        
+        public int GeneratePIN()
+        {
+            var objs = _repository.FindAll(x => /*!x.IsDeleted &&*/ x.PIN > 0).OrderBy(x => x.PIN).ToList();
+            int PIN = 0;
+            foreach (var obj in objs)
+            {
+                PIN = (obj.PIN + 1);
+                var fpuser = _repository.FindAll(x => x.PIN == PIN /*&& !x.IsDeleted*/).FirstOrDefault();
+                if (fpuser == null)
+                {
+                    PIN = obj.PIN + 1;
+                    break;
+                }
+            }
+            if (PIN > 65535) PIN = 0;
+            return PIN;
+        }
 
     }
 }

@@ -177,6 +177,10 @@ namespace Service.Service
                             {
                                 fpMachine.FirmwareVer = st;
                             }
+                            if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetSysOption(fpMachine.MachineNumber, "~ZKFPVersion", out st))
+                            {
+                                fpMachine.ArithmeticVer = st;
+                            }
                             if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetSerialNumber(fpMachine.MachineNumber, out st))
                             {
                                 fpMachine.SerialNumber = st;
@@ -416,14 +420,20 @@ namespace Service.Service
                         if (!FPMachines.fpDevices[fpMachine.Id].axCZKEM1.ReadAllUserID(fpMachine.MachineNumber)) //read all the user information to the memory
                         {
                             string err = FPMachines.fpDevices[fpMachine.Id].GetLastErrorMsg();
-                            fpMachine.Errors.Add("Generic", "Unable to read All UserID (Error:" + err + ")");
-                            ok = false;
+                            if (FPMachines.fpDevices[fpMachine.Id].iLastError != (int)FPDevice.ErrorCode.DataNotFound)
+                            {
+                                fpMachine.Errors.Add("Generic", "Unable to read All UserID (Error:" + err + ")");
+                                ok = false;
+                            }
                         }
                         if (ok && !FPMachines.fpDevices[fpMachine.Id].axCZKEM1.ReadAllTemplate(fpMachine.MachineNumber)) //read all the users' fingerprint templates to the memory
                         {
                             string err = FPMachines.fpDevices[fpMachine.Id].GetLastErrorMsg();
-                            fpMachine.Errors.Add("Generic", "Unable to read All Templates (Error:" + err + ")");
-                            ok = false;
+                            if (FPMachines.fpDevices[fpMachine.Id].iLastError != (int)FPDevice.ErrorCode.DataNotFound)
+                            {
+                                fpMachine.Errors.Add("Generic", "Unable to read All Templates (Error:" + err + ")");
+                                ok = false;
+                            }
                         }
                         int idwEnrollNumber = 0;
                         string sName = "";
@@ -615,7 +625,9 @@ namespace Service.Service
                                 }
                             }
                         }
-                        //Update or Create User
+                        // TODO: Create New Users to get the EnrollNumber
+
+                        // Update Users
                         foreach (var fpUser in userlist.Where(x => !x.IsDeleted).ToList()) //for (int i = 0; i < list.Count; i++)
                         {
                             idwEnrollNumber = fpUser.PIN;
@@ -633,6 +645,7 @@ namespace Service.Service
                                 //FPMachines.fpDevices[fpMachine.Id].axCZKEM1.GetUserInfo(fpMachine.MachineNumber, idwEnrollNumber, sName, sPassword, iPrivilege, bEnabled);
                                 if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetUserInfo(fpMachine.MachineNumber, idwEnrollNumber, sName, sPassword, iPrivilege, bEnabled)) //upload user information to the memory
                                 {
+                                    // TODO: Newly created data doesn't have RollNumber yet
                                     //FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetPIN2(idwEnrollNumber, pin2);
                                     FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetStrCardNumber(card);
                                     FPMachines.fpDevices[fpMachine.Id].axCZKEM1.SetUserGroup(fpMachine.MachineNumber, idwEnrollNumber, grp);

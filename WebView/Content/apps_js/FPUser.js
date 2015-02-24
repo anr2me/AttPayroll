@@ -226,7 +226,7 @@
                   { name: 'Employee Name', index: 'employeename', width: 150 },
                   //{ name: 'User ID', index: 'userid', width: 60 },
                   { name: 'User ID', index: 'pin', width: 60 },
-                  { name: 'PIN2', index: 'pin2', width: 60 },
+                  { name: 'Tag', index: 'pin2', width: 60 },
                   { name: 'Privilege', index: 'privilege', width: 90, formatter: 'select', stype: 'select', editoptions: { value: getSelectOption("#Privilege") } },
                   { name: 'Name', index: 'name', width: 150 },
                   { name: 'Password', index: 'password', width: 100 },
@@ -303,6 +303,7 @@
         $('#EnrollmentDate').datebox('setValue', $.datepicker.formatDate('mm/dd/yy', new Date()));
         $('#EnrollmentDateDiv2').hide();
         $('#EnrollmentDateDiv').show();
+        $('#PIN').attr('disabled', true);
         $('#btnEmployee').removeAttr('disabled');
         $('#Description').removeAttr('disabled');
         $('#btn_edit_detail').removeClass('ui-state-disabled disabled');

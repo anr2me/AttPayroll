@@ -181,6 +181,7 @@
                   { name: 'Time Zone', index: 'timezone', width: 100, formatter: 'select', stype: 'select', editoptions: { value: getSelectOption("#TimeZone") } },
                   { name: 'Platform', index: 'platform', width: 100 },
                   { name: 'Firmware Ver', index: 'firmwarever', width: 100 },
+                  { name: 'Arithmetic Ver', index: 'arithmeticver', width: 110 },
                   { name: 'Serial Number', index: 'serialnumber', width: 100 },
                   { name: 'User Count', index: 'usercount', width: 80 },
                   { name: 'Admin Count', index: 'admincount', width: 80 },
@@ -481,7 +482,7 @@
             var ret = jQuery("#list").jqGrid('getRowData', id);
             //$('#connect_confirm_btn_submit').data('Id', ret['ID']);
             //$("#connect_confirm_div").dialog("open");
-
+            $("#dnloaduser_confirm_div").dialog('close');
             $.ajax({
                 dataType: "json",
                 url: base_url + vModul + "/Download?Id=" + id,
@@ -502,7 +503,6 @@
                         }
                         ReloadGrid();
                     }
-                    $("#dnloaduser_confirm_div").dialog('close');
                 }
             });
         } else {
@@ -536,7 +536,7 @@
             var ret = jQuery("#list").jqGrid('getRowData', id);
             //$('#connect_confirm_btn_submit').data('Id', ret['ID']);
             //$("#connect_confirm_div").dialog("open");
-
+            $("#uploaduser_confirm_div").dialog('close');
             $.ajax({
                 dataType: "json",
                 url: base_url + vModul + "/Upload?Id=" + id,
@@ -557,7 +557,6 @@
                         }
                         ReloadGrid();
                     }
-                    $("#uploaduser_confirm_div").dialog('close');
                 }
             });
         } else {
@@ -620,7 +619,7 @@
     });
 
     $('#delete_confirm_btn_submit').click(function () {
-
+        $("#delete_confirm_div").dialog('close');
         $.ajax({
             url: base_url + vModul + "/Delete",
             type: "POST",
@@ -639,11 +638,9 @@
                             $.messager.alert('Warning', result.model.Errors[key], 'warning');
                         }
                     }
-                    $("#delete_confirm_div").dialog('close');
                 }
                 else {
                     ReloadGrid();
-                    $("#delete_confirm_div").dialog('close');
                 }
             }
         });

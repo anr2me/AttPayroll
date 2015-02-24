@@ -28,6 +28,7 @@ namespace Core.DomainModel
         //public string ProductName { get; set; }
         public string Platform { get; set; }
         public string FirmwareVer { get; set; }
+        public string ArithmeticVer { get; set; }
         public string SerialNumber { get; set; }
         public Int64 UserCount { get; set; }
         public Int64 AdminCount { get; set; }
