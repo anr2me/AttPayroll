@@ -82,6 +82,17 @@
                         </tr>
                         <tr>
                             <td>
+                                <label>Privilege </label></td>
+                            <td>
+                                <select id="Privilege" name="Privilege">
+                                    @foreach (int item in Enum.GetValues(typeof(FPDevice.UserPrivilege)))
+                                    {
+                                        <option value="@item">@Enum.GetName(typeof(FPDevice.UserPrivilege), item)</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <label>Verification Mode </label></td>
                             <td>
                                 <select id="VerifyMode" name="VerifyMode">
