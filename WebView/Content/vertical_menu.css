@@ -191,7 +191,7 @@ border-bottom: dashed 2px #ccc;
 
   transition: all 0.4s ease;
   transform-origin: left;
-  transform: rotateY(90deg);
+  transform: rotateY(89deg);
 }
 /*.flipbook ul{
   margin: 0 auto;
