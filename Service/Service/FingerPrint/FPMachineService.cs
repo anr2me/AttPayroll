@@ -235,13 +235,23 @@ namespace Service.Service
             return fpMachine;
         }
 
-        public FPMachine SyncObject(FPMachine fpMachine, IFPUserService _fpUserService, IFPTemplateService _fpTemplateService)
+        public FPMachine SyncObject(FPMachine fpMachine, IFPUserService _fpUserService, IFPTemplateService _fpTemplateService, IEmployeeService _employeeService)
         {
             if (_validator.ValidSyncObject(fpMachine, this, _fpUserService, _fpTemplateService))
             {
+                lock (FPMachines.fpDevices[fpMachine.Id]._locker)
+                {
+                    // Upload changed data to Machine
+                    UploadAllUserData(fpMachine, false, true, _fpUserService, _fpTemplateService, _employeeService);
+                    if (!fpMachine.Errors.Any())
+                    {
+                        // Download all data from Machine
+                        DownloadAllUserData(fpMachine, _fpUserService, _fpTemplateService, _employeeService);
+                    }
+                }
 
-                fpMachine.IsInSync = true;
-                _repository.UpdateObject(fpMachine);
+                //fpMachine.IsInSync = true;
+                //_repository.UpdateObject(fpMachine);
             }
             return fpMachine;
         }
@@ -310,7 +320,7 @@ namespace Service.Service
                 bool ok = true;
                 lock (FPMachines.fpDevices[fpMachine.Id]._locker)
                 {
-                    FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
+                    FPMachines.fpDevices[fpMachine.Id].Disable(); //.axCZKEM1.DisableDeviceWithTimeOut(fpMachine.MachineNumber, FPMachines.fpDevices[fpMachine.Id].DisabledTime); //.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
                     try
                     {
                         //int idwErrorCode = 0;
@@ -374,7 +384,7 @@ namespace Service.Service
                     }
                     finally
                     {
-                        FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
+                        FPMachines.fpDevices[fpMachine.Id].Enable(); //.axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
                     }
                 }
                 return ok;
@@ -412,7 +422,7 @@ namespace Service.Service
                         //    return false;
                         //}
                     }
-                    FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
+                    FPMachines.fpDevices[fpMachine.Id].Disable(); //.axCZKEM1.DisableDeviceWithTimeOut(fpMachine.MachineNumber, FPMachines.fpDevices[fpMachine.Id].DisabledTime); //.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
                     try
                     {
                         FPMachines.fpDevices[fpMachine.Id].axCZKEM1.BeginBatchUpdate(fpMachine.MachineNumber, (int)FPDevice.BatchUpdateFlag.Overwrite); //create memory space for batching data
@@ -485,7 +495,7 @@ namespace Service.Service
                                 fpUser.Reserved = BitConverter.ToString(rsv).Replace("-",""); //rsv.CopyTo(fpUser.Reserved, 0);
                                 fpUser.IsInSync = true;
                                 _fpUserService.UpdateOrCreateObject(fpUser, _employeeService);
-                                //Mark non existing fpTemplates as not InSync
+                                //Mark All fpTemplates as not InSync, thus non-existing fpTemplates will remain not InSync
                                 var tmplist = _fpTemplateService.GetQueryable().Where(x => x.FPUserId == fpUser.Id);
                                 foreach (var tmp in tmplist.Where(x => x.IsInSync && !x.IsDeleted).ToList())
                                 {
@@ -529,7 +539,7 @@ namespace Service.Service
                     finally
                     {
                         //FPMachines.fpDevices[fpMachine.Id].axCZKEM1.RefreshData(fpMachine.MachineNumber); //the data in the device should be refreshed
-                        FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
+                        FPMachines.fpDevices[fpMachine.Id].Enable(); //.axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
                     }
                 }
                 return ok;
@@ -566,7 +576,7 @@ namespace Service.Service
                         //    return false;
                         //}
                     }
-                    FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
+                    FPMachines.fpDevices[fpMachine.Id].Disable(); //.axCZKEM1.DisableDeviceWithTimeOut(fpMachine.MachineNumber, FPMachines.fpDevices[fpMachine.Id].DisabledTime); //.EnableDevice(fpMachine.MachineNumber, false); // Prevent user from using the device
                     try
                     {
                         FPMachines.fpDevices[fpMachine.Id].axCZKEM1.BeginBatchUpdate(fpMachine.MachineNumber, (int)FPDevice.BatchUpdateFlag.Overwrite); //create memory space for batching data
@@ -625,7 +635,7 @@ namespace Service.Service
                                 }
                             }
                         }
-                        // TODO: Create New Users to get the EnrollNumber
+                        // TODO: Create New Users to get the EnrollNumber, current workaround is by assigning UserID on server side upon creation
 
                         // Update Users
                         foreach (var fpUser in userlist.Where(x => !x.IsDeleted).ToList()) //for (int i = 0; i < list.Count; i++)
@@ -657,10 +667,18 @@ namespace Service.Service
                                     {
                                         //if (ReSyncAll || !tmp.IsInSync)
                                         {
-                                            if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.DeleteEnrollData(fpMachine.MachineNumber, idwEnrollNumber, fpMachine.MachineNumber, tmp.FingerID))
+                                            //if (FPMachines.fpDevices[fpMachine.Id].axCZKEM1.DeleteEnrollData(fpMachine.MachineNumber, idwEnrollNumber, fpMachine.MachineNumber, tmp.FingerID))
+                                            //{
+                                            //    //tmp.IsInSync = true;
+                                            //    //_fpTemplateService.GetRepository().Update(tmp);
+                                            //    _fpTemplateService.DeleteObject(tmp.Id);
+                                            //}
+
+                                            FPMachines.fpDevices[fpMachine.Id].axCZKEM1.DeleteEnrollData(fpMachine.MachineNumber, idwEnrollNumber, fpMachine.MachineNumber, tmp.FingerID);
+                                            var err = FPMachines.fpDevices[fpMachine.Id].GetLastError();
+                                            if (err == (int)FPDevice.ErrorCode.NoError || err == (int)FPDevice.ErrorCode.DataNotFound || err == (int)FPDevice.ErrorCode.OperationFailed || err == (int)FPDevice.ErrorCode.IOError)
                                             {
-                                                //tmp.IsInSync = true;
-                                                //_fpTemplateService.GetRepository().Update(tmp);
+                                                // Hard delete soft deleted templates when it's no longer exist in the machine
                                                 _fpTemplateService.DeleteObject(tmp.Id);
                                             }
                                         }
@@ -678,9 +696,12 @@ namespace Service.Service
                                                 var err = FPMachines.fpDevices[fpMachine.Id].GetLastError();
                                                 if (err != (int)FPDevice.ErrorCode.TimedOut && err != (int)FPDevice.ErrorCode.NotInitialized)
                                                 {
-                                                    //tmp.IsDeleted = true;
-                                                    //_fpTemplateService.GetRepository().Update(tmp);
-                                                    _fpTemplateService.DeleteObject(tmp.Id);
+                                                    ////tmp.IsDeleted = true;
+                                                    ////_fpTemplateService.GetRepository().Update(tmp);
+                                                    //_fpTemplateService.DeleteObject(tmp.Id); // Don't delete on error, otherwise server will loose template data
+                                                    
+                                                    // Mark failed template creation as not InSync instead of deleting it automatically (should be deleted manually on server side)
+                                                    tmp.IsInSync = false;
                                                 }
                                                 ok = false;
                                                 break;
@@ -723,8 +744,8 @@ namespace Service.Service
                     }
                     finally
                     {
-                        FPMachines.fpDevices[fpMachine.Id].axCZKEM1.RefreshData(fpMachine.MachineNumber); //the data in the device should be refreshed
-                        FPMachines.fpDevices[fpMachine.Id].axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
+                        FPMachines.fpDevices[fpMachine.Id].Refresh(); //.axCZKEM1.RefreshData(fpMachine.MachineNumber); //the data in the device should be refreshed
+                        FPMachines.fpDevices[fpMachine.Id].Enable(); //.axCZKEM1.EnableDevice(fpMachine.MachineNumber, true);
                     }
                 }
                 return ok;

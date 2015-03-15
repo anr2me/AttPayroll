@@ -497,8 +497,10 @@ namespace FPDevice
         public int iMachineNumber = 1; //the serial number of the device.After connecting the device ,this value will be changed.
         public bool bIsDisconnecting = false;
         public bool bIsDestroying = false;
+        public bool bIsDisabled = false;
         public int iLastError = 1; // 1 = OK/No Error
-        public int TimerInterval = 100;
+        public int TimerInterval = 100; //100ms
+        public int DisabledTime = 7200; //7200 sec
         public int Tag = 0;
 
         public void RegisterEvents()
@@ -615,6 +617,56 @@ namespace FPDevice
             return ret;
         }
 
+        // Disable device
+        [STAThread]
+        public bool Disable(int TimeOutSec = 0)
+        {
+            bool disabled = false;
+            lock (_locker)
+            {
+                //WaitForReady(); //while (bIsConnected && bIsBusy) Thread.Sleep(0);
+                if (TimeOutSec < 0)
+                {
+
+                    disabled = axCZKEM1.EnableDevice(iMachineNumber, false);
+                }
+                else
+                {
+                    int sec = TimeOutSec;
+                    if (sec == 0) sec = DisabledTime;
+                    disabled = axCZKEM1.DisableDeviceWithTimeOut(iMachineNumber, sec);
+                }
+                if (disabled) bIsDisabled = true;
+            }
+            return disabled;
+        }
+
+        // Enable device
+        [STAThread]
+        public bool Enable()
+        {
+            bool enabled = false;
+            lock (_locker)
+            {
+                //WaitForReady(); //while (bIsConnected && bIsBusy) Thread.Sleep(0);
+                enabled = axCZKEM1.EnableDevice(iMachineNumber, true);
+                if (enabled) bIsDisabled = false;
+            }
+            return enabled;
+        }
+
+        // Refresh device data
+        [STAThread]
+        public bool Refresh()
+        {
+            lock (_locker)
+            {
+                //WaitForReady(); //while (bIsConnected && bIsBusy) Thread.Sleep(0);
+                return axCZKEM1.RefreshData(iMachineNumber);
+            }
+            //return false;
+        }
+
         // Disconnect device
         [STAThread]
         public void Disconnect()
@@ -629,6 +681,7 @@ namespace FPDevice
 
                 bIsConnected = false;
                 bIsDisconnecting = false;
+                //bIsDisabled = false;
             }
             return;
         }
@@ -964,7 +1017,7 @@ namespace FPDevice
             try
             {
                 zkTimer1.Enabled = false; //(sender as System.Timers.Timer).Enabled = false;
-                if (bIsConnected == true && !bIsDestroying)
+                if (bIsConnected && !bIsDestroying && !bIsDisabled)
                 {
                     //if (ilock > 0) break;
                     lock (_locker)
@@ -972,7 +1025,7 @@ namespace FPDevice
                         //ilock++; //bIsBusy = true;
                         if (axCZKEM1.ReadRTLog(iMachineNumber))
                         {
-                            while (bIsConnected && !bIsDestroying && axCZKEM1.GetRTLog(iMachineNumber))
+                            while (bIsConnected && !bIsDestroying && !bIsDisabled && axCZKEM1.GetRTLog(iMachineNumber))
                             {
                                 ;
                             }

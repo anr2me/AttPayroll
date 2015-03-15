@@ -20,7 +20,7 @@ namespace Core.Interface.Service
         FPMachine ConnectObject(FPMachine fpMachine);
         FPMachine DisconnectObject(FPMachine fpMachine);
         FPMachine RefreshObject(FPMachine fpMachine, IFPUserService _fpUserService, IFPTemplateService _fpTemplateService);
-        FPMachine SyncObject(FPMachine fpMachine, IFPUserService _fpUserService, IFPTemplateService _fpTemplateService);
+        FPMachine SyncObject(FPMachine fpMachine, IFPUserService _fpUserService, IFPTemplateService _fpTemplateService, IEmployeeService _employeeService);
         bool DeleteObject(int Id);
         bool IsNameDuplicated(FPMachine fpMachine);
         bool IsConnected(FPMachine fpMachine);

@@ -39,6 +39,7 @@ namespace Core.DomainModel
 
         public bool IsAutoConnect { get; set; }
         public bool IsConnected { get; set; }
+        public bool IsDisabled { get; set; }
         public bool IsClearLogAfterDownload { get; set; }
         public bool IsInSync { get; set; }
         public Nullable<DateTime> LastSync { get; set; }

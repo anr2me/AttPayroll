@@ -14,6 +14,7 @@ using Validation.Validation;
 using Core.Constants;
 using WebView.Hubs;
 using System.Timers;
+using FPDevice;
 
 namespace WebView
 {
@@ -99,20 +100,24 @@ namespace WebView
                     // AutoSync
                     if (fpMachine.IsConnected)
                     {
-                        DateTime curutc = curTime.ToUniversalTime().AddMinutes((double)fpMachine.TimeZoneOffset);
-                        string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
-                        TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
-                        DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
-                        if ((fpMachine.LastSync == null || fpMachine.LastSync != curlocaltime.Date) && curlocaltime.Hour < 4)
+                        fpMachine.IsDisabled = FPMachines.fpDevices[fpMachine.Id].bIsDisabled;
+                        if (!fpMachine.IsDisabled)
                         {
-                            _fpMachineService.UploadAllUserData(fpMachine, false, true, _fpUserService, _fpTemplateService, _employeeService);
-                            if (!fpMachine.Errors.Any())
+                            DateTime curutc = curTime.ToUniversalTime().AddMinutes((double)fpMachine.TimeZoneOffset);
+                            string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                            TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                            DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
+                            if ((fpMachine.LastSync == null || fpMachine.LastSync != curlocaltime.Date) && curlocaltime.Hour < 4)
                             {
-                                _fpMachineService.DownloadAllUserData(fpMachine, _fpUserService, _fpTemplateService, _employeeService);
+                                _fpMachineService.UploadAllUserData(fpMachine, false, true, _fpUserService, _fpTemplateService, _employeeService);
+                                if (!fpMachine.Errors.Any())
+                                {
+                                    _fpMachineService.DownloadAllUserData(fpMachine, _fpUserService, _fpTemplateService, _employeeService);
+                                }
+                                _fpMachineService.DownloadAttLog(fpMachine, fpMachine.IsClearLogAfterDownload, _fpUserService, _fpAttLogService);
+                                fpMachine.LastSync = curlocaltime.Date;
+                                _fpMachineService.UpdateObject(fpMachine, _companyInfoService);
                             }
-                            _fpMachineService.DownloadAttLog(fpMachine, fpMachine.IsClearLogAfterDownload, _fpUserService, _fpAttLogService);
-                            fpMachine.LastSync = curlocaltime.Date;
-                            _fpMachineService.UpdateObject(fpMachine, _companyInfoService);
                         }
                     }
                 }

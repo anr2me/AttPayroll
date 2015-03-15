@@ -624,10 +624,20 @@ namespace WebView.Controllers
                     }, JsonRequestBehavior.AllowGet);
                 }
                 model = _fpMachineService.GetObjectById(Id);
-                _fpMachineService.UploadAllUserData(model, false, true, _fpUserService, _fpTemplateService, _employeeService);
-                if (!model.Errors.Any())
+                //if (model != null)
                 {
-                    _fpMachineService.DownloadAllUserData(model, _fpUserService, _fpTemplateService, _employeeService);
+                    //lock (FPMachines.fpDevices[model.Id]._locker)
+                    //{
+                    //    // Upload changed data to Machine
+                    //    _fpMachineService.UploadAllUserData(model, false, true, _fpUserService, _fpTemplateService, _employeeService);
+                    //    if (!model.Errors.Any())
+                    //    {
+                    //        // Download all data from Machine
+                    //        _fpMachineService.DownloadAllUserData(model, _fpUserService, _fpTemplateService, _employeeService);
+                    //    }
+                    //}
+
+                    _fpMachineService.SyncObject(model, _fpUserService, _fpTemplateService, _employeeService);
                 }
             }
             catch (Exception ex)
