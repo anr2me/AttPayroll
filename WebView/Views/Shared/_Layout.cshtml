@@ -72,6 +72,7 @@
         <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery-ui-timepicker-addon.min.css")">
         <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.timeentry.css")">
         <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.datetimeentry.css")">
+        @*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/bookblock.css")">*@
         <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/uploadify/uploadify.css")">
         @*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css")">*@
 		@Styles.Render("~/Content/css")
@@ -81,7 +82,10 @@
 			var base_url = '@Url.Content("~//")';
 		</script>
 
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/modernizr.custom.js")"></script>*@
 		<script type="text/javascript" src="@Url.Content("~/scripts/jquery-1.8.0.min.js")"></script>
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/jquerypp.custom.js")"></script>*@
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/jquery.bookblock.js")"></script>*@
         <script type="text/javascript" src="@Url.Content("~/scripts/jquery.plugin.min.js")"></script>
         <script type="text/javascript" src="@Url.Content("~/scripts/jquery.mousewheel.min.js")"></script>
         <script type="text/javascript" src="@Url.Content("~/scripts/jquery.multicolselect.js")"></script>
@@ -157,22 +161,31 @@
 
 
 				if ($.browser.msie) {
-					$('#menusisi').stop().animate({ 'marginLeft': '-180px' }, 1000);
-					$('#menusisi > li.out').hover(function () {
-						$('ul', $(this)).stop().animate({ 'marginLeft': '-2px' }, 400);
-					}, function () {
-						$('ul', $(this)).stop().animate({ 'marginLeft': '-180px' }, 400);
-					}
-				);
+					//$('#menusisi').stop().animate({ 'marginLeft': '-180px' }, 1000);
+					//$('#menusisi > li.out').hover(function () {
+					//	    $('ul', $(this)).stop().animate({ 'marginLeft': '-2px' }, 400);
+					//    }, function () {
+					//	    $('ul', $(this)).stop().animate({ 'marginLeft': '-180px' }, 400);
+					//    }
+				    //);
 				} else {
-					$('#menusisi').stop().animate({ 'margin-Left': '-240px' }, 1000);
+				    $('#main_menu_image').stop().animate({ 'margin-Left': '-240px' }, 1000);
 					$('#menusisi > div.menuimage, #menusisi').mouseover(function () {
 						//alert('hover')
-						$('#menusisi').stop().animate({ 'margin-left': '-2px' }, 400);
+					    $('#main_menu_image').stop().animate({ 'margin-left': '-2px' }, 400);
 					});
 					$('#menusisi').mouseout(function () {
-						$('#menusisi').stop().animate({ 'margin-left': '-240px' }, 400);
-					});
+					    $('#main_menu_image').stop().animate({ 'margin-left': '-240px' }, 400);
+				    });
+
+				    //$('#menusisi').stop().animate({ 'transition':'all 1.0s ease', 'transform-origin':'left', 'transform':'rotateY(90deg)' }, 1000);
+				    //$('#menusisi > div.menuimage, #menusisi').mouseover(function () {
+				    //    //alert('hover')
+				    //    $('#menusisi').stop().animate({ 'transition': 'all 1.0s ease', 'transform-origin': 'left', 'transform': 'rotateY(0deg)' }, 400);
+				    //});
+				    //$('#menusisi').mouseout(function () {
+				    //    $('#menusisi').stop().animate({ 'transition': 'all 0.4s ease', 'transform-origin': 'left', 'transform': 'rotateY(90deg)' }, 400);
+				    //});
 				}
 
 				// Export buttons display toggle
@@ -282,8 +295,8 @@
 		</div>
 		<div data-options="region:'center',border:false" style="margin-right: 5px;">
 
-			<div id="menusisi">
-				<div id="menusisixx">
+			<div id="menusisi" class="flipbook">
+				<div id="menusisixx" class="flipbook">
 					<div id="logo">
 					   @* <img src='@Url.Content(infoss.Models.AccountModels.GetCompanyLogoPath())' 
 							title='@infoss.Models.AccountModels.GetCompanyName()' width='200' height='105'>*@
@@ -417,7 +430,7 @@
 						PT. Solusi Sentral Data
 					</div>
 				</div>
-				<div class="menuimage" style="text-align: center; width: 15px; height: 170px; border: solid 1px #4cff00; float: left; background: #b6ff00; margin-top: 150px; border-bottom-right-radius: 10px; border-top-right-radius: 10px;">
+				<div id="main_menu_image" class="menuimage" style="text-align: center; width: 15px; height: 170px; border: solid 1px #4cff00; float: left; background: #b6ff00; margin-top: 150px; border-bottom-right-radius: 10px; border-top-right-radius: 10px;">
 					<br />
 					M<br />
 					A<br />

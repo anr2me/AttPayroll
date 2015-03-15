@@ -1,0 +1,26 @@
+﻿.collapsibleContainer{
+	border: solid 1px #9BB5C1;
+}
+
+.collapsibleContainerTitle{
+    cursor:pointer;
+}
+
+.collapsibleContainerTitle div {
+	width:200px;
+    padding-top:5px;
+    padding-left:10px;
+    background-color:#9BB5C1;
+    color:#607882;	
+}
+
+.collapsibleContainerTitle2 div {
+    padding-top:5px;
+    padding-left:10px;
+    background-color:#9BB5C1;
+    color:#607882;	
+}
+
+.collapsibleContainerContent{
+    padding: 10px;
+}
