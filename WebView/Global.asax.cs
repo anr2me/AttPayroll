@@ -15,6 +15,9 @@ using Core.Constants;
 using WebView.Hubs;
 using System.Timers;
 using FPDevice;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Net.Http.Formatting;
 
 namespace WebView
 {
@@ -56,11 +59,29 @@ namespace WebView
         {
             //RouteTable.Routes.MapHubs();
 
-            // Prevent circular reference errors while serializing using JSON ??
+            // Prevent circular reference errors while serializing using JSON ?? Should be in WebApiConfig.cs ??
             //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            
+            // Prevent JSON from converting DateTime to local server timezone when responding to client
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+            json.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
+
+            //// Create Json.Net formatter serializing DateTime using the ISO 8601 format
+            //JsonMediaTypeFormatter jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            //JsonSerializerSettings jSettings = new Newtonsoft.Json.JsonSerializerSettings()
+            //{
+            //    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            //    DateTimeZoneHandling = DateTimeZoneHandling.Local
+            //};
+            ////jSettings.Converters.Add(new MyDateTimeConvertor());
+            //jsonFormatter.SerializerSettings = jSettings;
 
             AreaRegistration.RegisterAllAreas();
 
+            // Manually installed WebAPI 2.2 after making an MVC5 project.
+            //GlobalConfiguration.Configure(WebApiConfig.Register); // NEW way
+            //WebApiConfig.Register(GlobalConfiguration.Configuration); // DEPRECATED
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

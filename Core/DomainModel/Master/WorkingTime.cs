@@ -28,6 +28,8 @@ namespace Core.DomainModel
         public decimal CheckOutTolerance { get; set; } // toleransi checkout (minutes)
         public decimal WorkInterval { get; set; } // waktu kerja minus waktu break (minutes)
         public decimal BreakInterval { get; set; } // waktu istirahat (minutes)
+        public string TimeZone { get; set; } // should use IANA standard instead of Windows standard to maintain compatibility with javascript??
+        public decimal TimeZoneOffset { get; set; } // additional minutes offset for the timezone selected
 
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }

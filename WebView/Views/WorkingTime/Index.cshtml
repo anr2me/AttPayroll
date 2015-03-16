@@ -144,6 +144,23 @@
                             <td>
                                 <input id="BreakInterval" name="BreakInterval" type="text" size="10" maxlength="20" class="textright easyui-numberbox" data-options="min:0,precision:1" disabled />Hours</td>
                         </tr>
+                        <tr>
+                            <td>
+                                <label>Time Zone </label></td>
+                            <td colspan="5">
+                                <select id="TimeZone" name="TimeZone">
+                                    @foreach (var item in TimeZoneInfo.GetSystemTimeZones())
+                                    {
+                                        <option value="@item.Id">@item.DisplayName</option>
+                                    }
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>TimeZone Offset</label></td>
+                            <td colspan="3">
+                                <input id="TimeZoneOffset" name="TimeZoneOffset" type="number" size="10" maxlength="30" align="left" value="0"/>Minute(s)</td>
+                        </tr>
                     </table>
                 @*</fieldset>*@
             </form>

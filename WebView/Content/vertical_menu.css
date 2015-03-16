@@ -187,10 +187,14 @@ border-bottom: dashed 2px #ccc;
   /*margin: 0 auto;*/
 
   /*perspective-origin: left top;*/
-  perspective:150px;
+  -webkit-perspective:150px;
+  perspective: 20em; /*150px;*/
 
+  -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
+  -webkit-transform-origin: left;
   transform-origin: left;
+  -webkit-transform: rotateY(89deg);
   transform: rotateY(89deg);
 }
 /*.flipbook ul{
@@ -202,6 +206,26 @@ border-bottom: dashed 2px #ccc;
   transform: rotateY(115deg);
 }*/
 .flipbook:hover /*ul*/{
+  -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
+  -webkit-transform: rotateY(0deg);
   transform: rotateY(0deg);
+}
+
+.noflipbook{
+  position: relative;
+  transform-style: flat;
+  perspective:none;
+
+  transition: all 0.4s ease;
+  transform-origin: left;
+  transform: none; /*translateX(-240px);*/
+}
+.noflipbook:hover {
+  position: relative;
+  transform-style: flat;
+  perspective:none;
+
+  transition: all 0.4s ease;
+  transform: none;
 }

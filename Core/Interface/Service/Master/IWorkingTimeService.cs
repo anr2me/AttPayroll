@@ -19,5 +19,6 @@ namespace Core.Interface.Service
         WorkingTime SoftDeleteObject(WorkingTime workingTime, IEmployeeWorkingTimeService _employeeWorkingTimeService);
         bool DeleteObject(int Id);
         bool IsCodeDuplicated(WorkingTime workingTime);
+        DateTime SetTimeZone(DateTime dateTime, TimeZoneInfo timeZoneInfo, decimal additionalMinutesOffset = 0);
     }
 }

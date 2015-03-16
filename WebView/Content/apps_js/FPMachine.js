@@ -179,6 +179,7 @@
                   { name: 'Serial Port', index: 'serialport', width: 60 },
                   { name: 'Serial Baud Rate', index: 'serialbaudrate', width: 100 },
                   { name: 'Time Zone', index: 'timezone', width: 100, formatter: 'select', stype: 'select', editoptions: { value: getSelectOption("#TimeZone") } },
+                  { name: 'TZ Addon Offset', index: 'TimeZoneOffset', width: 80 },
                   { name: 'Platform', index: 'platform', width: 100 },
                   { name: 'Firmware Ver', index: 'firmwarever', width: 100 },
                   { name: 'Arithmetic Ver', index: 'arithmeticver', width: 110 },
@@ -283,8 +284,8 @@
         $('#EthernetIP').val("192.168.1.201");
         $('#EthernetPort').val("4370");
         $('#SerialBaudRate').val("115200");
-        $('#TimeZoneOffset').val('0');
         document.getElementById('IsClear').checked = false;
+        $('#TimeZoneOffset').val('0');
         //var tzoffset = new Date().getTimezoneOffset(); // the difference, in minutes, between UTC and local time
         var timezone = jstz.determine();
         var tzname = timezone.name(); // eg. "Asia/Jakarta"

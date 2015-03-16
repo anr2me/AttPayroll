@@ -68,7 +68,7 @@
         url: base_url + 'WorkingTime/GetList',
         postData: { 'ParentId': function () { return $("#parenttype").val(); } },
         datatype: "json",
-        colNames: ['ID', 'Code', 'Name', 'Min CheckIn', 'CheckIn', 'Max CheckIn', 'BreakOut', 'BreakIn','Min CheckOut', 'CheckOut', 'Max CheckOut', 'CheckIn Tolerance', 'CheckOut Tolerance', 'Work Interval', 'Break Interval', 'Created At', 'Updated At'],
+        colNames: ['ID', 'Code', 'Name', 'Min CheckIn', 'CheckIn', 'Max CheckIn', 'BreakOut', 'BreakIn','Min CheckOut', 'CheckOut', 'Max CheckOut', 'CheckIn Tolerance', 'CheckOut Tolerance', 'Work Interval', 'Break Interval', 'Time Zone', 'TZ Addon Offset', 'Created At', 'Updated At'],
         colModel: [
     			  { name: 'id', index: 'id', width: 80, align: "center" },
                   { name: 'code', index: 'code', width: 100 },
@@ -85,6 +85,8 @@
                   { name: 'checkouttolerance', index: 'checkouttolerance', width: 100 },
                   { name: 'workinterval', index: 'workinterval', width: 100 },
                   { name: 'breakinterval', index: 'breakinterval', width: 100 },
+                  { name: 'timezone', index: 'timezone', width: 100, formatter: 'select', stype: 'select', editoptions: { value: getSelectOption("#TimeZone") } },
+                  { name: 'TimeZoneOffset', index: 'TimeZoneOffset', width: 80 },
 				  { name: 'createdat', index: 'createdat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
 				  { name: 'updatedat', index: 'updatedat', search: false, width: 100, align: "center", formatter: 'date', formatoptions: { srcformat: 'Y-m-d', newformat: 'm/d/Y' } },
         ],
@@ -156,6 +158,19 @@
         $('#MaxCheckOut').val('00:00');
         $('#BreakIn').val('00:00');
         $('#BreakOut').val('00:00');
+        $('#TimeZoneOffset').val('0');
+        //var tzoffset = new Date().getTimezoneOffset(); // the difference, in minutes, between UTC and local time
+        var timezone = jstz.determine();
+        var tzname = timezone.name(); // eg. "Asia/Jakarta"
+        var fixtzname = tzname.split('/')[1].split('_').join(' ').toUpperCase(); // convert "Asia/Jakarta" to "JAKARTA"
+        //$('#TimeZone option').each(function () {
+        $('#TimeZone').find('option').each(function () { // find an (uppercased) option's text which contains "JAKARTA"
+            if ($(this).text().toUpperCase().indexOf(fixtzname) >= 0) { //($(this).is(':contains(' + fixtzname + ')'))
+                fixtzname = $(this).val();
+                return false; //break from iteration
+            }
+        });
+        $('#TimeZone').val(fixtzname);
         vStatusSaving = 0; //add data mode	
         $('#form_div').dialog('open');
     });
@@ -186,6 +201,8 @@
                             $('#id').val(result.Id);
                             $('#Code').val(result.Code);
                             $('#Name').val(result.Name);
+                            $('#TimeZone').val(result.TimeZone);
+                            $('#TimeZoneOffset').val(result.TimeZoneOffset);
                             $('#MinCheckIn').val(timeEnt(result.MinCheckIn)); //datebox('setValue', timeEnt(result.MinCheckIn));
                             $('#CheckIn').val(timeEnt(result.CheckIn)); //datebox('setValue', timeEnt(result.CheckIn));
                             $('#MaxCheckIn').val(timeEnt(result.MaxCheckIn));
@@ -286,6 +303,7 @@
                 MinCheckOut: $("#MinCheckOut").val(), CheckOut: $("#CheckOut").val(), MaxCheckOut: $("#MaxCheckOut").val(),
                 BreakIn: $("#BreakIn").val(), BreakOut: $("#BreakOut").val(),
                 CheckInTolerance: $("#CheckInTolerance").numberbox('getValue'), CheckOutTolerance: $("#CheckOutTolerance").numberbox('getValue'),
+                TimeZone: $("#TimeZone").val(), TimeZoneOffset: $("#TimeZoneOffset").val(),
             }),
             async: false,
             cache: false,

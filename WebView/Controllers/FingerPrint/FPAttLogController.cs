@@ -10,6 +10,7 @@ using Data.Repository;
 using Validation.Validation;
 using System.Linq.Dynamic;
 using System.Data.Entity;
+using Newtonsoft.Json;
 
 namespace WebView.Controllers
 {
@@ -47,7 +48,7 @@ namespace WebView.Controllers
             if (filter == "") filter = "true";
 
             // Get Data
-            var q = _fpAttLogService.GetQueryable().Include(x => x.FPUser).Where(x => x.FPUserId == id);
+            var q = _fpAttLogService.GetQueryable().Include(x => x.FPUser).Where(x => x.FPUserId == id).ToList();
 
             var query = (from model in q
                          select new
@@ -63,7 +64,7 @@ namespace WebView.Controllers
                              model.Reserved,
                              model.CreatedAt,
                              model.UpdatedAt,
-                         }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
+                         }).AsQueryable().Where(filter).OrderBy(sidx + " " + sord); //.ToList();
 
             var list = query.AsEnumerable();
 
@@ -339,7 +340,7 @@ namespace WebView.Controllers
                     Errors
                 }, JsonRequestBehavior.AllowGet);
             }
-
+            
             return Json(new
             {
                 model.Errors

@@ -138,5 +138,15 @@ namespace Service.Service
             IQueryable<WorkingTime> workingTimes = _repository.FindAll(x => x.Code == workingTime.Code && !x.IsDeleted && x.Id != workingTime.Id);
             return (workingTimes.Count() > 0 ? true : false);
         }
+
+        public DateTime SetTimeZone(DateTime dateTime, TimeZoneInfo timeZoneInfo, decimal additionalMinutesOffset = 0)
+        {
+            // Add TimeZone info to the new DateTime
+            //string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+            //TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+            DateTimeOffset dto = new DateTimeOffset(dateTime, timeZoneInfo.GetUtcOffset(dateTime.AddMinutes((double)additionalMinutesOffset)));
+            return dto.LocalDateTime;
+        }
+
     }
 }

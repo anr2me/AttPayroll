@@ -95,6 +95,7 @@ namespace WebView.Controllers
                              model.SerialPort,
                              model.SerialBaudRate,
                              model.TimeZone,
+                             model.TimeZoneOffset,
                              //model.ProductName,
                              model.Platform,
                              model.FirmwareVer,
@@ -157,6 +158,7 @@ namespace WebView.Controllers
                              model.SerialPort,
                              model.SerialBaudRate,
                              model.TimeZone,
+                             model.TimeZoneOffset,
                              //model.ProductName,
                              model.Platform,
                              model.FirmwareVer,
@@ -211,6 +213,7 @@ namespace WebView.Controllers
                 model.SerialPort,
                 model.SerialBaudRate,
                 model.TimeZone,
+                model.TimeZoneOffset,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -318,6 +321,7 @@ namespace WebView.Controllers
                 data.SerialBaudRate = model.SerialBaudRate;
                 data.IsClearLogAfterDownload = model.IsClearLogAfterDownload;
                 data.TimeZone = model.TimeZone; // GeneralFunction.IanaToWindows(model.TimeZone);
+                data.TimeZoneOffset = model.TimeZoneOffset;
 
                 model = _fpMachineService.UpdateObject(data, _companyInfoService);
             }
@@ -767,6 +771,7 @@ namespace WebView.Controllers
         {
             try
             {
+                var fpMachine = _fpMachineService.GetObjectById(Tag); //GetObjectByMachineNumber(iMachineNumber);
                 int pin = int.Parse(sEnrollNumber);
                 var fpUser = _fpUserService.GetObjectByPIN(pin);
                 if (fpUser != null)
@@ -780,8 +785,20 @@ namespace WebView.Controllers
                         VerifyMode = iVerifyMethod,
                         InOutMode = iAttState,
                         WorkCode = iWorkCode,
-                        Time_second = new DateTime(iYear, iMonth, iDay, iHour, iMinute, iSecond),
+                        Time_second = new DateTime(iYear, iMonth, iDay, iHour, iMinute, iSecond, DateTimeKind.Local),
                     };
+                    //// Convert Server local time to machine local time
+                    //DateTime curutc = fpAttLog.Time_second.ToUniversalTime().AddMinutes((double)fpMachine.TimeZoneOffset);
+                    //string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                    //TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                    //DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
+                    //fpAttLog.Time_second = curlocaltime;
+
+                    // Add TimeZone info to the new DateTime
+                    string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                    TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                    DateTimeOffset dto = new DateTimeOffset(fpAttLog.Time_second, destTZ.GetUtcOffset(fpAttLog.Time_second.AddMinutes((double)fpMachine.TimeZoneOffset)));
+                    fpAttLog.Time_second = dto.LocalDateTime;
                     _fpAttLogService.FindOrCreateObject(fpAttLog, _fpUserService);
 
                     //Notify clients

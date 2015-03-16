@@ -67,6 +67,8 @@ namespace WebView.Controllers
                              model.CheckOutTolerance,
                              model.WorkInterval,
                              model.BreakInterval,
+                             model.TimeZone,
+                             model.TimeZoneOffset,
                              model.CreatedAt,
                              model.UpdatedAt,
                          }).Where(filter).OrderBy(sidx + " " + sord); //.ToList();
@@ -115,6 +117,8 @@ namespace WebView.Controllers
                             model.CheckOutTolerance,
                             model.WorkInterval,
                             model.BreakInterval,
+                            model.TimeZone,
+                            model.TimeZoneOffset,
                             model.CreatedAt,
                             model.UpdatedAt,
                       }
@@ -159,6 +163,8 @@ namespace WebView.Controllers
                 model.CheckOutTolerance,
                 model.WorkInterval,
                 model.BreakInterval,
+                model.TimeZone,
+                model.TimeZoneOffset,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -199,6 +205,8 @@ namespace WebView.Controllers
                 model.CheckOutTolerance,
                 model.WorkInterval,
                 model.BreakInterval,
+                model.TimeZone,
+                model.TimeZoneOffset,
                 model.Errors
             }, JsonRequestBehavior.AllowGet);
         }
@@ -218,7 +226,16 @@ namespace WebView.Controllers
                         Errors
                     }, JsonRequestBehavior.AllowGet);
                 }
-
+                string winTZ = model.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                model.MinCheckIn = _workingTimeService.SetTimeZone(model.MinCheckIn, destTZ, model.TimeZoneOffset);
+                model.CheckIn = _workingTimeService.SetTimeZone(model.CheckIn, destTZ, model.TimeZoneOffset);
+                model.MaxCheckIn = _workingTimeService.SetTimeZone(model.MaxCheckIn, destTZ, model.TimeZoneOffset);
+                model.BreakOut = _workingTimeService.SetTimeZone(model.BreakOut, destTZ, model.TimeZoneOffset);
+                model.BreakIn = _workingTimeService.SetTimeZone(model.BreakIn, destTZ, model.TimeZoneOffset);
+                model.MinCheckOut = _workingTimeService.SetTimeZone(model.MinCheckOut, destTZ, model.TimeZoneOffset);
+                model.CheckOut = _workingTimeService.SetTimeZone(model.CheckOut, destTZ, model.TimeZoneOffset);
+                model.MaxCheckOut = _workingTimeService.SetTimeZone(model.MaxCheckOut, destTZ, model.TimeZoneOffset);
                 model = _workingTimeService.CreateObject(model, _workingDayService);
             }
             catch (Exception ex)
@@ -258,18 +275,23 @@ namespace WebView.Controllers
                 var data = _workingTimeService.GetObjectById(model.Id);
                 data.Code = model.Code;
                 data.Name = model.Name;
-                data.MinCheckIn = model.MinCheckIn;
-                data.CheckIn = model.CheckIn;
-                data.MaxCheckIn = model.MaxCheckIn;
-                data.BreakOut = model.BreakOut;
-                data.BreakIn = model.BreakIn;
-                data.MinCheckOut = model.MinCheckOut;
-                data.CheckOut = model.CheckOut;
-                data.MaxCheckOut = model.MaxCheckOut;
+                data.TimeZone = model.TimeZone;
+                data.TimeZoneOffset = model.TimeZoneOffset;
+                string winTZ = model.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                data.MinCheckIn = _workingTimeService.SetTimeZone(model.MinCheckIn, destTZ, model.TimeZoneOffset);
+                data.CheckIn = _workingTimeService.SetTimeZone(model.CheckIn, destTZ, model.TimeZoneOffset);
+                data.MaxCheckIn = _workingTimeService.SetTimeZone(model.MaxCheckIn, destTZ, model.TimeZoneOffset);
+                data.BreakOut = _workingTimeService.SetTimeZone(model.BreakOut, destTZ, model.TimeZoneOffset);
+                data.BreakIn = _workingTimeService.SetTimeZone(model.BreakIn, destTZ, model.TimeZoneOffset);
+                data.MinCheckOut = _workingTimeService.SetTimeZone(model.MinCheckOut, destTZ, model.TimeZoneOffset);
+                data.CheckOut = _workingTimeService.SetTimeZone(model.CheckOut, destTZ, model.TimeZoneOffset);
+                data.MaxCheckOut = _workingTimeService.SetTimeZone(model.MaxCheckOut, destTZ, model.TimeZoneOffset);
                 data.CheckInTolerance = model.CheckInTolerance;
                 data.CheckOutTolerance = model.CheckOutTolerance;
                 data.WorkInterval = model.WorkInterval;
                 data.BreakInterval = model.BreakInterval;
+                
                 model = _workingTimeService.UpdateObject(data, _workingDayService);
             }
             catch (Exception ex)

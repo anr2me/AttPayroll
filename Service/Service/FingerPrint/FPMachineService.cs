@@ -350,6 +350,7 @@ namespace Service.Service
                                 var fpUser = _fpUserService.GetObjectByPIN(idwEnrollNumber);
                                 if (fpUser != null)
                                 {
+                                    DateTimeKind dtk = new DateTimeKind();
                                     var fpAttLog = new FPAttLog()
                                     {
                                         DeviceID = fpMachine.MachineNumber,
@@ -362,6 +363,18 @@ namespace Service.Service
                                         Reserved = idwReserved,
                                         Time_second = new DateTime(idwYear, idwMonth, idwDay, idwHour, idwMinute, idwSecond),
                                     };
+                                    //// Convert Server local time to machine local time
+                                    //DateTime curutc = fpAttLog.Time_second.ToUniversalTime().AddMinutes((double)fpMachine.TimeZoneOffset);
+                                    //string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                                    //TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                                    //DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
+                                    //fpAttLog.Time_second = curlocaltime;
+
+                                    // Add TimeZone info to the new DateTime
+                                    string winTZ = fpMachine.TimeZone.ToUpper(); // FPDevice.Convertion.IanaToWindows(fpMachine.TimeZone);
+                                    TimeZoneInfo destTZ = TimeZoneInfo.GetSystemTimeZones().Where(x => x.Id.ToUpper() == winTZ).FirstOrDefault();
+                                    DateTimeOffset dto = new DateTimeOffset(fpAttLog.Time_second, destTZ.GetUtcOffset(fpAttLog.Time_second.AddMinutes((double)fpMachine.TimeZoneOffset)));
+                                    fpAttLog.Time_second = dto.LocalDateTime;
                                     _fpAttLogService.FindOrCreateObject(fpAttLog, _fpUserService);
                                 }
                                 iIndex++;
