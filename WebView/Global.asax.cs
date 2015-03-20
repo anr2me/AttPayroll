@@ -102,6 +102,7 @@ namespace WebView
             try
             {
                 syncTimer.Enabled = false; //(sender as System.Timers.Timer).Enabled = false;
+                var gLOG = log4net.LogManager.GetLogger("Global");
                 var _companyInfoService = new CompanyInfoService(new CompanyInfoRepository(), new CompanyInfoValidator());
                 var _employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeValidator());
                 var _fpMachineService = new FPMachineService(new FPMachineRepository(), new FPMachineValidator());
@@ -130,6 +131,7 @@ namespace WebView
                             DateTime curlocaltime = TimeZoneInfo.ConvertTime(curutc, destTZ);
                             if ((fpMachine.LastSync == null || fpMachine.LastSync != curlocaltime.Date) && curlocaltime.Hour < 4)
                             {
+                                gLOG.Info("AutoSync Begin Machine[" + fpMachine.Id.ToString()+"]:"+fpMachine.MachineName);
                                 _fpMachineService.UploadAllUserData(fpMachine, false, true, _fpUserService, _fpTemplateService, _employeeService);
                                 if (!fpMachine.Errors.Any())
                                 {
@@ -138,6 +140,7 @@ namespace WebView
                                 _fpMachineService.DownloadAttLog(fpMachine, fpMachine.IsClearLogAfterDownload, _fpUserService, _fpAttLogService);
                                 fpMachine.LastSync = curlocaltime.Date;
                                 _fpMachineService.UpdateObject(fpMachine, _companyInfoService);
+                                gLOG.Info("AutoSync End Machine[" + fpMachine.Id.ToString() + "]:" + fpMachine.MachineName);
                             }
                         }
                     }

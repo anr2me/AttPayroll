@@ -776,6 +776,7 @@ namespace WebView.Controllers
                 var fpUser = _fpUserService.GetObjectByPIN(pin);
                 if (fpUser != null)
                 {
+                    LOG.Info("AttTransaction User["+fpUser.Id.ToString()+"]:"+fpUser.Name);
                     var fpAttLog = new FPAttLog()
                     {
                         DeviceID = iMachineNumber, //1,
